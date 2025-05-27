@@ -42,7 +42,9 @@ $router->add('recettes/recette', '\App\Controllers\RecettesController', 'show');
 $router->add('contact', '\App\Controllers\ContactController', 'index');
 $router->add('connexion', '\App\Controllers\AuthController', 'login');
 $router->add('inscription', '\App\Controllers\AuthController', 'register');
+$router->add('deconnexion', '\App\Controllers\AuthController', 'logout');
 $router->add('profil/monCompte', '\App\Controllers\ProfileController', 'account');
+$router->add('api/ingredients', '\App\Controllers\ApiController', 'searchIngredients');
 // Ajouter d'autres routes
 
 // Dispatcher

@@ -13,7 +13,8 @@
     <meta name="keywords" content="<?= $keywordsPage ?>" />
     <meta name="author" content="Recette AI">
     <meta name="application-name" content="Recette AI">
-
+    <meta name="racine-site" content="<?= RACINE_SITE ?>">
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Recette AI" />
     <meta property="og:description" content="<?= $descriptionPage ?>" />
@@ -95,12 +96,12 @@
             </button>
         </div>
         <div class="ctaButtons">
-            <?php if ($this->isLoggedIn()): ?>
+            <?php if (isset($isLoggedIn) && $isLoggedIn): ?>
                 <a href="<?= RACINE_SITE ?>profil/monCompte?id=<?= $user['id'] ?>" class="<?= is_active('monCompte') ? 'active' : '' ?>"><i class="fi fi-sr-user-trust"></i> <span>Mon Compte</span></a>
-                <a href="<?= RACINE_SITE ?>?action=deconnexion" class="cta"><i class="fi fi-sr-sign-out-alt"></i> <span>Déconnexion</span></a>
+                <a href="<?= RACINE_SITE ?>deconnexion" class="cta"><i class="fi fi-sr-sign-out-alt"></i> <span>Déconnexion</span></a>
             <?php else: ?>
-                <a href="<?= RACINE_SITE ?>inscription" class="cta<?= is_active('inscription.php') ? ' active' : '' ?>"><i class="fi fi-sr-sign-up"></i> <span>S'inscrire</span></a>
-                <a href="<?= RACINE_SITE ?>connexion" class="cta<?= is_active('connexion.php') ? ' active' : '' ?>"><i class="fi fi-sr-enter"></i> <span>Se Connecter</span></a>
+                <a href="<?= RACINE_SITE ?>inscription" class="cta<?= is_active('inscription') ? ' active' : '' ?>"><i class="fi fi-sr-sign-up"></i> <span>S'inscrire</span></a>
+                <a href="<?= RACINE_SITE ?>connexion" class="cta<?= is_active('connexion') ? ' active' : '' ?>"><i class="fi fi-sr-enter"></i> <span>Se Connecter</span></a>
             <?php endif; ?>
         </div>
     </nav>

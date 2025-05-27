@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const ingredientsContainer = document.getElementById('ingredients-container');
     const addIngredientBtn = document.getElementById('addIngredient');
     const selectedIngredientsContainer = document.querySelector('.selected-ingredients');
-// Définir RACINE_SITE pour JavaScript si ce n'est pas déjà fait
-const RACINE_SITE = "<?= RACINE_SITE ?>";
+
+    // Récupérer le chemin racine depuis une variable globale ou un attribut data
+    const RACINESITE = document.querySelector('meta[name="racine-site"]')?.getAttribute('content') || '/recettesaipoo/';
     // Fonction pour initialiser l'autocomplétion sur un champ
     function initAutocomplete(inputElement) {
         let currentFocus;
@@ -23,7 +24,7 @@ const RACINE_SITE = "<?= RACINE_SITE ?>";
             this.parentNode.appendChild(autocompleteList);
             
             // Requête AJAX pour obtenir les suggestions d'ingrédients
-            fetch(`inc/ingredients.php?search=${encodeURIComponent(val)}`)
+            fetch(`${RACINESITE}api/ingredients?search=${encodeURIComponent(val)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length === 0) {

@@ -11,6 +11,20 @@ class Ingredients extends Model {
     protected $table = 'ingredient';
 
     /**
+     * Récupère les ingrédients d'un utilisateur
+     * @param int $userId ID de l'utilisateur
+     * @return array Les ingrédients de l'utilisateur
+     */
+    public function getUserIngredients($userId) {
+        $sql = "SELECT i.id, i.nom FROM liste_personnelle_ingredients lpi
+                JOIN {$this->table} i ON lpi.id_ingredient = i.id
+                WHERE lpi.id_utilisateur = :id_utilisateur";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id_utilisateur', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    /**
      * Supprimer tous les ingrédients d'un utilisateur
      * @param int $userId L'ID de l'utilisateur dont les ingrédients doivent être supprimés
      */
@@ -53,7 +67,6 @@ class Ingredients extends Model {
      * @param int $idIngredient L'ID de l'ingrédient à vérifier
      * @return bool Retourne true si l'ingrédient existe, false sinon
      */
-
     public function ingredientExists($ingredientId)
     {
         $sql = "SELECT id FROM ingredient WHERE id = :id";
@@ -62,6 +75,21 @@ class Ingredients extends Model {
         $stmt->execute();
         
         return $stmt->rowCount() > 0;
+    }
+
+
+    /**
+     * Recherche des ingrédients par nom
+     * @param string $search Le terme de recherche
+     * @return array Les ingrédients correspondants
+     */
+    public function searchIngredients($search)
+    {
+        $sql = "SELECT id, nom FROM {$this->table} WHERE nom LIKE :search ORDER BY nom ASC LIMIT 10";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':search', '%' . $search . '%', \PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**

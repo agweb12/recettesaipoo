@@ -1,8 +1,8 @@
 <section class="hero">
     <div class="boxHero">
-        <?php if($this->isLoggedIn()): ?>
+        <?php if(isset($isLoggedIn) && $isLoggedIn): ?>
         <p class="alert alert-warning">Bonjour <?= $user['prenom'] ?>, vous êtes connecté !</p>
-        <form action="<?= RACINE_SITE ?>index.php" method="post" id="formIngredients">
+        <form action="<?= RACINE_SITE ?>" method="post" id="formIngredients">
             <h4>Rentrez vos ingrédients pour trouver votre recette</h4>
             <label for="ingredients">Quels ingrédients avez-vous ?</label>
             <div id="ingredients-container">

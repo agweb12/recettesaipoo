@@ -5,16 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.close');
     const signupLink = document.getElementById('signupLink');
 
-    // Ouvre le modal quand on clique sur le bouton
-    btnModal.addEventListener('click', function() {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Empêcher le scroll en arrière-plan
-    });
+    // Vérifier que les éléments existent avant d'ajouter des événements
+    if (btnModal) {
+        btnModal.addEventListener('click', function() {
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
 
     // Ferme le modal quand on clique sur le X
-    closeBtn.addEventListener('click', function() {
-        closeModal();
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            closeModal();
+        });
+    }
 
     // Ferme le modal quand on clique à l'extérieur
     window.addEventListener('click', function(event) {
@@ -34,12 +40,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fonction pour fermer le modal
     function closeModal() {
-        modal.style.display = 'none';
-        document.body.style.overflow = ''; // Réactiver le scroll
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
 
     // Soumettre le formulaire - À personnaliser selon vos besoins
-    const loginForm = document.getElementById('loginForm');
+    const loginForm = document.getElementById('modalLoginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             // Vous pouvez ajouter du code de validation ici si nécessaire

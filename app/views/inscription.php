@@ -1,129 +1,3 @@
-<?php
-require_once('../inc/functions.php');
-$titlePage = "Inscription";
-$descriptionPage = "S'inscrire sur Recette AI, pour trouver des recettes de cuisine en fonction des ingrédients que vous avez chez vous.";
-$indexPage = "index";
-$followPage = "follow";
-$info = "";
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $nom = htmlspecialchars(trim($_POST['nom']));
-    $prenom = htmlspecialchars(trim($_POST['prenom']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $password = htmlspecialchars(trim($_POST['password']));
-    $verification = true;
-
-    // Vérification du nom
-    // regex pour vérifier que le nom ne contient que des lettres en Majuscule, sans chiffres et sans caractères spéciaux
-    $regexNom = "/^\p{L}[\p{L}\s-]*$/u";
-    if(empty($nom) || !isset($nom)){
-        $verification = false;
-        $errorNom = "Le champs nom est vide";
-    } elseif(!preg_match($regexNom, $nom)){
-        $verification = false;
-        $errorNom = "Le nom ne doit contenir que des lettres, tirets ou espaces";
-    } elseif(strlen($nom) > 50){
-        $verification = false;
-        $errorNom = "Le nom ne doit pas dépasser 20 caractères";
-    } elseif(strlen($nom) < 2){
-        $verification = false;
-        $errorNom = "Le nom doit contenir au moins 2 caractères";
-    }
-
-    // Vérification du prénom
-    // regex pour vérifier que le prénom ne contient que des lettres en Majuscule ou minuscule, sans chiffres et sans caractères spéciaux
-    $regexPrenom = "/^\p{L}[\p{L}\s-]*$/u";
-    if(empty($prenom) || !isset($prenom)){
-        $verification = false;
-        $errorPrenom= "Le champs prénom est vide";
-    } elseif(!preg_match($regexPrenom, $prenom)){
-        $verification = false;
-        $errorPrenom = "Le prénom ne doit contenir que des lettres, tirets ou espaces";
-    } elseif(strlen($prenom) > 50){
-        $verification = false;
-        $errorPrenom = "Le prénom ne doit pas dépasser 20 caractères";
-    } elseif(strlen($prenom) < 2){
-        $verification = false;
-        $errorPrenom = "Le prénom doit contenir au moins 2 caractères";
-    }
-
-    // Vérification de l'email
-    // regex pour vérifier que l'email est valide
-    $regexEmail = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
-    if(empty($email) || !isset($email)){
-        $verification = false;
-        $errorEmail = "Le champs email est vide";
-    } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        $verification = false;
-        $errorEmail = "L'email n'est pas valide";
-    } elseif(!preg_match($regexEmail, $email)){
-        $verification = false;
-        $errorEmail = "L'email doit contenir un '@'et un '.'";
-    } elseif(strlen($email) > 100){
-        $verification = false;
-        $errorEmail = "L'email ne doit pas dépasser 100 caractères";
-    } elseif(strlen($email) < 5){
-        $verification = false;
-        $errorEmail = "L'email doit contenir au moins 5 caractères";
-    }
-
-    // Vérification du mot de passe 
-    // regex pour vérifier que le mot de passe contient au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
-    $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/";
-    if(empty($password) || !isset($password)){
-        $verification = false;
-        $errorPassword = "Le mot de passe est vide";
-    } elseif(!preg_match($regexPassword, $password)){
-        $verification = false;
-        $errorPassword = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial";
-    } elseif(strlen($password) > 100){
-        $verification = false;
-        $errorPassword = "Le mot de passe ne doit pas dépasser 100 caractères";
-    } elseif(strlen($password) < 8){
-        $verification = false;
-        $errorPassword = "Le mot de passe doit contenir au moins 8 caractères";
-    }
-
-    //Vérification de validation des champs
-    if($verification){
-        // Vérification si l'email existe déjà
-        $pdo = connexionBDD();
-        $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE email = :email");
-        $stmt->bindValue(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch();
-
-        if($user){
-            $verification = false;
-            // L'email existe déjà
-            $errorEmail = "L'email existe déjà";
-        } else {
-            $nom = strtoupper($nom);
-            $prenom = ucfirst(strtolower($prenom));
-            // Hachage du mot de passe
-            $passwordHashed = password_hash($password, PASSWORD_DEFAULT);
-
-            // Insertion de l'utilisateur dans la base de données
-            $pdo = connexionBDD();
-            $stmt = $pdo->prepare("INSERT INTO utilisateur (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mdp)");
-            $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
-            $stmt->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt->bindValue(':mdp', $passwordHashed, PDO::PARAM_STR);
-            $newUser = $stmt->execute();
-
-            if($newUser){
-                // Redirection vers la page de connexion
-                $info = alert("Vous êtes bien inscrit, vous pouvez vous connectez <a href='connexion.php'>ici</a>", "success");
-            } else {
-                $errorGeneral = "Une erreur est survenue lors de l'inscription";
-            }
-        }
-    }
-}
-
-require_once('header.php');
-?>
-
 <div id="register" class="register">
     <div class="register-content">
         <div class="register-header">
@@ -131,14 +5,19 @@ require_once('header.php');
             <p>Pour trouver des recettes adaptées à vos ingrédients</p>
         </div>
         <div class="register-body">
-            <?php echo $info; ?>
+            <?php if(!empty($info)): ?>
+                <div class="alert alert-success">
+                    <i class="fi fi-sr-check"></i>
+                    <p><?= $info ?></p>
+                </div>
+            <?php endif; ?>
             <?php if(isset($errorGeneral)) { ?>
                 <div class="alert alert-error">
                     <i class="fi fi-sr-exclamation-triangle"></i>
-                    <p class="alert-error"><?php echo $errorGeneral; ?></p>
+                    <p class="alert-error"><?= $errorGeneral ?></p>
                 </div>
             <?php } ?>
-            <form action="" method="post" id="registerForm">
+            <form action="<?= RACINE_SITE ?>inscription" method="post" id="registerForm">
                 <div class="form-group">
                     <label for="prenom">Prénom</label>
                     <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" >
@@ -189,7 +68,7 @@ require_once('header.php');
                 <span>ou</span>
             </div>
             <div class="signin-link">
-                <p>Déjà inscrit ? <a href="connexion.php" id="signinLink">Connectez-vous</a></p>
+                <p>Déjà inscrit ? <a href="<?= RACINE_SITE ?>connexion" id="signinLink">Connectez-vous</a></p>
             </div>
         </div>
     </div>

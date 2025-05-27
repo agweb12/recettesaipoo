@@ -1,19 +1,5 @@
 <?php
-require_once('../inc/functions.php');
 
-// Définition des variables pour la page
-$titlePage = "Recettes AI";
-$descriptionPage = "Recettes AI est un site qui vous permet de trouver des recettes de cuisine en fonction des ingrédients que vous avez chez vous.";
-$indexPage = "index";
-$followPage = "follow";
-$keywordsPage = "Recettes AI, recette, ai, intelligence artificielle, cuisine, ingrédients, recettes, trouver une recette";
-
-$recettes= []; // Tableau pour stocker les recettes
-$ingredientsUtilisateur = []; // Tableau pour stocker les ingrédients de l'utilisateur
-// Vérifie si l'utilisateur est connecté et si le formulaire d'ingrédients a été soumis
-
-$whereConditions = []; // Tableau pour stocker les conditions WHERE de la requête SQL
-$filterParams = []; // Tableau pour stocker les paramètres de filtre
 
 // Si l'utilisateur est connecté et que le formulaire d'ingrédients a été soumis
 if(isLoggedIn() && isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1){

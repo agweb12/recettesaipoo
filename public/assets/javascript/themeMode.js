@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const RACINE_SITE = 'http://localhost/recettesai/';
+    const RACINE_SITE = 'http://localhost/recettesaipoo/';
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const imgMenu = document.querySelector('.imgMenu img');

@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.prev-btn');
     const indicators = document.querySelectorAll('.indicator');
     
+    // Vérifier que les éléments nécessaires existent
+    if (!carousel || slides.length === 0) {
+        return;
+    }
+
     let currentIndex = 0;
     const totalSlides = slides.length;
     
@@ -12,15 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCarousel();
     
     // Navigation par boutons
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        updateCarousel();
-    });
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        });
+    }
     
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-        updateCarousel();
-    });
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        });
+    }
     
     // Navigation par indicateurs
     indicators.forEach((indicator, index) => {
@@ -32,16 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mise à jour de l'état du carousel
     function updateCarousel() {
-        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-        
-        // Mise à jour des indicateurs
-        indicators.forEach((indicator, index) => {
-            if (index === currentIndex) {
-                indicator.classList.add('active');
-            } else {
-                indicator.classList.remove('active');
-            }
-        });
+        if (carousel) {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            // Mise à jour des indicateurs
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
     }
     
     // Défilement automatique (optionnel)
@@ -51,7 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000); // Change de slide toutes les 5 secondes
     
     // Arrêter le défilement automatique au survol
-    document.querySelector('.features-carousel').addEventListener('mouseenter', () => {
-        clearInterval(autoSlide);
-    });
+    const carouselContainer = document.querySelector('.features-carousel');
+    if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoSlide);
+        });
+    }
 });

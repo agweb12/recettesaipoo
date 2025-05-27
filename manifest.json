@@ -1,6 +1,11 @@
 {
     "name": "Recettes AI",
-    "short_name": "RecetAI",
+    "short_name": "RecettesAI",
+    "description": "Trouvez des recettes selon vos ingrédients",
+    "start_url": "/",
+    "theme_color": "#ff6b35",
+    "background_color": "#121212",
+    "display": "standalone",
     "icons": [
         {
             "src": "android-icon-36x36.png",
@@ -128,8 +133,5 @@
             "type": "image/png",
             "purpose": "maskable"
         }
-    ],
-    "theme_color": "#121212",
-    "background_color": "#121212",
-    "display": "standalone"
+    ]
 }
