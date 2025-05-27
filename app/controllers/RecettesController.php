@@ -45,12 +45,36 @@ class RecettesController extends Controller {
                 $recettes = $this->recetteModel->getRecipesByUserIngredients($userId);
             }
         }
+        
+        // Traiter les recherches et les filtres
+        if(isset($_GET['search']) || $this->hasFilters($_GET)) {
+            // Construire les conditions de recherche
+            if(isset($_GET['search']) && !empty($_GET['search'])) {
+                $searchTerm = $_GET['search'];
+                $whereConditions[] = "(r.nom LIKE :search OR r.descriptif LIKE :search)";
+                $filterParams[':search'] = "%{$searchTerm}%";
+            }
+            
+            // Traiter les filtres
+            $this->processFilters($_GET, $whereConditions, $filterParams);
+            
+            // Récupérer les recettes filtrées
+            $recettesRecherche = $this->recetteModel->getFilteredRecipes($whereConditions, $filterParams);
+        }
+        
+        // Charger la vue avec les données
         $this->view('recettes', [
             'titlePage' => "Toutes les recettes - Recettes AI",
-            'descriptionPage' => "Découvrez toutes nos recettes",
+            'descriptionPage' => "Découvrez toutes nos recettes de cuisine sur Recettes AI",
             'indexPage' => "index",
             'followPage' => "follow",
-            'keywordsPage' => "recettes, cuisine"
+            'keywordsPage' => "recettes, cuisine, ingrédients, filtres, recherche",
+            'recettes' => $recettes,
+            'recettesRecherche' => $recettesRecherche,
+            'ingredientsUtilisateur' => $ingredientsUtilisateur,
+            'recettesFavorisIds' => $recettesFavorisIds,
+            'etiquettes' => $this->etiquetteModel->getAllEtiquettes(),
+            'categories' => $this->categorieModel->getAllCategories()
         ]);
     }
 
@@ -68,5 +92,67 @@ class RecettesController extends Controller {
             'titlePage' => $recette['nom'] . " - Recettes AI",
             'recette' => $recette
         ]);
+    }
+
+    /**
+     * Vérifie si la requête contient des filtres
+     */
+    private function hasFilters($request) {
+        $filterTypes = ['difficulte', 'temps_preparation', 'temps_cuisson', 'categorie', 'etiquette'];
+        foreach($filterTypes as $type) {
+            $paramName = "filtre_{$type}";
+            if(isset($request[$paramName]) && !empty($request[$paramName])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Traite les filtres de la requête et construit les conditions WHERE
+     */
+    private function processFilters($request, &$whereConditions, &$filterParams) {
+        $filterTypes = ['difficulte', 'temps_preparation', 'temps_cuisson', 'categorie', 'etiquette'];
+        foreach($filterTypes as $type) {
+            $paramName = "filtre_{$type}";
+            if(isset($request[$paramName]) && !empty($request[$paramName])) {
+                $values = explode(',', $request[$paramName]);
+                
+                if($type === 'etiquette') {
+                    $whereConditions[] = "r.id IN (
+                        SELECT DISTINCT re.id_recette 
+                        FROM recette_etiquette re 
+                        WHERE re.id_etiquette IN (" . implode(',', array_map('intval', $values)) . ")
+                    )";
+                }
+                else if($type === 'temps_preparation' || $type === 'temps_cuisson') {
+                    $timeConditions = [];
+                    foreach($values as $value) {
+                        $value = intval($value);
+                        if($value === 15) {
+                            $timeConditions[] = "r.{$type} <= 15";
+                        } else if($value === 30) {
+                            $timeConditions[] = "r.{$type} <= 30";
+                        } else if($value === 60) {
+                            $timeConditions[] = "r.{$type} <= 60";
+                        } else if($value === 120) {
+                            $timeConditions[] = "r.{$type} > 60";
+                        }
+                    }
+                    if(count($timeConditions) > 0) {
+                        $whereConditions[] = "(" . implode(' OR ', $timeConditions) . ")";
+                    }
+                }
+                else {
+                    $placeholders = [];
+                    foreach($values as $i => $val) {
+                        $placeholder = ":{$type}_{$i}";
+                        $placeholders[] = $placeholder;
+                        $filterParams[$placeholder] = $val;
+                    }
+                    $whereConditions[] = "r.{$type} IN (" . implode(',', $placeholders) . ")";
+                }
+            }
+        }
     }
 }
