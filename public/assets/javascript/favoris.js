@@ -1,7 +1,3 @@
-<?php 
-require_once('../../../inc/functions.php'); // Inclure le fichier de fonctions
-header('Content-Type: application/javascript');
-?>
 document.addEventListener('DOMContentLoaded', function() {
     const favoriteBtn = document.querySelector('.favorite-btn');
     
@@ -16,26 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('id_recette', recipeId);
             formData.append('action', action);
 
-            /* console.log('Envoi de la requête avec:', {
-                recipeId: recipeId,
-                action: action,
-                url: '<?= RACINE_SITE ?>inc/favoris.php'
-            }); */
+            // Récupérer la racine du site à partir du meta tag
+            const RACINESITE = document.querySelector('meta[name="racine-site"]')?.getAttribute('content') || '/recettesaipoo/';
 
             // Envoyer la requête avec FormData
-            fetch('<?= RACINE_SITE ?>inc/favoris.php', {
+            fetch(RACINESITE + 'api/favoris', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
-                // console.log("Status de la réponse:", response.status);
                 if (!response.ok) {
                     throw new Error('Réponse réseau non valide');
                 }
                 return response.json();
             })
             .then(data => {
-                // console.log("Données reçues:", data);
                 if (data.success) {
                     // Mettre à jour l'interface utilisateur
                     this.classList.toggle('is-active');
@@ -62,11 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                //console.error('Erreur:', error);
                 alert('Une erreur est survenue. Veuillez réessayer.');
             });
         });
-    } else {
-        console.log('Bouton favoris non trouvé');
     }
 });

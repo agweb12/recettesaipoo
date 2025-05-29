@@ -17,16 +17,18 @@
             <a href="#"><i class="fi fi-brands-instagram"></i></a>
         </div>
     </div>
-    <p>&copy; <?= date('Y') ?> Recette AI. Tous droits réservés.</p>
+    <p>&copy; <?= date('Y') ?> Recettes AI. Tous droits réservés.</p>
     <p>Développé par <a href="https://agwebcreation.fr" target="_blank">Alexandre Graziani</a></p>
 </footer>
 <?php if($this->isLoggedIn()):?>
-<script src="<?= RACINE_SITE ?>public/assets/javascript/favoris-loader.php"></script>
+<script src="<?= RACINE_SITE ?>public/assets/javascript/favoris.js"></script>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/autocomplete.js"></script>
+<script src="<?= RACINE_SITE ?>public/assets/javascript/tabOnglet.js"></script>
 <?php endif; ?>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/mediaQueries.js"></script>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/filter-recipes.js"></script>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/carousel.js"></script>
+<script src="<?= RACINE_SITE ?>public/assets/javascript/themeMode.js"></script>
 <?php if(!$this->isLoggedIn()): ?>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/password.js"></script>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/modal.js"></script>

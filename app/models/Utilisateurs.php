@@ -10,6 +10,20 @@ class Utilisateurs extends Model {
     protected $table = 'utilisateur';
 
     /**
+     * Récupère un utilisateur par son ID
+     * @param int $id ID de l'utilisateur
+     * @return array|false L'utilisateur ou false si non trouvé
+     */
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM {$this->table} WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    /**
      * Créer un nouvel utilisateur
      * @param array $data Les données de l'utilisateur (nom, prenom, email, mot_de_passe)
      * @return bool|int L'ID du nouvel utilisateur ou false en cas d'erreur
@@ -39,7 +53,7 @@ class Utilisateurs extends Model {
     public function validateRegistrationData($data) : array
     {
         $errors = [];
-        
+
         // Validation du nom
         $regexNom = "/^\p{L}[\p{L}\s-]*$/u";
         if (empty($data['nom'])) {
@@ -98,10 +112,11 @@ class Utilisateurs extends Model {
             $errors['email'] = "L'email n'est pas valide";
         }
         
+         $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
         if (empty($data['password'])) {
             $errors['password'] = "Le champ mot de passe est requis";
-        } elseif (strlen($data['password']) < 8) {
-            $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères";
+        } elseif (!preg_match($regexPassword, $data['password'])) {
+            $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial";
         }
         
         return $errors;
@@ -112,7 +127,7 @@ class Utilisateurs extends Model {
      * @param string $email L'email de l'utilisateur
      * @return array|false Les données de l'utilisateur ou false si non trouvé
      */
-    public function findByEmail($email) : array|false
+    public function findByEmail($email)
     {
         $sql = "SELECT * FROM {$this->table} WHERE email = :email";
         $stmt = $this->db->prepare($sql);
@@ -127,7 +142,7 @@ class Utilisateurs extends Model {
      * @param string $password Le mot de passe en clair
      * @return array|false Les données de l'utilisateur si authentifié, false sinon
      */
-    public function authenticate($email, $password) : array|false
+    public function authenticate($email, $password)
     {
         $user = $this->findByEmail($email);
         

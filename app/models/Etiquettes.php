@@ -28,7 +28,7 @@ class Etiquettes extends Model {
      */
     public function getRecipeEtiquettes($recipeId) : array
     {
-        $sql = "SELECT e.id, e.nom FROM {$this->table} e 
+        $sql = "SELECT e.id, e.nom, e.descriptif FROM {$this->table} e 
                 JOIN recette_etiquette re ON e.id = re.id_etiquette 
                 WHERE re.id_recette = :id_recette";
         $stmt = $this->db->prepare($sql);

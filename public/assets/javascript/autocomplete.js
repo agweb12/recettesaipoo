@@ -9,49 +9,49 @@ document.addEventListener('DOMContentLoaded', function() {
     function initAutocomplete(inputElement) {
         let currentFocus;
         let selectedIngredients = [];
-        
+
         // Événement lors de la saisie dans le champ
         inputElement.addEventListener('input', function(e) {
             const val = this.value;
             closeAllLists();
-            
+
             if (!val) { return false; }
             currentFocus = -1;
-            
+
             // Créer une liste de suggestions
             const autocompleteList = document.createElement('div');
             autocompleteList.setAttribute('class', 'autocomplete-items');
             this.parentNode.appendChild(autocompleteList);
-            
+
             // Requête AJAX pour obtenir les suggestions d'ingrédients
             fetch(`${RACINESITE}api/ingredients?search=${encodeURIComponent(val)}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.length === 0) {
+                    if (!data.ingredients || data.ingredients.length === 0) {
                         const noResultItem = document.createElement('div');
                         noResultItem.innerHTML = `<strong>Aucun ingrédient trouvé</strong>`;
                         autocompleteList.appendChild(noResultItem);
                         return;
                     }
-                    
-                    data.forEach(ingredient => {
+
+                    data.ingredients.forEach(ingredient => {
                         // Ne pas afficher les ingrédients déjà sélectionnés
                         if (selectedIngredients.includes(ingredient.id)) return;
-                        
+
                         const item = document.createElement('div');
                         // Mettre en surbrillance les caractères correspondants
                         const matchIndex = ingredient.nom.toLowerCase().indexOf(val.toLowerCase());
                         if (matchIndex !== -1) {
                             item.innerHTML = ingredient.nom.substring(0, matchIndex) + 
-                                             "<strong>" + ingredient.nom.substring(matchIndex, matchIndex + val.length) + "</strong>" + 
-                                             ingredient.nom.substring(matchIndex + val.length);
+                                            "<strong>" + ingredient.nom.substring(matchIndex, matchIndex + val.length) + "</strong>" + 
+                                            ingredient.nom.substring(matchIndex + val.length);
                         } else {
                             item.innerHTML = ingredient.nom;
                         }
-                        
+
                         // Stocker l'ID de l'ingrédient
                         item.setAttribute('data-id', ingredient.id);
-                        
+
                         // Événement de clic sur un élément de la liste
                         item.addEventListener('click', function(e) {
                             const selectedId = this.getAttribute('data-id');
@@ -117,10 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialiser l'autocomplétion sur le premier champ
-    initAutocomplete(document.querySelector('.ingredient-autocomplete'));
+    const firstInput = document.querySelector('.ingredient-autocomplete');
+    if (firstInput) {
+        initAutocomplete(firstInput);
+    }
     
     // Ajouter un nouveau champ d'ingrédient
-    addIngredientBtn.addEventListener('click', function() {
+    if(addIngredientBtn){
+        addIngredientBtn.addEventListener('click', function() {
         const newInputGroup = document.createElement('div');
         newInputGroup.className = 'ingredient-input-group';
         newInputGroup.innerHTML = `
@@ -141,5 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ingredientsContainer.appendChild(newInputGroup);
         initAutocomplete(newInputGroup.querySelector('.ingredient-autocomplete'));
     });
+    }
 });
 

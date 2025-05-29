@@ -1,6 +1,6 @@
 <!-- Section des recettes -->
-<?php if(isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1): ?>
-    <?php if(isLoggedIn()): ?>
+<?php if(isset($formIngredients) && $formIngredients == 1): ?>
+    <?php if($isLoggedIn): ?>
     <section class="listeRecipesIngredients">
         <!-- Afficher les ingrédients de l'utilisateur -->
         <?php if(!empty($ingredientsUtilisateur)): ?>
@@ -8,7 +8,7 @@
             <h4>Vos ingrédients</h4>
             <div class="ingredient-tags">
                 <?php foreach($ingredientsUtilisateur as $ingredient): ?>
-                    <span class="ingredient-tag"><?= $ingredient['nom'] ?></span>
+                    <span class="ingredient-tag"><?= htmlspecialchars($ingredient['nom']) ?></span>
                 <?php endforeach; ?>
             </div>
         </section>
@@ -20,51 +20,30 @@
             <div class="recipes">
             <?php foreach($recettes as $recette): ?>
                 <div class="recipeBox">
-                    <img src="<?= (!empty($recette['image_url'])) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg' ?>" alt="<?= $recette['nom'] ?>">
+                    <img src="<?= (!empty($recette['image_url'])) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg' ?>" alt="<?= htmlspecialchars($recette['nom']) ?>">
                     <div class="recipe-meta">
                         <span><i class="fi fi-sr-clock"></i> Préparation: <?= $recette['temps_preparation'] ?> min</span>
                         <span><i class="fi fi-sr-flame"></i> Cuisson: <?= $recette['temps_cuisson'] ?> min</span>
                         <span style="background-color:<?= $recette['couleur_categorie'] ?>; color:<?= $recette['couleurTexte'] ?>;  border-radius:3rem; padding:.3rem;"><?= $recette['categorie'] ?></span>
                         <span><i class="fi fi-sr-stats"></i><?= ucfirst($recette['difficulte']) ?></span>
-                        <?php if(isLoggedIn()): ?>
+                        <?php if($isLoggedIn): ?>
                             <span>
-                                <?php if(in_array($recette['id'], $recettesFavorisIds)): ?>
-                                    <i class="fi fi-sr-heart"></i>
-                                <?php else: ?>
-                                    <i class="fi fi-rr-heart"></i>
-                                <?php endif; ?>
+                                <i class="fi <?= in_array($recette['id'], $recettesFavorisIds) ? 'fi-sr-heart' : 'fi-rr-heart' ?>"></i>
                                 Favoris
                             </span>
                         <?php endif; ?>
                         <span><i class="fi fi-sr-list-check"></i>
-                        <?php 
-                            // déterminer le nombre d'ingrédients total de chaque recette
-                            $sql = "SELECT COUNT(*) AS nombre_ingredients_total 
-                                    FROM liste_recette_ingredients 
-                                    WHERE id_recette = :id_recette";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->bindValue(':id_recette', $recette['id']);
-                            $stmt->execute();
-                            $nombreIngredientsTotal = $stmt->fetchColumn();
-                            $recette['nombre_ingredients_total'] = $nombreIngredientsTotal;
-                        ?>
-                        <?php if($recette['nombre_ingredients_correspondants'] == 1) : ?>
-                            <?= $recette['nombre_ingredients_correspondants'] ?> ingrédient / <?= $nombreIngredientsTotal ?? '...' ?>
-                        <?php elseif($recette['nombre_ingredients_correspondants'] > 1) : ?>
-                            <?= $recette['nombre_ingredients_correspondants'] ?> ingrédients / <?= $nombreIngredientsTotal ?? '...' ?>
-                        <?php else : ?>
-                            <?= $recette['nombre_ingredients_correspondants'] ?> ingrédient / <?= $nombreIngredientsTotal ?? '...' ?> 
-                        <?php endif; ?>
+                        <?= $recette['nombre_ingredients_correspondants'] ?> ingrédient<?= $recette['nombre_ingredients_correspondants'] > 1 ? 's' : '' ?> / <?= $recette['nombre_ingredients_total'] ?>
                         </span>
                     </div>
-                    <p><?= $recette['nom'] ?></p>
-                    <p><?= substr($recette['descriptif'], 0, 100) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
-                    <a href="<?= RACINE_SITE ?>views/recettes/recette.php?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                    <p><?= htmlspecialchars($recette['nom']) ?></p>
+                    <p><?= htmlspecialchars(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
+                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
                 </div>
             <?php endforeach;?>
             </div>
         </section>
-        <?php elseif(isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1): ?>
+        <?php elseif(isset($formIngredients) && $formIngredients == 1): ?>
         <section class="no-recipes">
             <h4>Aucune recette trouvée</h4>
             <p>Nous n'avons pas trouvé de recettes correspondant à vos ingrédients. Essayez avec d'autres ingrédients ou consultez notre liste complète de recettes.</p>
@@ -78,7 +57,7 @@
     <section class="heroIngredients">
         <h1>Toutes les recettes</h1>
         <div class="boxHeroIngredients">
-            <?php if(!isLoggedIn()): ?>
+            <?php if(!$isLoggedIn): ?>
                 <p>Inscrivez-vous ou connectez-vous pour trouver vos recettes en fonction de votre liste d'ingrédients</p>
                 <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
             <?php else: ?>
@@ -132,15 +111,14 @@
                             <h4>Catégorie</h4>
                             <details class="filter-options">
                                 <summary>Choisir une catégorie</summary>
-                                <?php
-                                $pdo = connexionBDD();
-                                // Requête pour récupérer toutes les catégories
-                                $sql = "SELECT id, nom, couleur, couleurTexte FROM categorie ORDER BY nom";
-                                $stmt = $pdo->query($sql);
-                                while ($categorie = $stmt->fetch()) {
-                                    echo '<label><i style="display:block;background-color:'.$categorie['couleur'].';color:'.$categorie['couleurTexte'].'; border-radius:3rem; width:14px; height:14px;"></i><input type="checkbox" class="filter-checkbox" data-type="categorie" value="' . $categorie['id'] . '"> ' . $categorie['nom'] . '</label>';
-                                }
-                                ?>
+                                <!-- Afficher les catégories disponibles -->
+                                <?php foreach($categories as $categorie): ?>
+                                    <label>
+                                        <i style="display:block;background-color:<?= $categorie['couleur'] ?>;color:<?= $categorie['couleurTexte'] ?>; border-radius:3rem; width:14px; height:14px;"></i>
+                                        <input type="checkbox" class="filter-checkbox" data-type="categorie" value="<?= $categorie['id'] ?>"> 
+                                        <?= html_entity_decode($categorie['nom'], ENT_QUOTES, "utf-8") ?>
+                                    </label>
+                                <?php endforeach; ?>
                             </details>
                         </div>
                     </div>
@@ -149,21 +127,20 @@
                         <h4>Étiquettes</h4>
                         <details class="filter-options">
                             <summary>Choisir une étiquette</summary>
-                            <?php
-                            $pdo = connexionBDD();
-                            // Requête pour récupérer toutes les étiquettes
-                            $sql = "SELECT id, nom FROM etiquette ORDER BY nom";
-                            $stmt = $pdo->query($sql);
-                            while ($etiquette = $stmt->fetch()) {
-                                echo '<label><input type="checkbox" class="filter-checkbox" data-type="etiquette" value="' . $etiquette['id'] . '"> ' . $etiquette['nom'] . '</label>';
-                            }
-                            ?>
+                            <!-- Afficher les étiquettes disponibles -->
+                            <?php foreach($etiquettes as $etiquette): ?>
+                                <label>
+                                    <input type="checkbox" class="filter-checkbox" data-type="etiquette" value="<?= $etiquette['id'] ?>"> 
+                                    <?= htmlspecialchars($etiquette['nom']) ?>
+                                </label>
+                            <?php endforeach; ?>
                         </details>
                     </div>
                 </div>
             </details>
         </aside>
         <!-- Fin du filtre des recettes -->
+
         <!-- Affichage des recettes -->
         <section class="allRecipes">
             <!-- Barre de recherche -->
@@ -178,68 +155,48 @@
             </div>
             <!-- Fin de la barre de recherche -->
             <!-- Affichage des recettes filtrées -->
-            <?php if(isset($_GET['search']) || isset($_GET['filtre_difficulte']) || isset($_GET['filtre_temps_preparation']) || isset($_GET['filtre_temps_cuisson']) || isset($_GET['filtre_categorie']) || isset($_GET['filtre_etiquette'])) : ?>
+            <?php if(isset($_GET['search']) || $hasFilters) : ?>
             <section class="recipes">
-            <?php
-            if(!empty($recettesRecherche)) {
-                foreach($recettesRecherche as $recette) {
-                    // Récupérer les étiquettes de cette recette
-                    $sqlEtiquettes = "SELECT e.id, e.nom FROM etiquette e 
-                                    JOIN recette_etiquette re ON e.id = re.id_etiquette 
-                                    WHERE re.id_recette = :id_recette";
-                    $stmtEtiquettes = $pdo->prepare($sqlEtiquettes);
-                    $stmtEtiquettes->execute(['id_recette' => $recette['id']]);
-                    $etiquettes = $stmtEtiquettes->fetchAll();
-                    
-                    $etiquettesIds = [];
-                    foreach ($etiquettes as $etiquette) {
-                        $etiquettesIds[] = $etiquette['id'];
-                    }
-
-                    // Créer un élément de recette avec des attributs data pour le filtrage
-                    echo '<div class="recipeBox"
-                            data-difficulte="' . $recette['difficulte'] . '" 
-                            data-temps_preparation="' . $recette['temps_preparation'] . '" 
-                            data-temps_cuisson="' . $recette['temps_cuisson'] . '" 
-                            data-categorie="' . $recette['id_categorie'] . '" 
-                            data-etiquette="' . implode(',', $etiquettesIds) . '">
-                            <img src="' . (!empty($recette['image_url']) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg') . '" alt="' . $recette['nom'] . '">
+            <!-- Si des recettes sont trouvées -->
+                <?php if(!empty($recettesRecherche)): ?>
+                    <?php foreach($recettesRecherche as $recette): ?>
+                        <div class="recipeBox"
+                            data-difficulte="<?= $recette['difficulte'] ?>" 
+                            data-temps_preparation="<?= $recette['temps_preparation'] ?>" 
+                            data-temps_cuisson="<?= $recette['temps_cuisson'] ?>" 
+                            data-categorie="<?= $recette['id_categorie'] ?>" 
+                            data-etiquette="<?= $recette['etiquettes_ids'] ?>">
+                            <img src="<?= (!empty($recette['image_url'])) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg' ?>" alt="<?= htmlspecialchars($recette['nom']) ?>">
                             <div class="recipe-meta">
-                                <span><i class="fi fi-sr-clock"></i> Préparation: ' . $recette['temps_preparation'] . ' min</span>
-                                <span><i class="fi fi-sr-flame"></i> Cuisson: ' . $recette['temps_cuisson'] . ' min</span>
-                                <span style="background-color:'.$recette['couleur_categorie'].'; color:'.$recette['couleurTexte'].'; border-radius:3rem; padding:.3rem;">' . $recette['categorie'] . '</span>
-                                <span><i class="fi fi-sr-stats"></i> ' . ucfirst($recette['difficulte']) . '</span>';
-                    if(isLoggedIn()){
-                        echo '<span>';
-                                if(in_array($recette['id'], $recettesFavorisIds)){
-                                    echo '<i class="fi fi-sr-heart"></i>';
-                                } else {
-                                    echo '<i class="fi fi-rr-heart"></i>';
-                                }
-                        echo ' Favoris</span>';
-                    }
-
-                    echo '<span><i class="fi fi-sr-list-check"></i> ' . count($etiquettes) . ' étiquette(s)</span>
+                                <span><i class="fi fi-sr-clock"></i> Préparation: <?= $recette['temps_preparation'] ?> min</span>
+                                <span><i class="fi fi-sr-flame"></i> Cuisson: <?= $recette['temps_cuisson'] ?> min</span>
+                                <span style="background-color:<?= $recette['couleur_categorie'] ?>; color:<?= $recette['couleurTexte'] ?>; border-radius:3rem; padding:.3rem;"><?= htmlspecialchars($recette['categorie']) ?></span>
+                                <span><i class="fi fi-sr-stats"></i> <?= ucfirst($recette['difficulte']) ?></span>
+                                <?php if($isLoggedIn): ?>
+                                    <span>
+                                        <i class="fi <?= in_array($recette['id'], $recettesFavorisIds) ? 'fi-sr-heart' : 'fi-rr-heart' ?>"></i> Favoris
+                                    </span>
+                                <?php endif; ?>
+                                <span><i class="fi fi-sr-list-check"></i> <?= $recette['nb_etiquettes'] ?> étiquette(s)</span>
                             </div>
-                            <h4>' . $recette['nom'] . '</h4>
-                            <p>' . (strlen($recette['descriptif']) > 100 ? substr($recette['descriptif'], 0, 100) . '...' : $recette['descriptif']) . '</p>
-                            <a href="'.RACINE_SITE.'views/recettes/recette.php?id=' . $recette['id'] . '">Voir la recette</a>
-                        </div>';
-                }
-            }
-            ?>
-            <!-- Si aucune recette n'est trouvée -->
-        </section>
-        <!-- Fin de l'affichage des recettes filtrées -->
-        <?php else: ?>
-        <!-- Si aucune recherche ou filtre n'est appliqué, afficher un message d'état vide -->
-        <div class="empty-state">
-            <i class="fi fi-sr-search"></i>
-            <h3>Trouvez votre recette parfaite</h3>
-            <p>Utilisez la barre de recherche et les filtres pour découvrir des recettes qui correspondent à vos envies !</p>
-            <p>Vous pouvez rechercher par nom de recette ou par description.</p>
-        </div>
-        <?php endif; ?>
+                            <h4><?= htmlspecialchars($recette['nom']) ?></h4>
+                            <p><?= html_entity_decode(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
+                            <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                        </div>
+                    <?php endforeach; ?>
+                <!-- Si aucune recette n'est trouvée -->
+                <?php endif; ?>
+            </section>
+            <!-- Fin de l'affichage des recettes filtrées -->
+            <?php else: ?>
+            <!-- Si aucune recherche ou filtre n'est appliqué, afficher un message d'état vide -->
+            <div class="empty-state">
+                <i class="fi fi-sr-search"></i>
+                <h3>Trouvez votre recette parfaite</h3>
+                <p>Utilisez la barre de recherche et les filtres pour découvrir des recettes qui correspondent à vos envies !</p>
+                <p>Vous pouvez rechercher par nom de recette ou par description.</p>
+            </div>
+            <?php endif; ?>
         </section>
         <!-- Fin de l'affichage des recettes -->
     </section>
@@ -299,7 +256,3 @@
         </div>
     </div>
 </section>
-<!-- Fin du carousel des fonctionnalités -->
-<?php
-require_once('footer.php');
-?>

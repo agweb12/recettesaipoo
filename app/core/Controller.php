@@ -13,9 +13,17 @@ class Controller {
         // Inclure l'en-tête
         include_once ROOT_DIR . '/app/views/header.php';
 
-        // Inclusion de la modal de connexion si l'utilisateur n'est pas connecté
-        if(!$this->isLoggedIn()) {
-            include_once ROOT_DIR . '/app/views/modalConnexion.php';
+        // définir la vue 
+        if (!isset($view) || empty($view)) {
+            $view = 'accueil'; // Vue par défaut si aucune vue n'est spécifiée
+        }
+
+        // Si la vue est connexion ou inscription, on n'inclut pas le modal de connexion
+        if ($view !== 'connexion' && $view !== 'inscription') {
+            // Inclusion de la modal de connexion si l'utilisateur n'est pas connecté
+            if(!$this->isLoggedIn()) {
+                include_once ROOT_DIR . '/app/views/modalConnexion.php';
+            }
         }
 
         // Inclusion du contenu principal

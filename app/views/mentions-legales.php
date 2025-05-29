@@ -1,17 +1,3 @@
-<?php
-require_once('../inc/functions.php');
-
-$titlePage = "Mentions Légales - Recettes AI";
-$descriptionPage = "Consultez les mentions légales de Recettes AI pour connaître l'éditeur, l'hébergeur et les conditions d'utilisation du site.";
-$indexPage = "index";
-$followPage = "follow";
-$keywordsPage = "mentions légales, éditeur, hébergeur, Recettes AI, conditions d'utilisation";
-
-if(isLoggedIn()){
-    $user = $_SESSION['user'];
-}
-require_once('header.php');
-?>
 <div class="heroIngredients">
     <div class="boxHeroIngredients">
         <h1>Mentions légales</h1>
@@ -39,6 +25,3 @@ require_once('header.php');
     <h3>4. Données personnelles</h3>
     <p>Les informations personnelles sont traitées conformément à la politique de confidentialité.</p>
 </div>
-<?php
-require_once('footer.php');
-?>

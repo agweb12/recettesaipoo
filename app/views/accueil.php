@@ -38,7 +38,7 @@
                 <?php endif; ?>
                 <h4><?= $recette['nom'] ?></h4>
                 <p><?= $recette['descriptif'] ?></p>
-                <a href="<?= RACINE_SITE ?>recette?id=<?= $recette['id'] ?>">Voir la recette</a>
+                <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>">Voir la recette</a>
             </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -55,7 +55,7 @@
                     <?php endif; ?>
                     <h4><?= $recette['nom'] ?></h4>
                     <p><?= $recette['descriptif'] ?></p>
-                    <a href="<?= RACINE_SITE ?>recette?id=<?= $recette['id'] ?>">Voir la recette</a>
+                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>">Voir la recette</a>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

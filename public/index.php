@@ -39,12 +39,16 @@ $router->add('', '\App\Controllers\HomeController', 'index');
 $router->add('accueil', '\App\Controllers\HomeController', 'index');
 $router->add('recettes', '\App\Controllers\RecettesController', 'index');
 $router->add('recettes/recette', '\App\Controllers\RecettesController', 'show');
-$router->add('contact', '\App\Controllers\ContactController', 'index');
+$router->add('contact', '\App\Controllers\StaticPagesController', 'contact');
 $router->add('connexion', '\App\Controllers\AuthController', 'login');
 $router->add('inscription', '\App\Controllers\AuthController', 'register');
 $router->add('deconnexion', '\App\Controllers\AuthController', 'logout');
 $router->add('profil/monCompte', '\App\Controllers\ProfileController', 'account');
-$router->add('api/ingredients', '\App\Controllers\ApiController', 'searchIngredients');
+$router->add('mentions-legales', '\App\Controllers\StaticPagesController', 'mentionsLegales');
+$router->add('politique-confidentialite', '\App\Controllers\StaticPagesController', 'politiqueConfidentialite');
+$router->add('cgu', '\App\Controllers\StaticPagesController', 'cgu');
+$router->add('api/favoris', '\App\Controllers\ApiController', 'favoris');
+$router->add('api/ingredients', '\App\Controllers\ApiController', 'searchIngredientsAuto');
 // Ajouter d'autres routes
 
 // Dispatcher

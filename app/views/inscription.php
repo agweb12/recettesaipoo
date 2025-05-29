@@ -7,34 +7,33 @@
         <div class="register-body">
             <?php if(!empty($info)): ?>
                 <div class="alert alert-success">
-                    <i class="fi fi-sr-check"></i>
-                    <p><?= $info ?></p>
+                    <p><i class="fi fi-sr-check"></i><?= $info ?></p>
                 </div>
             <?php endif; ?>
-            <?php if(isset($errorGeneral)) { ?>
+            <?php if(isset($errors['general'])) { ?>
                 <div class="alert alert-error">
                     <i class="fi fi-sr-exclamation-triangle"></i>
-                    <p class="alert-error"><?= $errorGeneral ?></p>
+                    <p class="alert-error"><?= $errors['general'] ?></p>
                 </div>
             <?php } ?>
             <form action="<?= RACINE_SITE ?>inscription" method="post" id="registerForm">
                 <div class="form-group">
                     <label for="prenom">Prénom</label>
                     <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" >
-                    <?php if(isset($errorPrenom)) { ?>
+                    <?php if(isset($errors['prenom'])) { ?>
                         <div class="alert alert-error">
                             <i class="fi fi-sr-exclamation-triangle"></i>
-                            <p class="alert-error"><?php echo $errorPrenom; ?></p>
+                            <p class="alert-error"><?php echo $errors['prenom']; ?></p>
                         </div>
                     <?php } ?>
                 </div>
                 <div class="form-group">
                     <label for="nom">Nom</label>
                     <input type="text" id="nom" name="nom" placeholder="Votre nom" >
-                    <?php if(isset($errorNom)) { ?>
+                    <?php if(isset($errors['nom'])) { ?>
                         <div class="alert alert-error">
                             <i class="fi fi-sr-exclamation-triangle"></i>
-                            <p class="alert-error"><?php echo $errorNom; ?></p>
+                            <p class="alert-error"><?php echo $errors['nom']; ?></p>
                         </div>
                     <?php } ?>
                 </div>
@@ -42,10 +41,10 @@
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Votre adresse email" >
                 </div>
-                <?php if(isset($errorEmail)) { ?>
+                <?php if(isset($errors['email'])) { ?>
                     <div class="alert alert-error">
                         <i class="fi fi-sr-exclamation-triangle"></i>
-                        <p class="alert-error"><?php echo $errorEmail; ?></p>
+                        <p class="alert-error"><?php echo $errors['email']; ?></p>
                     </div>
                 <?php } ?>
                 <div class="form-group">
@@ -55,10 +54,10 @@
                         <i class="fi fi-sr-eye password-toggle"></i>
                     </div>
                 </div>
-                <?php if(isset($errorPassword)) { ?>
+                <?php if(isset($errors['password'])) { ?>
                     <div class="alert alert-error">
                         <i class="fi fi-sr-exclamation-triangle"></i>
-                        <p class="alert-error"><?php echo $errorPassword; ?></p>
+                        <p class="alert-error"><?php echo $errors['password']; ?></p>
                     </div>
                 <?php } ?>
                 <button type="submit" class="btn-primary">S'inscrire</button>

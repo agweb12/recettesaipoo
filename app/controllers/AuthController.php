@@ -36,11 +36,11 @@ class AuthController extends Controller {
             ];
 
             // Validation des données
-            $errors = $this->userModel->validateLoginData($loginData); // validateLoginData est une méthode à créer dans le modèle Utilisateurs pour valider les données de connexion
+            $errors = $this->userModel->validateLoginData($loginData); // validateLoginData est une méthode dans le modèle Utilisateurs pour valider les données de connexion
 
             if(empty($errors)){
                 // Si les données sont valides, tenter la connexion
-                $user = $this->userModel->authenticate($loginData['email'], $loginData['password']); // authenticate est une méthode à créer dans le modèle Utilisateurs pour vérifier les identifiants de l'utilisateur
+                $user = $this->userModel->authenticate($loginData['email'], $loginData['password']); // authenticate est une méthode dans le modèle Utilisateurs pour vérifier les identifiants de l'utilisateur
 
                 if($user){
                     // Connexion réussie
@@ -48,11 +48,10 @@ class AuthController extends Controller {
 
                     $this->redirect(RACINE_SITE);
                     return;
-                } else {
-                    $errors['general'] = $this->alert("Identifiants incorrects. Veuillez vérifier votre email et mot de passe.", "danger");
-                    $errors['email'] = $this->alert("Identifiants incorrects. Veuillez vérifier votre email et mot de passe.", "danger");
-                    $errors['password'] = $this->alert("Identifiants incorrects. Veuillez vérifier votre email et mot de passe.", "danger");
-                }
+                }else {
+                // Ajout d'un message d'erreur si l'authentification échoue
+                $errors['general'] = "Email ou mot de passe incorrect";
+            }
             }
         }
 
@@ -111,7 +110,9 @@ class AuthController extends Controller {
                 $userId = $this->userModel->createRegistration($userData); // createRegistration est une méthode 
                 
                 if ($userId) {
-                    $info = "Inscription réussie ! <a href='" . RACINE_SITE . "connexion' class='cta'>Connectez-vous ici</a>";
+                    $info = "Inscription réussie ! Redirection dans 3 secondes vers la page de connexion <script>setTimeout(function() {
+window.location.href='" . RACINE_SITE . "connexion';}, 3000);</script>";
+
                     // Effacer les données du formulaire après succès
                     $_POST = [];
                 } else {

@@ -20,7 +20,12 @@ class RecettesController extends Controller {
         $this->categorieModel = new Categories();
     }
 
-    public function index() {
+    /**
+     * Affiche toutes les recettes avec options de filtrage et de recherche
+     * @return void
+     */
+    public function index() : void
+    {
         $whereConditions = []; // Tableau pour stocker les conditions WHERE de la requête SQL
         $filterParams = []; // Tableau pour stocker les paramètres de filtre
         // Logique pour afficher toutes les recettes
@@ -28,6 +33,8 @@ class RecettesController extends Controller {
         $ingredientsUtilisateur = []; // Tableau pour stocker les ingrédients de l'utilisateur
         $recettesRecherche = []; // Tableau pour stocker les recettes de recherche
         $recettesFavorisIds = []; // Tableau pour stocker les IDs des recettes favorites de l'utilisateur
+        $formIngredients = isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1; // Vérifie si le formulaire d'ingrédients a été soumis
+        $hasFilters = $this->hasFilters($_GET); // Vérifie si des filtres sont appliqués
 
         // Si l'utilisateur est connecté
         if($this->isLoggedIn()){
@@ -37,17 +44,37 @@ class RecettesController extends Controller {
             $recettesFavorisIds = $this->recetteModel->getUserFavoriteIds($userId);
 
             // Si le formulaire d'ingrédients a été soumis
-            if(isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1){
+            if(isset($formIngredients)){
                 // Récupérer les ingrédients de l'utilisateur
                 $ingredientsUtilisateur = $this->ingredientModel->getUserIngredients($userId);
                 
                 // Récupérer les recettes correspondant aux ingrédients de l'utilisateur
-                $recettes = $this->recetteModel->getRecipesByUserIngredients($userId);
+                $recettesIngredients = $this->recetteModel->getRecipesByUserIngredients($userId);
+
+                // Ajouter le nombre total d'ingrédients pour chaque recette
+                // array_map permet de parcourir chaque recette et d'ajouter le nombre d'ingrédients
+                // On utilise array_map parce que nous voulons transformer chaque recette en ajoutant une nouvelle clé sans modifier l'original
+                // Cela permet de garder le code propre et de ne pas avoir à écrire une boucle foreach
+                // Chaque recette est un tableau associatif, on ajoute une nouvelle clé 'nombre_ingredients_total' qui contient le nombre total d'ingrédients de la recette
+                // On utilise la méthode countRecipeIngredients pour compter les ingrédients de chaque recette
+                // On utilise array_map pour appliquer une fonction à chaque élément du tableau $recettesIngredients
+                // Cela permet de ne pas modifier le tableau original et de retourner un nouveau tableau avec les modifications
+                // On utilise une fonction anonyme pour parcourir chaque recette 
+                $recettes = array_map(function($recette){
+                    $recette['nombre_ingredients_total'] = $this->recetteModel->countRecipeIngredients($recette['id']);
+                    return $recette;
+                }, $recettesIngredients);
+
+                // avec boucle foreach
+                // foreach($recettesIngredients as $recette) {
+                //     $recette['nombre_ingredients_total'] = $this->recetteModel->countRecipeIngredients($recette['id']);
+                //     $recettes[] = $recette;
+                // }
             }
         }
         
         // Traiter les recherches et les filtres
-        if(isset($_GET['search']) || $this->hasFilters($_GET)) {
+        if(isset($_GET['search']) || $hasFilters) {
             // Construire les conditions de recherche
             if(isset($_GET['search']) && !empty($_GET['search'])) {
                 $searchTerm = $_GET['search'];
@@ -59,8 +86,28 @@ class RecettesController extends Controller {
             $this->processFilters($_GET, $whereConditions, $filterParams);
             
             // Récupérer les recettes filtrées
-            $recettesRecherche = $this->recetteModel->getFilteredRecipes($whereConditions, $filterParams);
+            $recettesIngredients = $this->recetteModel->getFilteredRecipes($whereConditions, $filterParams);
+
+            // Pour chaque recette, récupérer les étiquettes associées et préparer le tableau d'IDs des recettes
+            // On utilise array_map pour parcourir chaque recette et ajouter les étiquettes
+            $recettesRecherche = array_map(function($recette) {
+                $etiquettes = $this->etiquetteModel->getRecipeEtiquettes($recette['id']);
+                
+                $etiquettesIds = [];
+                foreach($etiquettes as $etiquette) {
+                    $etiquettesIds[] = $etiquette['id'];
+                }
+                
+                $recette['etiquettes_ids'] = implode(',', $etiquettesIds);
+                $recette['nb_etiquettes'] = count($etiquettes);
+                
+                return $recette;
+            }, $recettesIngredients);
         }
+
+        // Récupérer toutes les catégories et étiquettes pour les filtres
+        $categories = $this->categorieModel->getAllCategories();
+        $etiquettes = $this->etiquetteModel->getAllEtiquettes();
         
         // Charger la vue avec les données
         $this->view('recettes', [
@@ -73,31 +120,20 @@ class RecettesController extends Controller {
             'recettesRecherche' => $recettesRecherche,
             'ingredientsUtilisateur' => $ingredientsUtilisateur,
             'recettesFavorisIds' => $recettesFavorisIds,
-            'etiquettes' => $this->etiquetteModel->getAllEtiquettes(),
-            'categories' => $this->categorieModel->getAllCategories()
-        ]);
-    }
-
-    public function show() {
-        // Logique pour afficher une recette spécifique
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            header("HTTP/1.0 404 Not Found");
-            echo "Recette non trouvée";
-            return;
-        }
-        
-        $recette = $this->recetteModel->findById($id);
-        $this->view('recette', [
-            'titlePage' => $recette['nom'] . " - Recettes AI",
-            'recette' => $recette
+            'etiquettes' => $etiquettes,
+            'categories' => $categories,
+            'formIngredients' => $formIngredients,
+            'hasFilters' => $hasFilters
         ]);
     }
 
     /**
      * Vérifie si la requête contient des filtres
+     * @param array $request La requête HTTP
+     * @return bool True si des filtres sont présents, sinon false
      */
-    private function hasFilters($request) {
+    private function hasFilters($request) : bool
+    {
         $filterTypes = ['difficulte', 'temps_preparation', 'temps_cuisson', 'categorie', 'etiquette'];
         foreach($filterTypes as $type) {
             $paramName = "filtre_{$type}";
@@ -110,8 +146,13 @@ class RecettesController extends Controller {
 
     /**
      * Traite les filtres de la requête et construit les conditions WHERE
+     * @param array $request La requête HTTP
+     * @param array $whereConditions Tableau pour stocker les conditions WHERE
+     * @param array $filterParams Tableau pour stocker les paramètres de filtre
+     * @return void
      */
-    private function processFilters($request, &$whereConditions, &$filterParams) {
+    private function processFilters($request, &$whereConditions, &$filterParams) : void
+    {
         $filterTypes = ['difficulte', 'temps_preparation', 'temps_cuisson', 'categorie', 'etiquette'];
         foreach($filterTypes as $type) {
             $paramName = "filtre_{$type}";
@@ -154,5 +195,91 @@ class RecettesController extends Controller {
                 }
             }
         }
+    }
+
+    /**
+     * Affiche une recette spécifique
+     * @return void
+     */
+    public function show() : void
+    {
+        // Logique pour afficher une recette spécifique
+        $id = $_GET['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
+            // Si l'ID n'est pas valide, on redirige vers la page d'accueil ou on affiche une erreur
+            header("HTTP/1.0 404 Not Found");
+            echo "<div class='alert alert-danger'>ID de recette invalide</div>";
+            return;
+        }
+
+        $recipeId = intval($id); // Convertir l'ID en entier pour éviter les injections SQL
+        
+        // 1. Récupérer la recette
+        $recette = $this->recetteModel->getRecipeById($recipeId);
+
+        if (!$recette) {
+            header("HTTP/1.0 404 Not Found");
+            echo "<div class='alert alert-error'>Recette introuvable</div>";
+            return;
+        }
+
+        // 2. Récupérer les étiquettes de la recette
+        $etiquettes = $this->etiquetteModel->getRecipeEtiquettes($recipeId);
+
+        $etiquettesIds = [];
+        foreach($etiquettes as $etiquette) {
+            $etiquettesIds[] = $etiquette['id'];
+        }
+
+        // 3. Vérifier si la recette est en favoris pour l'utilisateur connecté
+        $isFavorite = false;
+        $ingredientsUser = [];
+        $possedeListIngredients = false;
+
+
+        if ($this->isLoggedIn()) {
+            $userId = $_SESSION['user']['id'];
+            $isFavorite = $this->recetteModel->isRecipeFavorite($userId, $recipeId);
+
+            // 4. Récupérer les ingrédients de l'utilisateur
+            $ingredientsUser = $this->ingredientModel->getUserIngredientsIds($userId);
+            $possedeListIngredients = !empty($ingredientsUser);
+        }
+
+        // 5. Récupérer les ingrédients de la recette
+        $ingredients = $this->recetteModel->getRecipeIngredients($recipeId);
+        $ingredientsList = [];
+        
+        foreach ($ingredients as $ingredient) {
+            $estDisponible = in_array($ingredient['id'], $ingredientsUser);
+            
+            $ingredientsList[] = [
+                'id' => $ingredient['id'],
+                'nom' => $ingredient['nom'],
+                'quantite' => $ingredient['quantite'],
+                'unite' => $ingredient['unite'],
+                'disponible' => $estDisponible,
+                'possedeListIngredients' => $possedeListIngredients
+            ];
+        }
+
+        // 6. Récupérer la liste des unités de mesure
+        $uniteMesureList = $this->recetteModel->getAllUniteMesure();
+
+        // 7. Charger la vue avec les données
+        $this->view('recettes/recette', [
+            'titlePage' => htmlspecialchars($recette['nom']) . " - Recettes AI",
+            'descriptionPage' => "Découvrez comment préparer " . htmlspecialchars($recette['nom']) . ". " . substr(htmlspecialchars($recette['descriptif']), 0, 150) . "...",
+            'indexPage' => "index",
+            'followPage' => "follow",
+            'keywordsPage' => "Recettes AI, recette, ai, intelligence artificielle, cuisine, ingrédients, recettes, trouver une recette",
+            'recette' => $recette,
+            'etiquettes' => $etiquettes,
+            'etiquettesIds' => $etiquettesIds,
+            'isFavorite' => $isFavorite,
+            'ingredientsList' => $ingredientsList,
+            'uniteMesureList' => $uniteMesureList,
+            'possedeListIngredients' => $possedeListIngredients
+        ]);
     }
 }

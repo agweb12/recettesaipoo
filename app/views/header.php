@@ -6,20 +6,20 @@
     <meta charset="UTF-8" />
     <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?= $titlePage ?></title>
     <meta name="description" content="<?= $descriptionPage ?>" />
     <!-- Meta Tags -->
     <meta name="robots" content="<?= $indexPage ?>, <?= $followPage ?>">
     <meta name="keywords" content="<?= $keywordsPage ?>" />
-    <meta name="author" content="Recette AI">
-    <meta name="application-name" content="Recette AI">
+    <meta name="author" content="Recettes AI">
+    <meta name="application-name" content="Recettes AI">
     <meta name="racine-site" content="<?= RACINE_SITE ?>">
-    
+    <title><?= $titlePage ?></title>
+
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="Recette AI" />
+    <meta property="og:title" content="Recettes AI" />
     <meta property="og:description" content="<?= $descriptionPage ?>" />
     <meta property="og:image" content="<?= RACINE_SITE ?>public/assets/img/logo.svg" />
-    <meta property="og:site_name" content="Recette AI" />
+    <meta property="og:site_name" content="Recettes AI" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?= RACINE_SITE ?>" />
 
@@ -27,7 +27,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@recettesai">
     <meta name="twitter:creator" content="@recettesai">
-    <meta name="twitter:title" content="Recette AI">
+    <meta name="twitter:title" content="Recettes AI">
     <meta name="twitter:description" content="<?= $descriptionPage ?>">
     <meta name="twitter:image" content="<?= RACINE_SITE ?>public/assets/img/logo.svg">
 
@@ -66,28 +66,55 @@
     <link href="<?= RACINE_SITE ?>public/assets/icons/webfonts/uicons-brands.css" rel="stylesheet">
     <link href="<?= RACINE_SITE ?>public/assets/icons/webfonts/uicons-regular-rounded.css" rel="stylesheet">
 
-    <script src="<?= RACINE_SITE ?>public/assets/javascript/themeMode.js" defer></script>
 </head>
 <body>
 <header>
     <?php
-    // Une fonction améliorée pour détecter la page active
-    function is_active($page_name) {
-        $script_path = $_SERVER['SCRIPT_NAME'];
-        $current_url = $_SERVER['REQUEST_URI'];
-        
-        // Cas spécial pour la page monCompte.php
-        if ($page_name == 'monCompte' && strpos($script_path, 'profil/monCompte') !== false) {
-            return true;
-        }
-        
-        // Gestion normale pour les autres pages
-        return (strpos($script_path, $page_name) !== false);
+    function is_active($pageName) {
+    // Récupérer l'URL actuelle
+    $currentUrl = $_SERVER['REQUEST_URI']; // Par exemple, "/recettesaipoo/recettes/pizza-margherita?param=value"
+    
+    // Nettoyer l'URL des paramètres de requête et récupérer uniquement le chemin
+    $path = parse_url($currentUrl, PHP_URL_PATH); // Par exemple, "/recettesaipoo/recettes/pizza-margherita"
+    
+    // Enlever le chemin de base (par exemple "/recettesaipoo/")
+    $basePath = parse_url(RACINE_SITE, PHP_URL_PATH); // parse_url pour obtenir le chemin de base, par exemple "/recettesaipoo/"
+    $cleanedPath = str_replace($basePath, '', $path); // str_replace pour enlever le chemin de base, par exemple "recettes/pizza-margherita"
+    
+    // Suppression des slashes au début et à la fin
+    $cleanedPath = trim($cleanedPath, '/'); // Par exemple, "recettes/pizza-margherita"
+    
+    // Cas spéciaux
+    if ($pageName === 'accueil' && ($cleanedPath === '' || $cleanedPath === 'accueil')) {
+        return true;
     }
-    ?>
+    
+    if ($pageName === 'monCompte' && strpos($cleanedPath, 'profil/monCompte') === 0) {
+        return true;
+    }
+    
+    if ($pageName === 'recettes' && (strpos($cleanedPath, 'recettes') === 0)) {
+        return true;
+    }
+    
+    if ($pageName === 'contact' && $cleanedPath === 'contact') {
+        return true;
+    }
+    
+    if ($pageName === 'connexion' && $cleanedPath === 'connexion') {
+        return true;
+    }
+    
+    if ($pageName === 'inscription' && $cleanedPath === 'inscription') {
+        return true;
+    }
+    
+    return false;
+}
+?>
     <!-- Menu Application Recettes AI -->
     <nav class="menu">
-        <a href="<?= RACINE_SITE ?>accueil" class="imgMenu"><img src="<?= RACINE_SITE ?>public/assets/img/logo-white.webp" alt="Logo Recette AI"></a>
+        <a href="<?= RACINE_SITE ?>accueil" class="imgMenu"><img src="<?= RACINE_SITE ?>public/assets/img/logo-white.webp" alt="Logo Recettes AI"></a>
         <div class="linkNav">
             <a href="<?= RACINE_SITE ?>recettes" class="<?= is_active('recettes') ? 'active' : '' ?>"><i class="fi fi-sr-utensils"></i> <span>Recettes</span></a>
             <a href="<?= RACINE_SITE ?>contact" class="<?= is_active('contact') ? 'active' : '' ?>"><i class="fi fi-sr-headset"></i> <span>Contact</span></a>

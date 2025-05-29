@@ -1,33 +1,12 @@
-<?php
-require_once('../inc/functions.php');
-
-$titlePage = "Contactez-nous";
-$descriptionPage = "Contactez-nous pour toute question ou demande d'information concernant nos services de recettes AI.";
-$indexPage = "index";
-$followPage = "follow";
-$keywordsPage = "Recettes AI, recette, ai, intelligence artificielle, cuisine, ingrédients, recettes, trouver une recette";
-
-require_once('../inc/modalConnexionController.php');
-
-if(isLoggedIn()){
-    $userId = $_SESSION['user']['id'];
-}
-require_once('header.php');
-?>
-<?php if(!isLoggedIn()){
-    include ('../inc/modalConnexion.php'); 
-}
-?>
-
 <section class="heroIngredients">
     <h1><?= $titlePage ?></h1>
     <div class="boxHeroIngredients">
-        <?php if(!isLoggedIn()): ?>
+        <?php if(!$this->isLoggedIn()): ?>
             <p>Inscrivez-vous ou connectez-vous pour trouver vos recettes en fonction de votre liste d'ingrédients</p>
             <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
         <?php else: ?>
             <h5>Si vous souhaitez trouver votre recette du jour, clique juste en dessous</h5>
-            <a href="<?= RACINE_SITE ?>index.php" class="cta">Commencez à rentrer des ingrédients</a>
+            <a href="<?= RACINE_SITE ?>" class="cta">Commencez à rentrer des ingrédients</a>
         <?php endif; ?>
     </div>
 </section>
@@ -73,6 +52,3 @@ require_once('header.php');
         </div>
     </div>
 </section>
-<?php
-require_once('footer.php');
-?>
