@@ -18,8 +18,8 @@
             <button type="submit" name="submit_ingredients">Trouver une recette</button>
         </form>
         <?php else: ?>
-            <h1>Bienvenue sur Recettes AI</h1>
-            <p>Avec Recettes Assistant Ingrédient, trouvez votre recette de cuisine en fonction des ingrédients que vous avez chez vous.</p>
+            <h1>Recettes AI</h1>
+            <p style="line-height:1.8">Avec <strong class="alert alert-warning">Recettes Assistant Ingredient</strong>Trouvez votre recette de cuisine en fonction des ingrédients que vous avez chez vous.</p>
             <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
         <?php endif; ?>
     </div>
