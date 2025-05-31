@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteBase /recettesaipoo/
     
     # Si le fichier ou dossier demandé existe, alors l'utiliser
     RewriteCond %{REQUEST_FILENAME} !-f

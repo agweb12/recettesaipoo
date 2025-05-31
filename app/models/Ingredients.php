@@ -138,4 +138,151 @@ class Ingredients extends Model {
     {
         return $this->findAll();
     }
+
+    // ADMINISTRATIVE FUNCTIONS
+
+    /**
+     * Récupère tous les ingrédients avec informations d'utilisation
+     * @return array Tous les ingrédients avec leur utilisation
+     */
+    public function getAllIngredientsWithUsage() : array
+    {
+        $sql = "SELECT i.*, 
+                (SELECT COUNT(*) FROM liste_recette_ingredients WHERE id_ingredient = i.id) AS nb_recettes,
+                (SELECT COUNT(*) FROM liste_personnelle_ingredients WHERE id_ingredient = i.id) AS nb_listes_perso
+                FROM {$this->table} i
+                ORDER BY i.nom ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Vérifie si un ingrédient avec ce nom existe déjà
+     * @param string $name Le nom à vérifier
+     * @return bool True si le nom existe déjà, sinon false
+     */
+    public function existsByName(string $name) : bool
+    {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE nom = :nom";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nom', $name);
+        $stmt->execute();
+        return ($stmt->fetchColumn() > 0);
+    }
+    
+    /**
+     * Vérifie si un ingrédient avec ce nom existe déjà, sauf pour l'ID spécifié
+     * @param string $name Le nom à vérifier
+     * @param int $id L'ID à exclure de la vérification
+     * @return bool True si le nom existe déjà pour un autre ID, sinon false
+     */
+    public function existsByNameExcept(string $name, int $id) : bool
+    {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE nom = :nom AND id != :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nom', $name);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetchColumn() > 0);
+    }
+    
+    /**
+     * Crée un nouvel ingrédient
+     * @param array $data Les données de l'ingrédient
+     * @return int|bool L'ID de l'ingrédient créé ou false en cas d'échec
+     */
+    public function create(array $data)
+    {
+        $sql = "INSERT INTO {$this->table} (nom, id_admin) VALUES (:nom, :id_admin)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nom', $data['nom']);
+        $stmt->bindParam(':id_admin', $data['id_admin'], PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            return $this->db->lastInsertId();
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Met à jour un ingrédient existant
+     * @param int $id L'ID de l'ingrédient à mettre à jour
+     * @param array $data Les données à mettre à jour
+     * @return bool True si la mise à jour a réussi, sinon false
+     */
+    public function update(int $id, array $data) : bool
+    {
+        $sql = "UPDATE {$this->table} SET nom = :nom, id_admin = :id_admin WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nom', $data['nom']);
+        $stmt->bindParam(':id_admin', $data['id_admin'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+    
+    /**
+     * Supprime un ingrédient
+     * @param int $id L'ID de l'ingrédient à supprimer
+     * @return bool True si la suppression a réussi, sinon false
+     */
+    public function delete(int $id) : bool
+    {
+        $sql = "DELETE FROM {$this->table} WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
+    /**
+     * Vérifie si un ingrédient est utilisé dans des recettes
+     * @param int $id L'ID de l'ingrédient à vérifier
+     * @return bool True si l'ingrédient est utilisé, sinon false
+     */
+    public function isUsedInRecipes(int $id) : bool
+    {
+        $sql = "SELECT COUNT(*) FROM liste_recette_ingredients WHERE id_ingredient = :id_ingredient";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_ingredient', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetchColumn() > 0);
+    }
+    
+    /**
+     * Vérifie si un ingrédient est dans des listes personnelles
+     * @param int $id L'ID de l'ingrédient à vérifier
+     * @return bool True si l'ingrédient est dans des listes personnelles, sinon false
+     */
+    public function isInPersonalLists(int $id) : bool
+    {
+        $sql = "SELECT COUNT(*) FROM liste_personnelle_ingredients WHERE id_ingredient = :id_ingredient";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_ingredient', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetchColumn() > 0);
+    }
+    
+    /**
+     * Enregistre une action d'administrateur dans le journal
+     * @param int $adminId L'ID de l'administrateur
+     * @param string $table La table modifiée
+     * @param int $elementId L'ID de l'élément modifié
+     * @param string $action Le type d'action (ajout, modification, suppression)
+     * @return bool True si l'enregistrement a réussi, sinon false
+     */
+    public function logAdminAction(int $adminId, string $table, int $elementId, string $action) : bool
+    {
+        $sql = "INSERT INTO administrateur_actions (id_admin, table_modifiee, id_element, action) 
+                VALUES (:id_admin, :table_modifiee, :id_element, :action)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_admin', $adminId, PDO::PARAM_INT);
+        $stmt->bindParam(':table_modifiee', $table, PDO::PARAM_STR);
+        $stmt->bindParam(':id_element', $elementId, PDO::PARAM_INT);
+        $stmt->bindParam(':action', $action, PDO::PARAM_STR);
+        
+        return $stmt->execute();
+    }
 }

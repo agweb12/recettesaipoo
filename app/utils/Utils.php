@@ -1,5 +1,7 @@
 <?php
 // app/Utils/Utils.php
+namespace App\Utils;
+
 class Utils {
 
     // alert() est une fonction qui génère un message d'alerte HTML

@@ -10,27 +10,31 @@ class Controller {
 
         extract($data); // Extrait les données du tableau $data pour les rendre accessibles dans la vue
 
-        // Inclure l'en-tête
-        include_once ROOT_DIR . '/app/views/header.php';
-
-        // définir la vue 
-        if (!isset($view) || empty($view)) {
-            $view = 'accueil'; // Vue par défaut si aucune vue n'est spécifiée
+        // Détermine s'il s'agit d'une vue admin ou non
+        $isAdminView = strpos($view, 'admin/') === 0;
+        
+        // Inclure l'en-tête approprié
+        if ($isAdminView) {
+            include_once ROOT_DIR . '/app/views/headerAdmin.php';
+        } else {
+            include_once ROOT_DIR . '/app/views/header.php';
         }
 
-        // Si la vue est connexion ou inscription, on n'inclut pas le modal de connexion
-        if ($view !== 'connexion' && $view !== 'inscription') {
-            // Inclusion de la modal de connexion si l'utilisateur n'est pas connecté
-            if(!$this->isLoggedIn()) {
-                include_once ROOT_DIR . '/app/views/modalConnexion.php';
-            }
+        // Si la vue n'est pas celle de connexion ou d'inscription et que l'utilisateur n'est pas connecté,
+        // incluez la modal de connexion
+        if (!$isAdminView && $view !== 'connexion' && $view !== 'inscription' && !$this->isLoggedIn()) {
+            include_once ROOT_DIR . '/app/views/modalConnexion.php';
         }
 
         // Inclusion du contenu principal
         include_once ROOT_DIR . '/app/views/' . $view . '.php';
 
-        // Inclusion du pied de page
-        include_once ROOT_DIR . '/app/views/footer.php';
+        // Inclusion du pied de page approprié
+        if ($isAdminView) {
+            include_once ROOT_DIR . '/app/views/footerAdmin.php';
+        } else {
+            include_once ROOT_DIR . '/app/views/footer.php';
+        }
     }
     
     protected function redirect($url) {

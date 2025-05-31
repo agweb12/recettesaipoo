@@ -110,8 +110,9 @@ class AuthController extends Controller {
                 $userId = $this->userModel->createRegistration($userData); // createRegistration est une méthode 
                 
                 if ($userId) {
-                    $info = "Inscription réussie ! Redirection dans 3 secondes vers la page de connexion <script>setTimeout(function() {
-window.location.href='" . RACINE_SITE . "connexion';}, 3000);</script>";
+                    $info = "Inscription réussie ! 
+                    Redirection dans 3 secondes vers la page de connexion 
+                    <script>setTimeout(function() {window.location.href='" . RACINE_SITE . "connexion';}, 3000);</script>";
 
                     // Effacer les données du formulaire après succès
                     $_POST = [];

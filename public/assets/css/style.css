@@ -2070,6 +2070,7 @@ section.admin-section {
         }
 
         /* Tableau des utilisateurs */
+        .admins-table-container,
         .users-table-container,
         .unites-table-container,
         .recipes-table-container,
@@ -2093,6 +2094,7 @@ section.admin-section {
                 scrollbar-color: var(--primary-color) var(--background-secondary); /* For Firefox */
                 max-height: 600px;
 
+                .admins-table,
                 .users-table,
                 .unites-table,
                 .recipes-table,
@@ -2247,7 +2249,7 @@ section.admin-section {
 
                     td.actions {
                         white-space: nowrap;
-
+                        
                         .btn-edit,
                         .btn-delete {
                             padding: 5px 10px;

@@ -5,58 +5,110 @@ namespace App\Core; // Définition de l'espace de noms pour la classe Router
 class Router {
     protected $routes = []; // Tableau pour stocker les routes
 
-    // La méthode add est utilisée pour ajouter une nouvelle route
-    // Elle prend en paramètre la route, le contrôleur et l'action associés
-    // Elle stocke ces informations dans le tableau $routes
-    // Cette méthode est publique pour permettre aux autres classes d'ajouter des routes
-    // Exemple d'utilisation : $router->add('accueil', 'HomeController', 'index');
-    // Dans ce cas, 'accueil' est la route, 'HomeController' est le contrôleur et 'index' est l'action : l'action c'est la méthode du contrôleur qui sera appelée lorsque l'utilisateur accède à cette route
-    // Cette méthode permet d'ajouter une route à l'application
-    public function add($route, $controller, $action) { // Ajouter une route
-        $this->routes[$route] = ['controller' => $controller, 'action' => $action]; // Stocker le contrôleur et l'action associés à la route
+    /**
+     * Ajoute une route à l'application
+     * @param string $route La route (peut contenir des motifs pour les paramètres)
+     * @param string $controller Le contrôleur à utiliser
+     * @param string $action L'action (méthode) à appeler
+     * @param string $method La méthode HTTP (GET, POST, etc.)
+     */
+    public function add($route, $controller, $action, $method = 'GET') {
+        $this->routes[$route] = [
+            'controller' => $controller,
+            'action' => $action,
+            'method' => $method
+        ];
     }
 
-    // La méthode dispatch est responsable de la gestion des requêtes entrantes
-    // Elle prend en paramètre l'URL de la requête et détermine quel contrôleur et quelle action doivent être appelés
-    // Cette méthode est publique pour permettre à l'application de traiter les requêtes entrantes
-    public function dispatch($url) { // dispatch : c'est le processus de traitement de la requête entrante
+    /**
+     * Traite la requête entrante
+     * @param string $url L'URL demandée
+     */
+    public function dispatch($url) {
         // Etape 1 : Nettoyer et préparer l'URL
-        $url = filter_var($url, FILTER_SANITIZE_URL); // Nettoyer l'URL pour éviter les injections
-        $url = parse_url($url, PHP_URL_PATH); // Extraire le chemin de l'URL et le nettoyer
-        $url = trim($url, '/'); // Supprimer les barres obliques au début et à la fin de l'URL
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        $url = parse_url($url, PHP_URL_PATH);
+        $url = trim($url, '/');
 
         // Etape 2 : Supprimer le chemin de base
-        $basePath = 'recettesaipoo'; // Définir le chemin de base de l'application, par exemple 'recettesaipoo'
-        if(strpos($url, $basePath) === 0) { // Vérifier si l'URL commence par le chemin de base
-            $url = substr($url, strlen($basePath)); // Supprimer le chemin de base de l'URL
-            $url = trim($url, '/'); // Supprimer les barres obliques restantes au début et à la fin de l'URL
-            // exemple : si l'URL est 'recettesaipoo/accueil', elle devient 'accueil'
+        $basePath = 'recettesaipoo';
+        if(strpos($url, $basePath) === 0) {
+            // S'assurer que c'est bien au début et pas au milieu d'un autre segment
+            $afterBase = substr($url, strlen($basePath));
+            if (empty($afterBase) || $afterBase[0] === '/') {
+                $url = ltrim($afterBase, '/');
+            }
         }
         
-        // Si l'URL est vide, rediriger vers la page d'accueil
+        // Si l'URL est vide après traitement, utiliser la route racine
         if (empty($url)) {
             $url = '';
         }
+        
+        // Journaliser l'URL après traitement (pour déboguer)
+        error_log("URL après traitement : '{$url}'");
+        
+        // Méthode HTTP actuelle
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        // Etape 3 : Vérifier si l'URL correspond à une route définie
-        // Vérifier si la route existe
-        if (array_key_exists($url, $this->routes)) {
-            $controller = $this->routes[$url]['controller']; // Récupérer le contrôleur associé à la route
-            $action = $this->routes[$url]['action']; // Récupérer l'action associée à la route
-
-            if (class_exists($controller)) { // Vérifier si le contrôleur existe
-                $controllerInstance = new $controller(); // Instancier le contrôleur
+        // Variables pour stocker le contrôleur et l'action trouvés
+        $foundController = null;
+        $foundAction = null;
+        $params = [];
+        
+        // 1. Chercher une correspondance exacte d'abord (plus rapide)
+        if (array_key_exists($url, $this->routes) && 
+            ($this->routes[$url]['method'] === $requestMethod || $this->routes[$url]['method'] === 'ANY')) {
+            $foundController = $this->routes[$url]['controller'];
+            $foundAction = $this->routes[$url]['action'];
+            error_log("Route exacte trouvée : {$url} => {$foundController}::{$foundAction}");
+        } else {
+            // 2. Chercher des routes avec des paramètres
+            foreach ($this->routes as $pattern => $route) {
+                // Si la méthode HTTP ne correspond pas, passer à la route suivante
+                if ($route['method'] !== $requestMethod && $route['method'] !== 'ANY') {
+                    continue;
+                }
                 
-                if (method_exists($controllerInstance, $action)) { // Vérifier si l'action existe dans le contrôleur
-                    $controllerInstance->$action(); // Appeler l'action du contrôleur
+                // Convertir le motif de route en expression régulière correctement
+                // Gérer spécifiquement le pattern ([0-9]+)
+                $patternAsRegex = preg_quote($pattern, '#');
+                $patternAsRegex = str_replace('\([0-9]\+\)', '([0-9]+)', $patternAsRegex);
+                $regexPattern = '#^' . $patternAsRegex . '$#';
+                
+                error_log("Tentative de correspondance avec le pattern: $regexPattern pour l'URL: $url");
+                
+                if (preg_match($regexPattern, $url, $matches)) {
+                    $foundController = $route['controller'];
+                    $foundAction = $route['action'];
+                    
+                    // Extraire les paramètres
+                    array_shift($matches); // Supprimer la correspondance complète
+                    $params = $matches;
+                    
+                    error_log("Route avec paramètres trouvée : {$pattern} => {$foundController}::{$foundAction}");
+                    error_log("Paramètres : " . print_r($params, true));
+                    break;
+                }
+            }
+        }
+
+        // 3. Appeler le contrôleur et l'action s'ils ont été trouvés
+        if ($foundController) {
+            if (class_exists($foundController)) {
+                $controllerInstance = new $foundController();
+                
+                if (method_exists($controllerInstance, $foundAction)) {
+                    // Appeler la méthode avec les paramètres
+                    call_user_func_array([$controllerInstance, $foundAction], $params);
                 } else {
-                    $this->notFound("Action non trouvée: " . $action); // Si l'action n'existe pas, afficher une erreur 404
+                    $this->notFound("Action non trouvée: {$foundAction} dans le contrôleur {$foundController}");
                 }
             } else {
-                $this->notFound("Contrôleur non trouvé: " . $controller); // Si le contrôleur n'existe pas, afficher une erreur 404
+                $this->notFound("Contrôleur non trouvé: {$foundController}");
             }
         } else {
-            $this->notFound("Route non trouvée: " . $url); // Si la route n'existe pas, afficher une erreur 404
+            $this->notFound("Route non trouvée pour l'URL: {$url}");
         }
     }
 
@@ -66,6 +118,5 @@ class Router {
         echo "<p>" . $message . "</p>";
         echo "<p>URL demandée: " . $_SERVER['REQUEST_URI'] . "</p>";
         echo "<p>Routes disponibles: " . implode(', ', array_keys($this->routes)) . "</p>";
-
     }
 }

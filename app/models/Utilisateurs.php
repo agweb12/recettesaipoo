@@ -237,4 +237,59 @@ class Utilisateurs extends Model {
         return $stmt->fetchAll();
     }
 
+
+    // ADMINISTRATIVE FUNCTIONS
+
+    /**
+     * Récupère tous les utilisateurs
+     * @return array
+     */
+    public function getAllUsers() : array
+    {
+        $sql = "SELECT * FROM {$this->table} ORDER BY nom, prenom ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Met à jour un utilisateur
+     * @param int $id ID de l'utilisateur
+     * @param array $data Données à mettre à jour
+     * @return bool
+     */
+    public function updateUser(int $id, array $data) : bool
+    {
+        $fields = [];
+        $params = [];
+        
+        // Création dynamique des champs à mettre à jour
+        foreach ($data as $key => $value) {
+            $fields[] = "{$key} = :{$key}";
+            $params[":{$key}"] = $value;
+        }
+        
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+        $params[':id'] = $id;
+        
+        $stmt = $this->db->prepare($sql);
+        
+        return $stmt->execute($params);
+    }
+    
+    /**
+     * Vérifie si un email existe déjà pour un autre utilisateur que celui spécifié
+     * @param string $email Email à vérifier
+     * @param int $excludeId ID de l'utilisateur à exclure de la vérification
+     * @return bool
+     */
+    public function emailExistsForOthers(string $email, int $excludeId) : bool
+    {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE email = :email AND id != :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $excludeId, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetchColumn() > 0);
+    }
 }

@@ -71,46 +71,46 @@
 <header>
     <?php
     function is_active($pageName) {
-    // Récupérer l'URL actuelle
-    $currentUrl = $_SERVER['REQUEST_URI']; // Par exemple, "/recettesaipoo/recettes/pizza-margherita?param=value"
-    
-    // Nettoyer l'URL des paramètres de requête et récupérer uniquement le chemin
-    $path = parse_url($currentUrl, PHP_URL_PATH); // Par exemple, "/recettesaipoo/recettes/pizza-margherita"
-    
-    // Enlever le chemin de base (par exemple "/recettesaipoo/")
-    $basePath = parse_url(RACINE_SITE, PHP_URL_PATH); // parse_url pour obtenir le chemin de base, par exemple "/recettesaipoo/"
-    $cleanedPath = str_replace($basePath, '', $path); // str_replace pour enlever le chemin de base, par exemple "recettes/pizza-margherita"
-    
-    // Suppression des slashes au début et à la fin
-    $cleanedPath = trim($cleanedPath, '/'); // Par exemple, "recettes/pizza-margherita"
-    
-    // Cas spéciaux
-    if ($pageName === 'accueil' && ($cleanedPath === '' || $cleanedPath === 'accueil')) {
-        return true;
+        // Récupérer l'URL actuelle
+        $currentUrl = $_SERVER['REQUEST_URI']; // Par exemple, "/recettesaipoo/recettes/pizza-margherita?param=value"
+        
+        // Nettoyer l'URL des paramètres de requête et récupérer uniquement le chemin
+        $path = parse_url($currentUrl, PHP_URL_PATH); // Par exemple, "/recettesaipoo/recettes/pizza-margherita"
+        
+        // Enlever le chemin de base (par exemple "/recettesaipoo/")
+        $basePath = parse_url(RACINE_SITE, PHP_URL_PATH); // parse_url pour obtenir le chemin de base, par exemple "/recettesaipoo/"
+        $cleanedPath = str_replace($basePath, '', $path); // str_replace pour enlever le chemin de base, par exemple "recettes/pizza-margherita"
+        
+        // Suppression des slashes au début et à la fin
+        $cleanedPath = trim($cleanedPath, '/'); // Par exemple, "recettes/pizza-margherita"
+        
+        // Cas spéciaux
+        if ($pageName === 'accueil' && ($cleanedPath === '' || $cleanedPath === 'accueil')) {
+            return true;
+        }
+        
+        if ($pageName === 'monCompte' && strpos($cleanedPath, 'profil/monCompte') === 0) {
+            return true;
+        }
+        
+        if ($pageName === 'recettes' && (strpos($cleanedPath, 'recettes') === 0)) {
+            return true;
+        }
+        
+        if ($pageName === 'contact' && $cleanedPath === 'contact') {
+            return true;
+        }
+        
+        if ($pageName === 'connexion' && $cleanedPath === 'connexion') {
+            return true;
+        }
+        
+        if ($pageName === 'inscription' && $cleanedPath === 'inscription') {
+            return true;
+        }
+        
+        return false;
     }
-    
-    if ($pageName === 'monCompte' && strpos($cleanedPath, 'profil/monCompte') === 0) {
-        return true;
-    }
-    
-    if ($pageName === 'recettes' && (strpos($cleanedPath, 'recettes') === 0)) {
-        return true;
-    }
-    
-    if ($pageName === 'contact' && $cleanedPath === 'contact') {
-        return true;
-    }
-    
-    if ($pageName === 'connexion' && $cleanedPath === 'connexion') {
-        return true;
-    }
-    
-    if ($pageName === 'inscription' && $cleanedPath === 'inscription') {
-        return true;
-    }
-    
-    return false;
-}
 ?>
     <!-- Menu Application Recettes AI -->
     <nav class="menu">
