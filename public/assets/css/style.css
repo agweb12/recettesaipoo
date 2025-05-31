@@ -2002,7 +2002,7 @@ section.sectionSiteLinks {
             gap: 2rem;
 
             a.crumb {
-                color: var(--primarycolor);
+                color: var(--primary-color);
                 text-decoration: none;
                 font-size: 1.2rem;
                 font-weight: 600;
@@ -2010,7 +2010,6 @@ section.sectionSiteLinks {
                 transition: all .2s ease-in-out;
 
                 &:hover {
-                    color: #121212;
                     text-decoration: underline;
                 }
             }
@@ -2076,7 +2075,8 @@ section.admin-section {
         .recipes-table-container,
         .ingredients-table-container,
         .etiquettes-table-container,
-        .categories-table-container {
+        .categories-table-container,
+        .actions-container {
             margin-top: 3rem;
 
             #searchInput {
@@ -2101,7 +2101,8 @@ section.admin-section {
                 .ingredients-table,
                 .etiquettes-table,
                 .categories-table,
-                .actions-table {
+                .actions-table
+                {
                     width: 100%;
                     border-collapse: collapse;
                     margin-bottom: 30px;
@@ -2271,10 +2272,11 @@ section.admin-section {
                         }
 
                         .btn-delete {
-                            background-color: #e74c3c;
+                            background: #e74c3c;
 
                             &:hover {
-                                background-color: #c0392b;
+                                rotate: -4deg;
+                                background: #c0392b;
                             }
                         }
 

@@ -112,7 +112,7 @@ class Utilisateurs extends Model {
             $errors['email'] = "L'email n'est pas valide";
         }
         
-         $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+        $regexPassword = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
         if (empty($data['password'])) {
             $errors['password'] = "Le champ mot de passe est requis";
         } elseif (!preg_match($regexPassword, $data['password'])) {

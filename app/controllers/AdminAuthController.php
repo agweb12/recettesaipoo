@@ -29,8 +29,8 @@ class AdminAuthController extends Controller {
 
         // Traitement du formulaire de connexion
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $email = htmlspecialchars(trim($_POST['email'] ?? ''));
-            $password = htmlspecialchars(trim($_POST['password'] ?? ''));
+            $email = trim($_POST['email'] ?? '');
+            $password = trim($_POST['password'] ?? '');
 
             // Validation des données
             if(empty($email) || !isset($email)) {

@@ -110,7 +110,7 @@
                 <a href="<?= RACINE_SITE ?>admin/logout" class="cta"><i class="fi fi-sr-sign-out-alt"></i> Déconnexion</a>
                 <a href="<?= RACINE_SITE ?>admin/dashboard" class="<?= is_active('dashboard') ? 'active' : '' ?>"><i class="fi fi-sr-user-gear"></i> Dashboard</a>
             <?php else: ?>
-                <a href="<?= RACINE_SITE ?>admin/connexion" class="cta<?= is_active('connexion') ? ' active' : '' ?>"<i class="fi fi-sr-enter"></i> Se Connecter</a>
+                <a href="<?= RACINE_SITE ?>admin/login" class="cta<?= is_active('connexion') ? ' active' : '' ?>"<i class="fi fi-sr-enter"></i> Se Connecter</a>
             <?php endif; ?>
         </div>
     </nav>

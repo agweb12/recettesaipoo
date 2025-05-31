@@ -22,6 +22,7 @@
                     <?php foreach($ingredientsUtilisateur as $ingredient): ?>
                         <div class="ingredient-tag">
                             <span><?= htmlspecialchars($ingredient['nom']) ?></span>
+                            <!-- Formulaire pour supprimer un ingrédient -->
                             <form method="post" action="" class="inline-form">
                                 <input type="hidden" name="action" value="supprimer_ingredient">
                                 <input type="hidden" name="id_ingredient" value="<?= $ingredient['id'] ?>">
@@ -60,10 +61,11 @@
                         <?php endif; ?>
                         <div class="recipe-meta">
                             <h6><i class="fi fi-sr-clock"></i> <?= $recette['temps_preparation'] + $recette['temps_cuisson'] ?> min</h6>
+                            <!-- Formulaire pour supprimer une recette des favoris -->
                             <form method="post" action="" class="inline-form">
                                 <input type="hidden" name="action" value="supprimer_favori">
                                 <input type="hidden" name="id_recette" value="<?= $recette['id'] ?>">
-                                <button type="submit" class="favorite-btn is-active" title="Retirer des favoris">
+                                <button type="submit" class="favorite-btn is-active profile-favorite-btn" title="Retirer des favoris">
                                     <i class="fi fi-sr-heart" id="heart"></i>
                                 </button>
                             </form>

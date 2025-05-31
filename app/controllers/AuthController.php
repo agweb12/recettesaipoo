@@ -20,6 +20,9 @@ class AuthController extends Controller {
      */
     public function login(): void
     {
+        error_log("Login method called");
+        error_log("POST data: " . print_r($_POST, true));
+        error_log("Session before: " . print_r($_SESSION, true));
         // Si l'utilisateur est déjà connecté, rediriger vers l'accueil
         if($this->isLoggedIn()){
             $this->redirect(RACINE_SITE);
@@ -31,8 +34,8 @@ class AuthController extends Controller {
         // Traitement du formulaire de connexion
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $loginData = [
-                'email' => htmlspecialchars(trim($_POST['email'] ?? '')),
-                'password' => htmlspecialchars(trim($_POST['password'] ?? ''))
+                'email' => trim($_POST['email'] ?? ''),
+                'password' => trim($_POST['password'] ?? '')
             ];
 
             // Validation des données
@@ -45,6 +48,7 @@ class AuthController extends Controller {
                 if($user){
                     // Connexion réussie
                     $_SESSION['user'] = $user;
+                    error_log("Session after login: " . print_r($_SESSION, true));
 
                     $this->redirect(RACINE_SITE);
                     return;
@@ -87,10 +91,10 @@ class AuthController extends Controller {
         // Traitement du formulaire d'inscription
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $registrationData = [
-                'nom' => htmlspecialchars(trim($_POST['nom'] ?? '')),
-                'prenom' => htmlspecialchars(trim($_POST['prenom'] ?? '')),
-                'email' => htmlspecialchars(trim($_POST['email'] ?? '')),
-                'password' => htmlspecialchars(trim($_POST['password'] ?? ''))
+                'nom' => trim($_POST['nom'] ?? ''),
+                'prenom' => trim($_POST['prenom'] ?? ''),
+                'email' => trim($_POST['email'] ?? ''),
+                'password' => trim($_POST['password'] ?? '')
             ];
 
             // Validation des données

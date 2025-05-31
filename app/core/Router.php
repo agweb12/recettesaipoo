@@ -25,16 +25,27 @@ class Router {
      * @param string $url L'URL demandée
      */
     public function dispatch($url) {
+        error_log("=== DEBUT DEBUG ROUTER ===");
+        error_log("URL originale reçue : " . $url);
+        error_log("REQUEST_URI : " . $_SERVER['REQUEST_URI']);
+        error_log("Méthode HTTP : " . $_SERVER['REQUEST_METHOD']);
+
         // Etape 1 : Nettoyer et préparer l'URL
         $url = filter_var($url, FILTER_SANITIZE_URL);
+        error_log("URL après FILTER_SANITIZE_URL : " . $url);
         $url = parse_url($url, PHP_URL_PATH);
+        error_log("URL après parse_url : " . $url);
         $url = trim($url, '/');
+        error_log("URL après trim : " . $url);
 
         // Etape 2 : Supprimer le chemin de base
         $basePath = 'recettesaipoo';
         if(strpos($url, $basePath) === 0) {
+            error_log("Chemin de base détecté");
             // S'assurer que c'est bien au début et pas au milieu d'un autre segment
             $afterBase = substr($url, strlen($basePath));
+             error_log("Après suppression du chemin de base : " . $afterBase);
+
             if (empty($afterBase) || $afterBase[0] === '/') {
                 $url = ltrim($afterBase, '/');
             }
@@ -51,47 +62,66 @@ class Router {
         // Méthode HTTP actuelle
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+        // Debug - afficher les routes disponibles pour cette méthode
+        $routesForMethod = [];
+        foreach ($this->routes as $pattern => $route) {
+            if ($route['method'] === $requestMethod || $route['method'] === 'ANY') {
+                $routesForMethod[] = $pattern;
+            }
+        }
+        error_log("Routes disponibles pour " . $requestMethod . " : " . implode(', ', $routesForMethod));
+
+
         // Variables pour stocker le contrôleur et l'action trouvés
         $foundController = null;
         $foundAction = null;
         $params = [];
         
         // 1. Chercher une correspondance exacte d'abord (plus rapide)
-        if (array_key_exists($url, $this->routes) && 
-            ($this->routes[$url]['method'] === $requestMethod || $this->routes[$url]['method'] === 'ANY')) {
-            $foundController = $this->routes[$url]['controller'];
-            $foundAction = $this->routes[$url]['action'];
-            error_log("Route exacte trouvée : {$url} => {$foundController}::{$foundAction}");
+        if (array_key_exists($url, $this->routes)) {
+            $route = $this->routes[$url];
+            error_log("Route exacte trouvée dans le tableau pour : " . $url);
+            if ($route['method'] === $requestMethod || $route['method'] === 'ANY') {
+                $foundController = $route['controller'];
+                $foundAction = $route['action'];
+                error_log("Méthode HTTP compatible - Controller: {$foundController}, Action: {$foundAction}");
+            } else {
+                error_log("Méthode HTTP incompatible - Route: {$route['method']}, Requête: {$requestMethod}");
+            }
         } else {
+            error_log("Aucune route exacte trouvée pour : " . $url);
+        }
+
+        if (!$foundController) {
+            error_log("Recherche de routes avec paramètres...");
             // 2. Chercher des routes avec des paramètres
             foreach ($this->routes as $pattern => $route) {
-                // Si la méthode HTTP ne correspond pas, passer à la route suivante
                 if ($route['method'] !== $requestMethod && $route['method'] !== 'ANY') {
                     continue;
                 }
+
+                // Remplacer les patterns dynamiques directement
+                $pregPattern = str_replace('([0-9]+)', '(\d+)', $pattern);
+                $pregPattern = '#^' . str_replace('/', '\/', $pregPattern) . '$#';
                 
-                // Convertir le motif de route en expression régulière correctement
-                // Gérer spécifiquement le pattern ([0-9]+)
-                $patternAsRegex = preg_quote($pattern, '#');
-                $patternAsRegex = str_replace('\([0-9]\+\)', '([0-9]+)', $patternAsRegex);
-                $regexPattern = '#^' . $patternAsRegex . '$#';
+                error_log("Test pattern: '{$pattern}' => regex: '{$pregPattern}' pour URL: '{$url}'");
                 
-                error_log("Tentative de correspondance avec le pattern: $regexPattern pour l'URL: $url");
-                
-                if (preg_match($regexPattern, $url, $matches)) {
+                if (preg_match($pregPattern, $url, $matches)) {
+                    error_log("Match trouvé avec pattern '{$pattern}'");
                     $foundController = $route['controller'];
                     $foundAction = $route['action'];
                     
-                    // Extraire les paramètres
-                    array_shift($matches); // Supprimer la correspondance complète
+                    // Extraire les paramètres (retirer le premier élément qui est l'URL complète)
+                    array_shift($matches);
                     $params = $matches;
                     
-                    error_log("Route avec paramètres trouvée : {$pattern} => {$foundController}::{$foundAction}");
-                    error_log("Paramètres : " . print_r($params, true));
                     break;
                 }
             }
         }
+
+        error_log("=== FIN DEBUG ROUTER ===");
+
 
         // 3. Appeler le contrôleur et l'action s'ils ont été trouvés
         if ($foundController) {
@@ -112,7 +142,7 @@ class Router {
         }
     }
 
-    private function notFound($message = "Page non trouvée") {
+    private function notFound($message) {
         header("HTTP/1.0 404 Not Found");
         echo "<h1>404 - Page non trouvée</h1>";
         echo "<p>" . $message . "</p>";

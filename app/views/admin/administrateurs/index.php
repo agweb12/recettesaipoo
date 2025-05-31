@@ -15,7 +15,7 @@
         <?php endif; ?>
 
         <?php if ($_SESSION['admin']['role'] === 'superadmin'): ?>
-            <?php if (!isset($adminEdit) && !isset($isCreating) && !isset($viewActions)): ?>
+            <?php if (!isset($adminEdit) && !isset($isCreating)): ?>
                 <div class="admin-actions">
                     <a href="<?= RACINE_SITE ?>admin/administrateurs/create" class="btn-primary">Ajouter un administrateur</a>
                     <a href="<?= RACINE_SITE ?>admin/administrateurs/view-actions" class="btn-secondary">Voir les actions des administrateurs</a>

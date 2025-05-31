@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const favoriteBtn = document.querySelector('.favorite-btn');
+    const favoriteBtn = document.querySelector('.favorite-btn:not(.profile-favorite-btn)');
     
     if (favoriteBtn) {
         favoriteBtn.addEventListener('click', function() {
