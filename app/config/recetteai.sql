@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : dim. 25 mai 2025 à 12:56
+-- Généré le : sam. 31 mai 2025 à 11:59
 -- Version du serveur : 8.0.30
 -- Version de PHP : 8.4.3
 
@@ -45,12 +45,12 @@ CREATE TABLE `administrateur` (
 
 INSERT INTO `administrateur` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`, `role`) VALUES
 (1, 'GRAZIANI', 'Alexandre', 'graziani1112@gmail.com', '$2y$12$YlekwmMnL55WNeMSXA5Op.k6kcJhHik9C/Lo.7Ef5G27WWE9K2wSa', '2025-05-15 15:07:47', 'superadmin'),
-(6, 'LAUDET', 'Chloé', 'chloelaudet@gmail.com', '$2y$12$eeUwRC11h2dc7aevOEnoO.h9upfCuckNOXwdzGsG1Wi2AHpsYFxem', '2025-05-15 23:31:32', 'editeur'),
+(6, 'LAUDET', 'Chloé', 'chloelaudet@gmail.comg', '$2y$12$eeUwRC11h2dc7aevOEnoO.h9upfCuckNOXwdzGsG1Wi2AHpsYFxem', '2025-05-15 23:31:32', 'editeur'),
 (7, 'GRAZIANI', 'Tiffany', 'tiffany@gmail.com', '$2y$12$Z.60G2Yypw5eKu5y6fzMWOLRlCrpAgwdnIXCaFDqxprt4iiFIZvYe', '2025-05-15 23:32:04', 'moderateur'),
 (9, 'MISERI', 'Argentina', 'argentina@gmail.com', '$2y$12$5NkS1iBmcjUS9CtbmF1l6.oE.SkCpZzF0dwPTgzVqYMNryKZ9.7pO', '2025-05-17 19:15:16', 'editeur'),
 (10, 'GRAZIANI', 'Elodie', 'elodie@gmail.com', '$2y$12$K20Fh/DHX3TkpOuOPsHwqulz/5wV7lWfm6vAUvBRVtr8NNbjOt.Hi', '2025-05-17 19:16:31', 'moderateur'),
-(11, 'SEYLER', 'Christine', 'christine@gmail.com', '$2y$12$Hk8hA/.e.w6kbZyrR/cjyeafzNQsucKCREj04xQNGBiYNosdB.LCu', '2025-05-17 19:17:05', 'moderateur'),
-(13, 'BOTTI', 'Emma', 'emma@gmail.com', '$2y$12$egCVVtbboxJCVRiuLE3BFu2IEQeMMduwjFpACIzNt/Key0srlLVsu', '2025-05-19 11:47:41', 'moderateur');
+(11, 'SEYLER', 'Christine', 'christine@gmail.com', '$2y$12$Hk8hA/.e.w6kbZyrR/cjyeafzNQsucKCREj04xQNGBiYNosdB.LCu', '2025-05-17 19:17:05', 'superadmin'),
+(13, 'BOTTI', 'Emma', 'emma@gmail.com', '$2y$12$egCVVtbboxJCVRiuLE3BFu2IEQeMMduwjFpACIzNt/Key0srlLVsu', '2025-05-19 11:47:41', 'editeur');
 
 -- --------------------------------------------------------
 
@@ -218,7 +218,58 @@ INSERT INTO `administrateur_actions` (`id`, `id_admin`, `table_modifiee`, `id_el
 (145, 1, 'categorie', 19, 'ajout', '2025-05-22 16:20:13'),
 (146, 1, 'ingredient', 98, 'suppression', '2025-05-22 16:21:21'),
 (147, 1, 'administrateur', 11, 'modification', '2025-05-22 16:24:45'),
-(148, 1, 'categorie', 19, 'suppression', '2025-05-25 13:16:52');
+(148, 1, 'categorie', 19, 'suppression', '2025-05-25 13:16:52'),
+(149, 1, 'categorie', 20, 'ajout', '2025-05-30 09:59:45'),
+(150, 1, 'categorie', 21, 'ajout', '2025-05-30 10:52:52'),
+(151, 1, 'categorie', 20, 'suppression', '2025-05-30 11:06:10'),
+(152, 1, 'categorie', 21, 'suppression', '2025-05-30 11:09:09'),
+(153, 1, 'categorie', 22, 'ajout', '2025-05-30 11:14:33'),
+(154, 1, 'categorie', 23, 'ajout', '2025-05-30 11:14:46'),
+(155, 1, 'categorie', 22, 'suppression', '2025-05-30 11:14:52'),
+(156, 1, 'categorie', 23, 'modification', '2025-05-30 11:15:24'),
+(157, 1, 'categorie', 23, 'suppression', '2025-05-30 11:15:44'),
+(158, 1, 'categorie', 16, 'modification', '2025-05-30 11:16:15'),
+(159, 1, 'categorie', 16, 'modification', '2025-05-30 11:21:43'),
+(160, 1, 'categorie', 16, 'modification', '2025-05-30 11:31:46'),
+(161, 1, 'categorie', 24, 'ajout', '2025-05-30 12:04:29'),
+(162, 1, 'categorie', 24, 'suppression', '2025-05-30 12:04:42'),
+(163, 1, 'categorie', 25, 'ajout', '2025-05-30 12:22:11'),
+(164, 1, 'etiquette', 32, 'modification', '2025-05-30 12:34:06'),
+(165, 1, 'etiquette', 32, 'modification', '2025-05-30 12:34:15'),
+(166, 1, 'etiquette', 35, 'ajout', '2025-05-30 12:34:20'),
+(167, 1, 'etiquette', 35, 'suppression', '2025-05-30 12:34:29'),
+(168, 1, 'ingredient', 111, 'ajout', '2025-05-30 13:12:31'),
+(169, 1, 'ingredient', 111, 'modification', '2025-05-30 13:12:48'),
+(170, 1, 'ingredient', 111, 'suppression', '2025-05-30 13:13:02'),
+(171, 1, 'recette', 1, 'modification', '2025-05-30 13:29:55'),
+(172, 1, 'recette', 1, 'modification', '2025-05-30 13:30:35'),
+(173, 1, 'recette', 15, 'ajout', '2025-05-30 13:32:19'),
+(174, 1, 'recette', 14, 'suppression', '2025-05-30 13:32:45'),
+(175, 1, 'recette', 16, 'ajout', '2025-05-30 13:33:57'),
+(176, 1, 'recette', 16, 'suppression', '2025-05-30 13:34:27'),
+(177, 1, 'recette', 15, 'suppression', '2025-05-30 13:34:35'),
+(178, 1, 'administrateur', 6, 'modification', '2025-05-30 21:29:54'),
+(179, 1, 'administrateur', 6, 'modification', '2025-05-30 21:30:14'),
+(180, 1, 'categorie', 26, 'ajout', '2025-05-31 11:37:41'),
+(181, 1, 'ingredient', 112, 'ajout', '2025-05-31 12:04:59'),
+(182, 1, 'categorie', 27, 'ajout', '2025-05-31 12:05:59'),
+(183, 1, 'etiquette', 36, 'ajout', '2025-05-31 12:06:26'),
+(184, 1, 'recette', 17, 'ajout', '2025-05-31 12:07:50'),
+(185, 1, 'administrateur', 13, 'modification', '2025-05-31 12:56:11'),
+(186, 1, 'administrateur', 13, 'modification', '2025-05-31 12:56:20'),
+(187, 1, 'administrateur', 11, 'modification', '2025-05-31 13:03:46'),
+(188, 1, 'administrateur', 15, 'ajout', '2025-05-31 13:09:02'),
+(189, 1, 'administrateur', 15, 'modification', '2025-05-31 13:09:33'),
+(190, 1, 'administrateur', 15, 'suppression', '2025-05-31 13:09:39'),
+(191, 1, 'administrateur', 16, 'ajout', '2025-05-31 13:22:07'),
+(192, 1, 'administrateur', 16, 'suppression', '2025-05-31 13:22:21'),
+(193, 1, 'categorie', 26, 'suppression', '2025-05-31 13:25:43'),
+(194, 1, 'categorie', 27, 'suppression', '2025-05-31 13:25:48'),
+(195, 1, 'categorie', 25, 'suppression', '2025-05-31 13:25:52'),
+(196, 1, 'recette', 17, 'modification', '2025-05-31 13:26:38'),
+(197, 1, 'recette', 17, 'suppression', '2025-05-31 13:26:52'),
+(198, 1, 'ingredient', 112, 'suppression', '2025-05-31 13:28:52'),
+(199, 1, 'etiquette', 36, 'suppression', '2025-05-31 13:29:09');
 
 -- --------------------------------------------------------
 
@@ -257,7 +308,7 @@ INSERT INTO `categorie` (`id`, `id_admin`, `nom`, `descriptif`, `date_creation`,
 (13, 1, 'Cuisine Végétarienne', 'Plats sans viande ni poisson', '2025-03-17 21:22:16', '#2ecc71', '#121212', 'public/assets/img/categories/categorie_13_1747401242.webp'),
 (14, 1, 'Cuisine Vegan', 'Plats sans produits animaux', '2025-03-17 21:22:16', '#00b894', '#121212', 'public/assets/img/categories/categorie_14_1747401223.webp'),
 (15, 1, 'Cuisine Sans Gluten', 'Adaptée aux intolérants', '2025-03-17 21:22:16', '#ffc300', '#121212', 'public/assets/img/categories/categorie_15_1747401306.webp'),
-(16, 1, 'Cuisine Rapide &amp;amp; Facile', 'Recettes prêtes en &amp;lt; 30 min', '2025-03-17 21:22:16', '#6c757d', '#FFFFFF', 'public/assets/img/categories/categorie_16_1747401290.webp'),
+(16, 1, 'Cuisine Rapide & Facile', 'Recettes prêtes en moins de 30 minutes', '2025-03-17 21:22:16', '#6c757d', '#FFFFFF', 'public/assets/img/categories/categorie_16_1747401290.webp'),
 (17, 1, 'Cuisine des Fêtes', 'Plats festifs (Noël, Ramadan, Anniversaire, Pâques, Aïd...)', '2025-03-17 21:22:16', '#ffffff', '#121212', 'public/assets/img/categories/categorie_17_1747400994.webp');
 
 -- --------------------------------------------------------
@@ -443,17 +494,6 @@ CREATE TABLE `liste_personnelle_ingredients` (
 --
 
 INSERT INTO `liste_personnelle_ingredients` (`id_utilisateur`, `id_ingredient`, `quantite`, `date_creation`) VALUES
-(1, 5, 1.00, '2025-05-24 21:01:50'),
-(1, 8, 1.00, '2025-05-24 21:01:50'),
-(1, 12, 1.00, '2025-05-24 21:01:50'),
-(1, 13, 1.00, '2025-05-24 21:01:50'),
-(1, 18, 1.00, '2025-05-24 21:01:50'),
-(1, 41, 1.00, '2025-05-24 21:01:50'),
-(1, 45, 1.00, '2025-05-24 21:01:50'),
-(1, 60, 1.00, '2025-05-24 21:01:50'),
-(1, 70, 1.00, '2025-05-24 21:01:50'),
-(1, 77, 1.00, '2025-05-24 21:01:50'),
-(1, 88, 1.00, '2025-05-24 21:01:50'),
 (6, 41, 1.00, '2025-05-22 15:42:33'),
 (7, 77, 1.00, '2025-05-22 16:34:16');
 
@@ -595,10 +635,6 @@ CREATE TABLE `recette_favorite` (
 --
 
 INSERT INTO `recette_favorite` (`id_utilisateur`, `id_recette`, `date_enregistrement`) VALUES
-(1, 1, '2025-05-25 14:17:54'),
-(1, 2, '2025-05-25 09:26:18'),
-(1, 5, '2025-05-25 14:18:00'),
-(1, 13, '2025-05-25 14:17:49'),
 (6, 1, '2025-05-22 15:28:36'),
 (7, 5, '2025-05-22 16:06:49');
 
@@ -636,8 +672,7 @@ INSERT INTO `unite_mesure` (`id`, `nom`, `abreviation`) VALUES
 (15, 'boule', 'boule'),
 (16, 'tasse', 'tasse'),
 (17, 'portion', 'prt'),
-(18, 'feuille', 'f'),
-(19, 'dsdqs', 'dsqd');
+(18, 'feuille', 'f');
 
 -- --------------------------------------------------------
 
@@ -660,10 +695,10 @@ CREATE TABLE `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`id`, `id_admin`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`) VALUES
-(1, NULL, 'GRAZIANI', 'Alexandre', 'graziani1112@gmail.com', '$2y$12$FNkJFsMdPaliW18/iK4u7uOD.EH4JYmKxmzbcvj7M12s/1F/P6/hy', '2025-05-12 13:06:59'),
-(2, NULL, 'GRAZIANI', 'Tiffany', 'tiffany@gmail.com', '$2y$12$1ftAcgUKJQLS22XHWvkfSOtBHh1LwJQv/lbS8IBuFh5uUppDCJwMW', '2025-05-12 14:06:32'),
+(1, NULL, 'GRAZIANI', 'Alexandre', 'graziani1112@gmail.com', '$2y$12$Cq3adexjyvAiYAIKqQrUy.lbw9mD1zJn3KM5CyuHERebQJbu8rL8e', '2025-05-12 13:06:59'),
 (6, NULL, 'FOURATI', 'Islem', 'islemfourati@gmail.com', '$2y$12$U.9jVS9MxgGhqNlFCUa15efBcOn1nxtT8NJB6/H1cnJPrrszJ3HmC', '2025-05-22 15:25:12'),
-(7, NULL, 'OUNADJELA', 'Abdelkader', 'okadus@gmail.com', '$2y$12$B6JzZbAYhXJUBGzZjwVc7.1ibjW/RZ7r0.7LkVLo/CYf8MP090kbK', '2025-05-22 15:49:06');
+(7, NULL, 'OUNADJELA', 'Abdelkader', 'okadus@gmail.com', '$2y$12$B6JzZbAYhXJUBGzZjwVc7.1ibjW/RZ7r0.7LkVLo/CYf8MP090kbK', '2025-05-22 15:49:06'),
+(12, NULL, 'LEROY', 'Eloise', 'eloise@gmail.com', '$2y$12$0zjEQX.o/omp.d/pW.IMkOklxNJKJb41MxmgPAAzYcLAELedO5L9e', '2025-05-28 18:06:10');
 
 --
 -- Index pour les tables déchargées
@@ -766,31 +801,31 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur`
 --
 ALTER TABLE `administrateur`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT pour la table `administrateur_actions`
 --
 ALTER TABLE `administrateur_actions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT pour la table `etiquette`
 --
 ALTER TABLE `etiquette`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `ingredient`
 --
 ALTER TABLE `ingredient`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT pour la table `recette`
@@ -802,13 +837,13 @@ ALTER TABLE `recette`
 -- AUTO_INCREMENT pour la table `unite_mesure`
 --
 ALTER TABLE `unite_mesure`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Contraintes pour les tables déchargées
