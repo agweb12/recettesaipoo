@@ -53,6 +53,7 @@
                         <input type="password" id="password" name="password" placeholder="Votre mot de passe" >
                         <i class="fi fi-sr-eye password-toggle"></i>
                     </div>
+                    <h5>Le mot de passe doit contenir une minuscule, une majuscule, <br>un chiffre et un caractère spécial</h5>
                 </div>
                 <?php if(isset($errors['password'])) { ?>
                     <div class="alert alert-error">

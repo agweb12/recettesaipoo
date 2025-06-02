@@ -19,7 +19,7 @@
         </form>
         <?php else: ?>
             <h1>Recettes AI</h1>
-            <p style="line-height:1.8">Avec <strong class="alert alert-warning">Recettes Assistant Ingredient</strong>Trouvez votre recette de cuisine en fonction des ingrédients que vous avez chez vous.</p>
+            <p style="line-height:1.8">Avec <strong class="color-logo">Recettes Assistant Ingredient</strong> Trouvez votre recette de cuisine en fonction des ingrédients que vous avez chez vous.</p>
             <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
         <?php endif; ?>
     </div>
@@ -100,8 +100,8 @@
         </div>
 
         <div class="carousel-nav">
-            <button class="carousel-btn prev-btn"><i class="fi fi-sr-angle-left"></i></button>
-            <button class="carousel-btn next-btn"><i class="fi fi-sr-angle-right"></i></button>
+            <button class="carousel-btn prev-btn" aria-label="précédent"><i class="fi fi-sr-angle-left"></i></button>
+            <button class="carousel-btn next-btn" aria-label="suivant"><i class="fi fi-sr-angle-right"></i></button>
         </div>
 
         <div class="carousel-indicators">

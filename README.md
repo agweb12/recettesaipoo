@@ -46,14 +46,19 @@ Cette application est un MVP (Model Viable Product).
 git clone [url_du_repo] recettesaipoo
 ```
 
-2. Configurer le fichier de connexion à la base de données (à créer dans app/config/)
+2. Importer la base de données à partir du fichier SQL fourni dans app/config/
+a. (Recommandé) le fichier recetteai.sql permet de créer la base de données avec l'ensemble des données
+b. le fichier recette.sql permet de créer la base de données à partir de ZERO.
 
-3. Importer la base de données à partir du fichier SQL fourni
-
-4. Configurer la constante RACINE_SITE dans public/index.php selon votre environnement
+3. Configurer la constante RACINE_SITE dans public/index.php selon votre environnement
 ```php
 define("RACINE_SITE", "http://localhost/recettesaipoo/");
 ```
+
+4. Configurer la constante RACINE_SITE dans public/assets/javascript/themeMode.js (ligne 2)
+`const RACINE_SITE = 'http://localhost/recettesaipoo/';`
+et la constante RACINESITE dans public/assets/javascript/favoris.js (ligne 14) ET dans public/assets/javascript/autocomplete.js (ligne 7)
+`const RACINESITE = document.querySelector('meta[name="racine-site"]')?.getAttribute('content') || '/recettesaipoo/';`
 
 5. Accéder à l'application via l'URL configurée
 
@@ -62,7 +67,8 @@ define("RACINE_SITE", "http://localhost/recettesaipoo/");
 ```
 recettesaipoo/
 ├── app/
-│   ├── controllers/      # Contrôleurs de l'application
+|   |── config/          # fichiers SQL pour importation database
+│   ├── controllers/     # Contrôleurs de l'application
 │   ├── core/            # Classes de base du framework
 │   ├── helpers/         # Fonctions utilitaires
 │   ├── models/          # Modèles pour l'accès aux données

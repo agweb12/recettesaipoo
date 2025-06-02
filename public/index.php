@@ -37,7 +37,6 @@ spl_autoload_register(function($className) {
 
 require_once ROOT_DIR . '/app/helpers/functions.php';
 
-
 // Initialiser le routeur
 $router = new \App\Core\Router();
 

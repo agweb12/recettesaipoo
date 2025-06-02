@@ -151,6 +151,7 @@
     --text-warning: light-dark(#FFE0B2, #FF9800);
     --alert-error: light-dark(#F44336, #FFCDD2);
     --text-error: light-dark(#FFCDD2, #F44336);
+    --color-logo: light-dark(#ff5b4c, #FF9800);
 }
 
 * {
@@ -384,6 +385,11 @@ textarea::placeholder {
 .alert-error {
     background-color: var(--alert-error);
     color: var(--text-error);
+}
+
+.color-logo {
+    color: var(--color-logo);
+    text-decoration: underline;
 }
 
 /* BODY */

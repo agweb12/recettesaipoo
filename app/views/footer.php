@@ -2,23 +2,23 @@
 <footer>
     <div class="footer-content">
         <div class="footer-links">
-            <a href="<?= RACINE_SITE ?>">Accueil</a>
-            <a href="<?= RACINE_SITE ?>recettes">Recettes</a>
-            <a href="<?= RACINE_SITE ?>contact">Contact</a>
+            <a href="<?= RACINE_SITE ?>" title="accueil">Accueil</a>
+            <a href="<?= RACINE_SITE ?>recettes" title="recettes">Recettes</a>
+            <a href="<?= RACINE_SITE ?>contact" title="contact">Contact</a>
         </div>
         <div class="footer-links">
-            <a href="<?= RACINE_SITE ?>politique-confidentialite">Politique de Confidentialité</a>
-            <a href="<?= RACINE_SITE ?>cgu">CGU</a>
-            <a href="<?= RACINE_SITE ?>mentions-legales">Mentions Légales</a>
+            <a href="<?= RACINE_SITE ?>politique-confidentialite" title="">Politique de Confidentialité</a>
+            <a href="<?= RACINE_SITE ?>cgu" title="cgu">CGU</a>
+            <a href="<?= RACINE_SITE ?>mentions-legales" title="mentions légales">Mentions Légales</a>
         </div>
         <div class="footer-social">
-            <a href="#"><i class="fi fi-brands-facebook"></i></a>
-            <a href="#"><i class="fi fi-brands-twitter"></i></a>
-            <a href="#"><i class="fi fi-brands-instagram"></i></a>
+            <a href="#" title="facebook"><i class="fi fi-brands-facebook"></i></a>
+            <a href="#" title="twitter"><i class="fi fi-brands-twitter"></i></a>
+            <a href="#" title="instagram"><i class="fi fi-brands-instagram"></i></a>
         </div>
     </div>
     <p>&copy; <?= date('Y') ?> Recettes AI. Tous droits réservés.</p>
-    <p>Développé par <a href="https://agwebcreation.fr" target="_blank">Alexandre Graziani</a></p>
+    <p>Développé par <a href="https://agwebcreation.fr" target="_blank" title="lien site web">Alexandre Graziani</a></p>
 </footer>
 <?php if($this->isLoggedIn()):?>
 <script src="<?= RACINE_SITE ?>public/assets/javascript/favoris.js"></script>
