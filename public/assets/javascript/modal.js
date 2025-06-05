@@ -50,14 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('modalLoginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            // Vous pouvez ajouter du code de validation ici si nécessaire
-            // Par exemple, vérifier la longueur du mot de passe, etc.
-            
-            // Pour la démonstration, nous allons juste empêcher la soumission par défaut
-            // Décommentez cette ligne pour le développement
-            // e.preventDefault(); 
-            
-            // Vous pouvez également ajouter un spinner pendant la soumission
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span class="spinner"></span> ' + originalText;

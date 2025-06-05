@@ -185,7 +185,7 @@ main{
             input[type="text"] {
                 width: 100%;
                 padding: 12px 15px;
-                border: 1px solid var(--border-color);
+                border: 1px solid var(--primary-color);
                 border-radius: 8px;
                 background-color: var(--input-background);
                 font-size: 1rem;
@@ -255,7 +255,7 @@ main{
                     left: 0;
                     width: 45%;
                     height: 1px;
-                    background-color: var(--border-color);
+                    background-color: var(--primary-color);
                 }
                 &::after {
                     content: '';
@@ -264,7 +264,7 @@ main{
                     right: 0;
                     width: 45%;
                     height: 1px;
-                    background-color: var(--border-color);
+                    background-color: var(--primary-color);
                 }
 
                 span {
@@ -368,7 +368,7 @@ main{
             input[type="password"] {
                 width: 100%;
                 padding: 12px 15px;
-                border: 1px solid var(--border-color);
+                border: 1px solid var(--primary-color);
                 border-radius: 8px;
                 background-color: var(--input-background);
                 font-size: 1rem;
@@ -419,7 +419,7 @@ main{
                     left: 0;
                     width: 45%;
                     height: 1px;
-                    background-color: var(--border-color);
+                    background-color: var(--primary-color);
                 }
                 &::after {
                     content: '';
@@ -428,7 +428,7 @@ main{
                     right: 0;
                     width: 45%;
                     height: 1px;
-                    background-color: var(--border-color);
+                    background-color: var(--primary-color);
                 }
 
                 span {
@@ -925,9 +925,9 @@ main{
             input{
                 width: 100%;
                 padding: 0.8rem;
-                border: 1px solid var(--border-color, #ddd);
+                border: 1px solid var(--primary-color, #ddd);
                 border-radius: 4px;
-                background-color: var(--input-background, #f9f9f9);
+                background-color: var(--background-color, #f9f9f9);
             }
         }
     }
@@ -2034,7 +2034,7 @@ section.sectionDashboard{
         width: 100%;
         max-width: 1200px;
         padding: 2rem 1rem;
-        background-color: var(--backgroundcolor);
+        background-color: var(--background-color);
         border-radius: .5rem;
         box-shadow: 0px 0px 12px #12121216;
     }
@@ -2116,8 +2116,8 @@ section.admin-section {
                     }
 
                     th {
-                        background-color: var(--backgroundcolorsecondary);
-                        color: var(--titlecolor);
+                        background-color: var(--background-secondary);
+                        color: var(--primary-color);
                         font-weight: bold;
                     }
 
@@ -2191,14 +2191,14 @@ section.admin-section {
                                 overflow: hidden;
 
                                 .status-option {
-                                    color: var(--primarycolor);
+                                    color: var(--primary-color);
                                     padding: 12px 16px;
                                     text-decoration: none;
                                     display: block;
                                     text-align: left;
 
                                     &:hover {
-                                        background-color: var(--backgroundcolorsecondary);
+                                        background-color: var(--background-secondary);
                                     }
 
                                     &.admin {
@@ -2287,7 +2287,7 @@ section.admin-section {
                     }
 
                     tr:hover {
-                        background-color: var(--backgroundcolorsecondary);
+                        background-color: var(--background-secondary);
                     }
                 }
                 

@@ -27,13 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(`${RACINESITE}api/ingredients?search=${encodeURIComponent(val)}`)
                 .then(response => response.json())
                 .then(data => {
+                    // Vérifier si des ingrédients ont été trouvés
                     if (!data.ingredients || data.ingredients.length === 0) {
                         const noResultItem = document.createElement('div');
                         noResultItem.innerHTML = `<strong>Aucun ingrédient trouvé</strong>`;
                         autocompleteList.appendChild(noResultItem);
                         return;
                     }
-
+                    // Parcourir les ingrédients reçus
                     data.ingredients.forEach(ingredient => {
                         // Ne pas afficher les ingrédients déjà sélectionnés
                         if (selectedIngredients.includes(ingredient.id)) return;
