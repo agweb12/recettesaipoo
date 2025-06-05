@@ -68,6 +68,8 @@
     <!-- Hero Section End -->
     <section class="filterAllRecipes">
         <!-- Filtre des recettes -->
+        <?php if(!isset($_GET['search'])) : ?>
+        <?php else: ?>
         <aside class="filterRecipes">
             <div class="filterTitle">
                 <h3>Filtrer les recettes</h3>
@@ -139,6 +141,7 @@
                 </div>
             </details>
         </aside>
+        <?php endif; ?>
         <!-- Fin du filtre des recettes -->
 
         <!-- Affichage des recettes -->
@@ -148,7 +151,7 @@
                 <form id="search-form" method="get" action="">
                     <div class="inputBox">
                         <i class="fi fi-sr-search"></i>
-                        <input type="text" name="search" id="search-input" placeholder="Rechercher une recette..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <input type="text" name="search" id="search-input" placeholder="Rechercher une recette par nom ou descriptif" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                     </div>
                     <button type="submit" class="search-btn">Rechercher</button>
                 </form>
