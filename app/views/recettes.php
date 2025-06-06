@@ -207,8 +207,8 @@
 <!-- Fin de la section des recettes -->
 <!-- Carousel des fonctionnalités -->
 <section class="features">
-    <h2>nos fonctionnalités</h2>
-    <p>Nous proposons plusieurs fonctionnalités pour vous aider à trouver la recette parfaite :</p>
+    <h2>comment ça marche ?</h2>
+    <p>Nous proposons plusieurs solutions pour vous aider à trouver la recette parfaite :</p>
     <div class="features-carousel">
         <div class="features-carousel-container">
             <div class="feature-slide">
@@ -218,7 +218,7 @@
             </div>
             <div class="feature-slide">
                 <i class="fi fi-sr-shopping-cart"></i>
-                <strong>Liste d'ingrédients Personnelles</strong>
+                <strong>Liste personnelle d'ingrédients</strong>
                 <p>Créez votre liste d'ingrédients à partir des ingrédients existants, et retrouver les recettes correspondantes à votre liste.</p>
             </div>
             <div class="feature-slide">

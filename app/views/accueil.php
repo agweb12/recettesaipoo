@@ -3,8 +3,8 @@
         <?php if(isset($isLoggedIn) && $isLoggedIn): ?>
         <p class="alert alert-warning">Bonjour <?= $user['prenom'] ?>, vous êtes connecté !</p>
         <form action="<?= RACINE_SITE ?>" method="post" id="formIngredients">
-            <h4>Rentrez vos ingrédients pour trouver votre recette</h4>
-            <label for="ingredients">Quels ingrédients avez-vous ?</label>
+            <h4>Quels ingrédients avez-vous ?</h4>
+            <label for="ingredients">Choisissez vos ingrédients :</label>
             <div id="ingredients-container">
                 <div class="ingredient-input-group">
                     <div class="inputBox">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="selected-ingredients"></div>
-            <button type="submit" name="submit_ingredients">Trouver une recette</button>
+            <button type="submit" name="submit_ingredients">Trouver votre recette adaptée</button>
         </form>
         <?php else: ?>
             <h1>Recettes AI</h1>
@@ -63,8 +63,8 @@
     <a href="<?= RACINE_SITE ?>recettes" class="cta">Vous pouvez également rechercher des recettes</a>
 </section>
 <section class="features">
-    <h2>nos fonctionnalités</h2>
-    <p>Nous proposons plusieurs fonctionnalités pour vous aider à trouver la recette parfaite :</p>
+    <h2>comment ça marche ?</h2>
+    <p>Nous proposons plusieurs solutions pour vous aider à trouver la recette parfaite :</p>
     <div class="features-carousel">
         <div class="features-carousel-container">
             <div class="feature-slide">
@@ -74,7 +74,7 @@
             </div>
             <div class="feature-slide">
                 <i class="fi fi-sr-shopping-cart"></i>
-                <strong>Liste d'ingrédients Personnelles</strong>
+                <strong>Liste personnelle d'ingrédient</strong>
                 <p>Créez votre liste d'ingrédients à partir des ingrédients existants, et retrouver les recettes correspondantes à votre liste.</p>
             </div>
             <div class="feature-slide">

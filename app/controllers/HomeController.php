@@ -20,9 +20,21 @@ class HomeController extends Controller {
 
     public function index() {
         // Traitement du formulaire d'ingrédients
-        if($this->isLoggedIn() && isset($_POST['submit_ingredients']) && !empty($_POST['ingredients'])) {
-            $this->processIngredientForm();
-            return; // Redirection déjà effectuée dans processIngredientForm
+        if($this->isLoggedIn() && isset($_POST['submit_ingredients']) && !empty($_POST['ingredients'])){
+            // Vérifier qu'au moins un ingrédient valide est présent
+            $hasValidIngredient = false;
+            foreach($_POST['ingredients'] as $ingredient){
+                if(!empty($ingredient)){
+                    $hasValidIngredient = true; // Au moins un ingrédient est valide
+                    break; // Pour éviter de continuer à vérifier les autres ingrédients si un valide est trouvé
+                }
+            }
+
+            if($hasValidIngredient){
+                $this->processIngredientForm();
+                return; // Redirection déjà effectuée dans processIngredientForm
+            }
+
         }
 
         // Récupération des recettes populaires et récentes

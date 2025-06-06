@@ -77,6 +77,10 @@ class Ingredients extends Model {
 
      public function addUserIngredients(int $userId, array $ingredients): int // retourne le nombre de lignes affectées
     {
+        // Vérifier si le tableau d'ingrédients est vide
+        if (empty($ingredients) || count(array_filter($ingredients)) === 0) {
+            return 0; // Retourner 0 si aucun ingrédient valide
+        }
         $sql = "INSERT INTO liste_personnelle_ingredients (id_utilisateur, id_ingredient, quantite, date_creation) VALUES (:id_utilisateur, :id_ingredient, :quantite, NOW())";
         $stmt = $this->db->prepare($sql);
 
@@ -97,7 +101,7 @@ class Ingredients extends Model {
             }
         }
         // $result est un booléen qui indique si l'insertion a réussi pour tous les ingrédients
-        return $result;
+            return (int)$result; // Convertir le résultat booléen en entier (1 pour succès, 0 pour échec)
     }
 
     /**
