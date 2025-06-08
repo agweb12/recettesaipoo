@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : sam. 31 mai 2025 à 11:59
+-- Généré le : dim. 08 juin 2025 à 10:27
 -- Version du serveur : 8.0.30
 -- Version de PHP : 8.4.3
 
@@ -50,7 +50,8 @@ INSERT INTO `administrateur` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `d
 (9, 'MISERI', 'Argentina', 'argentina@gmail.com', '$2y$12$5NkS1iBmcjUS9CtbmF1l6.oE.SkCpZzF0dwPTgzVqYMNryKZ9.7pO', '2025-05-17 19:15:16', 'editeur'),
 (10, 'GRAZIANI', 'Elodie', 'elodie@gmail.com', '$2y$12$K20Fh/DHX3TkpOuOPsHwqulz/5wV7lWfm6vAUvBRVtr8NNbjOt.Hi', '2025-05-17 19:16:31', 'moderateur'),
 (11, 'SEYLER', 'Christine', 'christine@gmail.com', '$2y$12$Hk8hA/.e.w6kbZyrR/cjyeafzNQsucKCREj04xQNGBiYNosdB.LCu', '2025-05-17 19:17:05', 'superadmin'),
-(13, 'BOTTI', 'Emma', 'emma@gmail.com', '$2y$12$egCVVtbboxJCVRiuLE3BFu2IEQeMMduwjFpACIzNt/Key0srlLVsu', '2025-05-19 11:47:41', 'editeur');
+(13, 'BOTTI', 'Emma', 'emma@gmail.com', '$2y$12$egCVVtbboxJCVRiuLE3BFu2IEQeMMduwjFpACIzNt/Key0srlLVsu', '2025-05-19 11:47:41', 'moderateur'),
+(17, 'SEYLER', 'Marie', 'seyler@gmail.com', '$2y$12$.JIr5JlhB4XU4SfiY1LJwugJqCOKrTU9mQFXFontkjptRVW6Gkqku', '2025-06-05 12:15:37', 'moderateur');
 
 -- --------------------------------------------------------
 
@@ -269,7 +270,14 @@ INSERT INTO `administrateur_actions` (`id`, `id_admin`, `table_modifiee`, `id_el
 (196, 1, 'recette', 17, 'modification', '2025-05-31 13:26:38'),
 (197, 1, 'recette', 17, 'suppression', '2025-05-31 13:26:52'),
 (198, 1, 'ingredient', 112, 'suppression', '2025-05-31 13:28:52'),
-(199, 1, 'etiquette', 36, 'suppression', '2025-05-31 13:29:09');
+(199, 1, 'etiquette', 36, 'suppression', '2025-05-31 13:29:09'),
+(200, 1, 'ingredient', 113, 'ajout', '2025-06-02 09:38:34'),
+(201, 1, 'ingredient', 113, 'modification', '2025-06-02 09:39:03'),
+(202, 1, 'ingredient', 113, 'suppression', '2025-06-02 09:39:15'),
+(203, 1, 'ingredient', 114, 'ajout', '2025-06-05 10:26:09'),
+(204, 1, 'ingredient', 114, 'suppression', '2025-06-05 10:26:41'),
+(205, 1, 'administrateur', 13, 'modification', '2025-06-05 12:14:31'),
+(206, 1, 'administrateur', 17, 'ajout', '2025-06-05 12:15:37');
 
 -- --------------------------------------------------------
 
@@ -495,7 +503,7 @@ CREATE TABLE `liste_personnelle_ingredients` (
 
 INSERT INTO `liste_personnelle_ingredients` (`id_utilisateur`, `id_ingredient`, `quantite`, `date_creation`) VALUES
 (6, 41, 1.00, '2025-05-22 15:42:33'),
-(7, 77, 1.00, '2025-05-22 16:34:16');
+(19, 14, 1.00, '2025-06-05 10:40:18');
 
 -- --------------------------------------------------------
 
@@ -538,7 +546,92 @@ INSERT INTO `liste_recette_ingredients` (`id_recette`, `id_ingredient`, `quantit
 (13, 21, 150.00, 1),
 (13, 26, 200.00, 1),
 (13, 85, 4.00, 7),
-(13, 101, 200.00, 1);
+(13, 101, 200.00, 1),
+(18, 3, 1.00, 9),
+(18, 4, 1.00, 9),
+(18, 6, 2.00, 6),
+(18, 32, 200.00, 1),
+(18, 41, 5.00, 18),
+(18, 77, 200.00, 5),
+(19, 3, 1.00, 9),
+(19, 4, 1.00, 9),
+(19, 6, 1.00, 6),
+(19, 14, 1.00, 7),
+(19, 15, 1.00, 7),
+(19, 17, 2.00, 7),
+(19, 34, 700.00, 5),
+(19, 44, 1.00, 9),
+(19, 61, 200.00, 1),
+(20, 1, 50.00, 1),
+(20, 2, 120.00, 1),
+(20, 5, 150.00, 1),
+(20, 48, 200.00, 1),
+(20, 85, 3.00, 7),
+(21, 3, 1.00, 9),
+(21, 4, 1.00, 9),
+(21, 6, 1.00, 6),
+(21, 14, 1.00, 7),
+(21, 18, 3.00, 7),
+(21, 21, 100.00, 1),
+(21, 22, 200.00, 5),
+(22, 7, 3.00, 6),
+(22, 10, 1.00, 13),
+(22, 51, 50.00, 5),
+(22, 85, 2.00, 7),
+(22, 86, 2.00, 7),
+(22, 100, 120.00, 1),
+(23, 3, 1.00, 9),
+(23, 4, 1.00, 9),
+(23, 6, 2.00, 6),
+(23, 13, 2.00, 7),
+(23, 14, 1.00, 7),
+(23, 19, 1.00, 7),
+(23, 22, 50.00, 5),
+(23, 25, 300.00, 1),
+(23, 39, 1.00, 9),
+(23, 44, 1.00, 9),
+(24, 3, 1.00, 9),
+(24, 4, 1.00, 9),
+(24, 6, 2.00, 6),
+(24, 13, 2.00, 7),
+(24, 14, 1.00, 7),
+(24, 17, 2.00, 7),
+(24, 18, 2.00, 7),
+(24, 43, 1.00, 9),
+(24, 44, 1.00, 9),
+(24, 62, 100.00, 1),
+(24, 110, 200.00, 1),
+(25, 1, 150.00, 1),
+(25, 2, 30.00, 1),
+(25, 7, 2.00, 6),
+(25, 10, 1.00, 13),
+(25, 52, 30.00, 5),
+(25, 55, 1.00, 7),
+(25, 85, 1.00, 7),
+(26, 3, 1.00, 9),
+(26, 4, 1.00, 9),
+(26, 6, 2.00, 6),
+(26, 16, 2.00, 7),
+(26, 17, 1.00, 7),
+(26, 18, 1.00, 7),
+(26, 39, 1.00, 9),
+(26, 62, 100.00, 1),
+(26, 70, 1.00, 7),
+(27, 2, 30.00, 1),
+(27, 23, 100.00, 5),
+(27, 47, 1.00, 9),
+(27, 48, 200.00, 1),
+(27, 49, 50.00, 1),
+(27, 60, 80.00, 1),
+(28, 3, 1.00, 9),
+(28, 4, 1.00, 9),
+(28, 6, 1.00, 6),
+(28, 14, 1.00, 7),
+(28, 15, 1.00, 7),
+(28, 16, 2.00, 7),
+(28, 22, 100.00, 5),
+(28, 34, 600.00, 5),
+(28, 66, 1.00, 7);
 
 -- --------------------------------------------------------
 
@@ -575,7 +668,19 @@ INSERT INTO `recette` (`id`, `id_admin`, `nom`, `descriptif`, `instructions`, `i
 (8, 1, 'Moussaka Grecque', 'Gratin d’aubergines, viande hachée, béchamel et fromage.', '##1. Faites griller les aubergines.\r\n##2. Préparez la sauce viande/tomate.\r\n##3. Préparez une béchamel.\r\n##4. Alternez les couches dans un plat.\r\n##5. Cuisez 40 minutes.', 'images/recette_8_1747659981.jpg', 30, 40, 'difficile', 8, '2025-03-23 16:32:38'),
 (9, 1, 'Baklava Turque', 'Pâtisserie feuilletée sucrée à base de miel, pistaches et noix.', '##1. Beurrez les feuilles de filo.\r\n##2. Ajoutez les couches de fruits secs.\r\n##3. Découpez en losanges.\r\n##4. Cuisez au four.\r\n##5. Arrosez de sirop de miel.', 'images/recette_9_1747660058.jpg', 45, 25, 'difficile', 9, '2025-03-23 16:32:38'),
 (10, 1, 'Falafel Libanais', 'Boulettes croustillantes de pois chiches et épices, typiques du Moyen-Orient.', '##1. Mixez pois chiches, ail, oignon, épices.\r\n##2. Formez des boulettes.\r\n##3. Faites-les frire dans l’huile chaude.\r\n##4. Servez avec sauce tahini ou yaourt.', 'images/recette_10_1747660136.jpg', 25, 10, 'moyenne', 10, '2025-03-23 16:32:38'),
-(13, 1, 'Cake aux olives', 'Recette à base d&#039;olive', '##Étape 1\r\n\r\nPréchauffer le four à Th 6 (180°C). Entretemps, mélanger la farine et les oeufs jusqu&#039;à obtenir un mélange onctueux. Ajouter l&#039;huile et l&#039;équivalent d&#039;1 verre de vin blanc sec.\r\n\r\n##Étape 2\r\n\r\nEgoutter les olives, les fariner légèrement et les incorporer à la pâte.\r\n\r\n##Étape 3\r\n\r\nAjouter le jambon, bien malaxer et verser le gruyère râpé et la levure; bien poivrer, mais ne pas saler à cause du jambon!\r\n\r\n##Étape 4\r\nBeurrer un moule à cake, y verser la pâte jusqu&#039;aux 2/3.\r\n\r\n##Étape 5\r\nEnfourner le cake pendant 50 min à Th 6 (180°C).\r\n\r\n##Étape 6\r\nSi le dessus du cake prend une teinte dorée trop rapidement, le couvrir d&#039;une feuille de papier alu et le laisser cuire ainsi.', 'images/recette_1747833559.jpg', 20, 50, 'facile', 1, '2025-05-21 15:19:19');
+(13, 1, 'Cake aux olives', 'Recette à base d&#039;olive', '##Étape 1\r\n\r\nPréchauffer le four à Th 6 (180°C). Entretemps, mélanger la farine et les oeufs jusqu&#039;à obtenir un mélange onctueux. Ajouter l&#039;huile et l&#039;équivalent d&#039;1 verre de vin blanc sec.\r\n\r\n##Étape 2\r\n\r\nEgoutter les olives, les fariner légèrement et les incorporer à la pâte.\r\n\r\n##Étape 3\r\n\r\nAjouter le jambon, bien malaxer et verser le gruyère râpé et la levure; bien poivrer, mais ne pas saler à cause du jambon!\r\n\r\n##Étape 4\r\nBeurrer un moule à cake, y verser la pâte jusqu&#039;aux 2/3.\r\n\r\n##Étape 5\r\nEnfourner le cake pendant 50 min à Th 6 (180°C).\r\n\r\n##Étape 6\r\nSi le dessus du cake prend une teinte dorée trop rapidement, le couvrir d&#039;une feuille de papier alu et le laisser cuire ainsi.', 'images/recette_1747833559.jpg', 20, 50, 'facile', 1, '2025-05-21 15:19:19'),
+(18, 1, 'Spaghetti à la Sauce Tomate et Basilic', 'Recette italienne simple et savoureuse à base de spaghetti, sauce tomate et basilic frais.', '##1. Faites cuire les spaghetti dans de l\'eau bouillante salée.\r\n##2. Dans une poêle, chauffez l\'huile d\'olive et ajoutez la sauce tomate.\r\n##3. Salez, poivrez et laissez mijoter 10 minutes.\r\n##4. Égouttez les pâtes et ajoutez-les à la sauce.\r\n##5. Mélangez bien et servez avec du basilic frais.', 'images/recette_spaghetti_tomate.jpg', 10, 15, 'facile', 2, '2025-06-08 12:01:05'),
+(19, 1, 'Spaghetti à la Sauce Tomate et Basilic', 'Recette italienne simple et savoureuse à base de spaghetti, sauce tomate et basilic frais.', '##1. Faites cuire les spaghetti dans de l\'eau bouillante salée.\r\n##2. Dans une poêle, chauffez l\'huile d\'olive et ajoutez la sauce tomate.\r\n##3. Salez, poivrez et laissez mijoter 10 minutes.\r\n##4. Égouttez les pâtes et ajoutez-les à la sauce.\r\n##5. Mélangez bien et servez avec du basilic frais.', 'images/recette_spaghetti_tomate.jpg', 10, 15, 'facile', 2, '2025-06-08 12:03:02'),
+(20, 1, 'Soupe de Lentilles Corail aux Carottes et Cumin', 'Soupe réconfortante, simple et saine à base de lentilles corail, légumes et épices douces.', '##1. Faites revenir l’oignon et l’ail dans l’huile d’olive.\r\n##2. Ajoutez les carottes en dés, les lentilles, le cumin, le sel et le poivre.\r\n##3. Couvrez d’eau.\r\n##4. Laissez mijoter 25 minutes à feu moyen.\r\n##5. Mixez selon la consistance souhaitée.', 'images/recette_soupe_lentilles.jpg', 10, 25, 'facile', 12, '2025-06-08 12:04:44'),
+(21, 1, 'Fondant au Chocolat Noir', 'Un dessert irrésistible au cœur coulant de chocolat noir. Simple et rapide.', '##1. Préchauffez le four à 200°C.\r\n##2. Faites fondre le chocolat et le beurre.\r\n##3. Ajoutez le sucre, les œufs puis la farine.\r\n##4. Répartissez dans des moules individuels.\r\n##5. Enfournez 12 minutes.\r\n##6. Servez tiède.', 'images/recette_fondant_chocolat.jpg', 15, 12, 'moyenne', 1, '2025-06-08 12:05:17'),
+(22, 1, 'Gratin de Courgettes au Fromage', 'Un gratin fondant et savoureux à base de courgettes, crème et fromage. Simple et végétarien.', '##1. Préchauffez le four à 180°C.\r\n##2. Coupez les courgettes en rondelles, émincez l’oignon.\r\n##3. Faites revenir l’oignon dans l’huile d’olive.\r\n##4. Ajoutez les courgettes, faites revenir 5 min.\r\n##5. Mélangez avec la crème, salez et poivrez.\r\n##6. Versez dans un plat, ajoutez le fromage râpé.\r\n##7. Enfournez 30 minutes jusqu’à ce que ce soit doré.', 'images/recette_gratin_courgettes.jpg', 15, 30, 'facile', 13, '2025-06-08 12:06:37'),
+(23, 1, 'Muffins à la Banane et au Miel', 'Des muffins moelleux et sains à base de banane, farine sans gluten et miel.', '##1. Préchauffez le four à 180°C.\r\n##2. Écrasez les bananes dans un saladier.\r\n##3. Ajoutez le miel, l’huile, les œufs battus.\r\n##4. Incorporez la farine et la levure.\r\n##5. Répartissez la pâte dans des moules à muffins.\r\n##6. Cuire 25 minutes jusqu’à ce qu’ils soient dorés.', 'images/recette_muffins_banane.webp', 10, 25, 'facile', 15, '2025-06-08 12:07:29'),
+(24, 1, 'Tacos de Poulet Épicé', 'Des tacos mexicains garnis de poulet sauté, légumes et crème fraîche. Un repas savoureux et rapide.', '##1. Coupez le poulet en lanières, émincez les légumes.\r\n##2. Faites revenir l’oignon et le poivron dans l’huile d’olive.\r\n##3. Ajoutez le poulet, les tomates et les épices.\r\n##4. Laissez cuire 15 min à feu moyen.\r\n##5. Garnissez des tortillas (non incluses ici) et ajoutez un filet de crème fraîche.', 'images/recette_tacos_poulet.webp', 20, 15, 'moyenne', 11, '2025-06-08 12:08:08'),
+(25, 1, 'Couscous Végétarien aux Légumes', 'Un couscous marocain revisité sans viande, riche en légumes et en épices orientales.', '##1. Faites revenir l’oignon dans l’huile d’olive.\r\n##2. Ajoutez les carottes, les courgettes, les tomates et les pois chiches.\r\n##3. Ajoutez les épices, le sel et le poivre.\r\n##4. Couvrez d’eau et laissez mijoter 45 minutes.\r\n##5. Préparez la semoule selon les instructions, puis servez avec les légumes en sauce.', 'images/recette_couscous_vegetarien.webp', 25, 45, 'moyenne', 6, '2025-06-08 12:08:51'),
+(26, 1, 'Pancakes au Yaourt et au Sirop d’Érable', 'Des pancakes ultra moelleux au yaourt, à déguster avec du sirop d’érable pour un petit-déjeuner ou brunch réussi.', '##1. Mélangez la farine, la levure et le sucre.\r\n##2. Ajoutez l’œuf, le yaourt et l’huile.\r\n##3. Mélangez jusqu’à obtenir une pâte homogène.\r\n##4. Faites cuire les pancakes dans une poêle bien chaude, 1 à 2 min par face.\r\n##5. Servez avec un filet de sirop d’érable.', 'images/recette_pancakes_yaourt.webp', 10, 10, 'facile', 16, '2025-06-08 12:09:32'),
+(27, 1, 'Buddha Bowl Vegan aux Légumes Rôtis', 'Un bol complet, coloré et nourrissant à base de légumes rôtis, pois chiches et avocat.', '##1. Préchauffez le four à 200°C.\r\n##2. Coupez les légumes en dés (pomme de terre, courgette, carotte).\r\n##3. Mélangez avec huile d\'olive, paprika, sel et poivre.\r\n##4. Enfournez 25 minutes.\r\n##5. Dressez dans un bol avec les pois chiches et l\'avocat tranché.', 'images/recette_buddha_bowl.webp', 20, 25, 'facile', 14, '2025-06-08 12:10:10'),
+(28, 1, 'Truffes au Chocolat et aux Amandes', 'Des bouchées fondantes et festives à base de chocolat noir, amandes et vanille. Parfait pour les fêtes !', '##1. Faites chauffer la crème liquide.\r\n##2. Versez-la sur le chocolat noir en morceaux, mélangez jusqu’à fonte complète.\r\n##3. Ajoutez les amandes concassées, le sucre et la vanille.\r\n##4. Laissez refroidir au réfrigérateur 2h.\r\n##5. Formez des boules et roulez-les dans du chocolat râpé.', 'images/recette_truffes_chocolat.webp', 15, 0, 'facile', 17, '2025-06-08 12:10:43'),
+(29, 1, 'Velouté de Brocoli et Pomme de Terre', 'Un velouté onctueux et savoureux, parfait pour se réchauffer en hiver.', '##1. Coupez le brocoli en fleurettes et épluchez les pommes de terre.\r\n##2. Faites revenir l’oignon et l’ail dans l’huile d’olive.\r\n##3. Ajoutez les légumes et l’eau, puis salez et poivrez.\r\n##4. Laissez cuire 20 minutes à feu moyen.\r\n##5. Mixez le tout avec la crème fraîche jusqu’à obtenir une texture lisse.', 'images/recette_veloute_brocoli.webp', 10, 20, 'facile', 1, '2025-06-08 12:11:09');
 
 -- --------------------------------------------------------
 
@@ -598,25 +703,64 @@ INSERT INTO `recette_etiquette` (`id_recette`, `id_etiquette`) VALUES
 (1, 3),
 (3, 3),
 (6, 3),
+(18, 3),
+(19, 3),
+(21, 3),
+(23, 3),
+(24, 3),
+(26, 3),
 (9, 5),
+(22, 5),
+(25, 5),
+(20, 6),
+(27, 6),
 (13, 8),
+(27, 9),
 (2, 10),
 (8, 10),
 (9, 10),
+(18, 10),
+(20, 10),
+(21, 10),
+(22, 10),
 (3, 12),
 (4, 12),
+(23, 12),
+(25, 12),
+(19, 13),
+(24, 13),
 (13, 14),
+(18, 14),
 (10, 15),
+(19, 15),
+(21, 15),
+(24, 15),
+(26, 16),
+(19, 17),
+(22, 17),
 (10, 21),
+(26, 21),
+(23, 22),
 (9, 23),
+(22, 23),
+(25, 23),
+(25, 24),
 (4, 25),
+(27, 25),
 (4, 26),
 (13, 26),
 (1, 27),
 (6, 27),
 (3, 28),
+(18, 28),
+(23, 28),
 (4, 29),
-(13, 33);
+(20, 32),
+(27, 32),
+(13, 33),
+(21, 33),
+(24, 33),
+(26, 33);
 
 -- --------------------------------------------------------
 
@@ -636,7 +780,8 @@ CREATE TABLE `recette_favorite` (
 
 INSERT INTO `recette_favorite` (`id_utilisateur`, `id_recette`, `date_enregistrement`) VALUES
 (6, 1, '2025-05-22 15:28:36'),
-(7, 5, '2025-05-22 16:06:49');
+(19, 4, '2025-06-05 10:17:34'),
+(19, 6, '2025-06-05 10:15:55');
 
 -- --------------------------------------------------------
 
@@ -697,8 +842,8 @@ CREATE TABLE `utilisateur` (
 INSERT INTO `utilisateur` (`id`, `id_admin`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`) VALUES
 (1, NULL, 'GRAZIANI', 'Alexandre', 'graziani1112@gmail.com', '$2y$12$Cq3adexjyvAiYAIKqQrUy.lbw9mD1zJn3KM5CyuHERebQJbu8rL8e', '2025-05-12 13:06:59'),
 (6, NULL, 'FOURATI', 'Islem', 'islemfourati@gmail.com', '$2y$12$U.9jVS9MxgGhqNlFCUa15efBcOn1nxtT8NJB6/H1cnJPrrszJ3HmC', '2025-05-22 15:25:12'),
-(7, NULL, 'OUNADJELA', 'Abdelkader', 'okadus@gmail.com', '$2y$12$B6JzZbAYhXJUBGzZjwVc7.1ibjW/RZ7r0.7LkVLo/CYf8MP090kbK', '2025-05-22 15:49:06'),
-(12, NULL, 'LEROY', 'Eloise', 'eloise@gmail.com', '$2y$12$0zjEQX.o/omp.d/pW.IMkOklxNJKJb41MxmgPAAzYcLAELedO5L9e', '2025-05-28 18:06:10');
+(12, NULL, 'LEROY', 'Eloise', 'eloise@gmail.com', '$2y$12$0zjEQX.o/omp.d/pW.IMkOklxNJKJb41MxmgPAAzYcLAELedO5L9e', '2025-05-28 18:06:10'),
+(19, NULL, 'OUNADJELA', 'Kader', 'okadus@colombbus.org', '$2y$12$BrAPo2WA3rc1lA7kAR4sbeVqpayaAF8xtMvs2q2wWTlpmMs6/dssC', '2025-06-05 09:56:02');
 
 --
 -- Index pour les tables déchargées
@@ -801,13 +946,13 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur`
 --
 ALTER TABLE `administrateur`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT pour la table `administrateur_actions`
 --
 ALTER TABLE `administrateur_actions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
@@ -825,7 +970,7 @@ ALTER TABLE `etiquette`
 -- AUTO_INCREMENT pour la table `ingredient`
 --
 ALTER TABLE `ingredient`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT pour la table `recette`
@@ -843,7 +988,7 @@ ALTER TABLE `unite_mesure`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Contraintes pour les tables déchargées

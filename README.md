@@ -4,7 +4,7 @@
 
 Recettes AI (Assistant Ingrédient) est une application web (Web Progressive App) permettant aux utilisateurs de trouver des recettes de cuisine en fonction des ingrédients qu'ils possèdent déjà chez eux. L'application offre également des fonctionnalités de gestion de recettes favorites et de filtrage par catégories ou étiquettes.
 
-Cette application est un MVP (Model Viable Product).
+Cette application est un MVP (Minimum Viable Product).
 
 ## Fonctionnalités
 
