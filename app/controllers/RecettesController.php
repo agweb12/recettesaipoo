@@ -53,23 +53,10 @@ class RecettesController extends Controller {
 
                 // Ajouter le nombre total d'ingrédients pour chaque recette
                 // array_map permet de parcourir chaque recette et d'ajouter le nombre d'ingrédients
-                // On utilise array_map parce que nous voulons transformer chaque recette en ajoutant une nouvelle clé sans modifier l'original
-                // Cela permet de garder le code propre et de ne pas avoir à écrire une boucle foreach
-                // Chaque recette est un tableau associatif, on ajoute une nouvelle clé 'nombre_ingredients_total' qui contient le nombre total d'ingrédients de la recette
-                // On utilise la méthode countRecipeIngredients pour compter les ingrédients de chaque recette
-                // On utilise array_map pour appliquer une fonction à chaque élément du tableau $recettesIngredients
-                // Cela permet de ne pas modifier le tableau original et de retourner un nouveau tableau avec les modifications
-                // On utilise une fonction anonyme pour parcourir chaque recette 
                 $recettes = array_map(function($recette){
                     $recette['nombre_ingredients_total'] = $this->recetteModel->countRecipeIngredients($recette['id']);
                     return $recette;
                 }, $recettesIngredients);
-
-                // avec boucle foreach
-                // foreach($recettesIngredients as $recette) {
-                //     $recette['nombre_ingredients_total'] = $this->recetteModel->countRecipeIngredients($recette['id']);
-                //     $recettes[] = $recette;
-                // }
             }
         }
         

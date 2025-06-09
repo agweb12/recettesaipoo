@@ -14,13 +14,13 @@ define("ROOT_DIR", dirname(__DIR__)); // Définir le répertoire racine de l'app
 define("RACINE_SITE", "http://localhost/recettesaipoo/"); // Définir la racine du site
 
 // Autoloader / fonction d'autoload des classes
-spl_autoload_register(function($className) {
+spl_autoload_register(function($className) { // spl_autoload_register est une fonction PHP qui permet de charger automatiquement les classes
     // Remplacer les backslashes par des slashes pour la compatibilité avec les chemins de fichiers
     $className = str_replace('\\', '/', $className);
 
     // Supprimer le préfixe "App/" du chemin de classe
     if (strpos($className, 'App/') === 0) {
-        $className = substr($className, 4);
+        $className = substr($className, 4); // Retirer "App/" du début du nom de la classe
     }
 
     $file = ROOT_DIR . '/app/' . $className . '.php';

@@ -26,6 +26,10 @@ class Ingredients extends Model {
         return $stmt->fetchAll();
     }
 
+    // différence entre bindValue et bindParam
+    // on ne peut pas attribuer une valeur à un paramètre avec bindParam,
+    // il faut d'abord le lier à une variable, alors que bindValue permet de lier directement une valeur.
+
     /**
      * Récupère les IDs des ingrédients d'un utilisateur
      * @param int $userId ID de l'utilisateur
@@ -95,8 +99,7 @@ class Ingredients extends Model {
                 $result = $stmt->execute() && $result; // $stmt->execute() retourne true si l'insertion a réussi, && $result permet de conserver le résultat de l'exécution précédente
             }
             else {
-                // Si l'ingrédient n'existe pas, je peux choisir de lancer une exception ou de continuer
-                // Lancer une exception
+                // Si l'ingrédient n'existe pas
                 throw new \Exception("L'ingrédient avec l'ID $ingredientId n'existe pas.");
             }
         }
@@ -109,7 +112,7 @@ class Ingredients extends Model {
      * @param int $idIngredient L'ID de l'ingrédient à vérifier
      * @return bool Retourne true si l'ingrédient existe, false sinon
      */
-    public function ingredientExists($ingredientId)
+    public function ingredientExists(int $ingredientId) : bool
     {
         $sql = "SELECT id FROM ingredient WHERE id = :id";
         $stmt = $this->db->prepare($sql);
@@ -118,7 +121,6 @@ class Ingredients extends Model {
         
         return $stmt->rowCount() > 0;
     }
-
 
     /**
      * Recherche des ingrédients par nom
@@ -196,7 +198,7 @@ class Ingredients extends Model {
      * @param array $data Les données de l'ingrédient
      * @return int|bool L'ID de l'ingrédient créé ou false en cas d'échec
      */
-    public function create(array $data)
+    public function create(array $data) : int|bool
     {
         $sql = "INSERT INTO {$this->table} (nom, id_admin) VALUES (:nom, :id_admin)";
         $stmt = $this->db->prepare($sql);

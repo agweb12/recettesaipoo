@@ -12,7 +12,7 @@ class Controller {
 
         // Détermine s'il s'agit d'une vue admin ou non
         $isAdminView = strpos($view, 'admin/') === 0;
-        
+
         // Inclure l'en-tête approprié
         if ($isAdminView) {
             include_once ROOT_DIR . '/app/views/headerAdmin.php';
@@ -36,7 +36,7 @@ class Controller {
             include_once ROOT_DIR . '/app/views/footer.php';
         }
     }
-    
+
     protected function redirect($url) {
         header('Location: ' . $url);
         exit();

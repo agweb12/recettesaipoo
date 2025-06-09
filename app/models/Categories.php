@@ -85,7 +85,7 @@ class Categories extends Model {
      * @param array $data Les données de la catégorie
      * @return int|bool L'ID de la catégorie créée ou false en cas d'échec
      */
-    public function create(array $data)
+    public function create(array $data) : int|bool
     {
         $sql = "INSERT INTO {$this->table} (nom, descriptif, couleur, image_url, id_admin, couleurTexte) 
                 VALUES (:nom, :descriptif, :couleur, :image_url, :id_admin, :couleurTexte)";

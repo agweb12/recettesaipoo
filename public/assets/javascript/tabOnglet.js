@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tabContents.forEach(content => content.classList.remove('active'));
             
             // On affiche le contenu correspondant
-            const tabId = this.getAttribute('data-tab');
+            let tabId = this.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
         });
     });

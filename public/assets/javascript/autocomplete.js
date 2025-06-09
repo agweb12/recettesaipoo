@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.parentNode.appendChild(autocompleteList);
 
             // Requête AJAX pour obtenir les suggestions d'ingrédients
-            fetch(`${RACINESITE}api/ingredients?search=${encodeURIComponent(val)}`)
+            fetch(`${RACINESITE}api/ingredients?search=${encodeURIComponent(val)}`) 
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si des ingrédients ont été trouvés

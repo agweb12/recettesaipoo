@@ -119,7 +119,7 @@ class Recettes extends Model{
         $stmt->bindValue(':id_utilisateur', $userId, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        return $result ?: [];
+        return $result ?: []; // Retourne un tableau vide si aucun résultat
     }
 
     /**

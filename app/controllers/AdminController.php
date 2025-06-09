@@ -30,8 +30,6 @@ class AdminController extends Controller {
     public function dashboard() : void
     {
         // Connexion à la base de données
-        // Connexion à la base de données
-        // Remplacer new Database() par Database::getInstance()
         $db = Database::getInstance();
         
         // Récupération des compteurs pour chaque table
