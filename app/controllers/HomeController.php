@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\Recettes;
 use App\Models\Ingredients;
+use App\Helpers\StructuredData;
+
 /**
  * HomeController gère la page d'accueil et le traitement des ingrédients.
  * Il interagit avec les modèles Recettes et Ingredients pour récupérer les données nécessaires.
@@ -19,8 +21,13 @@ class HomeController extends Controller {
     }
 
     public function index() {
+        $isLoggedIn = $this->isLoggedIn();
+
+        // Récupérer les recettes populaires au début
+        $popularRecipes = $this->recetteModel->getPopularRecipes(3);
+
         // Traitement du formulaire d'ingrédients
-        if($this->isLoggedIn() && isset($_POST['submit_ingredients']) && !empty($_POST['ingredients'])){
+        if($isLoggedIn && isset($_POST['submit_ingredients']) && !empty($_POST['ingredients'])){
             // Vérifier qu'au moins un ingrédient valide est présent
             $hasValidIngredient = false;
             foreach($_POST['ingredients'] as $ingredient){
@@ -37,20 +44,32 @@ class HomeController extends Controller {
 
         }
 
-        // Récupération des recettes populaires et récentes
-        $popularRecipes = $this->recetteModel->getPopularRecipes(3);
+        // Générer les données structurées
+        $structuredData = [
+            'website' => StructuredData::getWebSiteData(),
+            'organization' => StructuredData::getOrganizationData(),
+            'navigation' => StructuredData::getSiteNavigationData()
+        ];
+        
+        // Si on a des recettes populaires, ajouter les données de liste
+        if (!empty($popularRecipes)) {
+            $structuredData['popularRecipes'] = StructuredData::getRecipeListData($popularRecipes);
+        }
+
         $recentRecipes = $this->recetteModel->getRecentRecipes(3);
 
         // Chargement de la vue avec les données
         $this->view('accueil', [
-            'titlePage' => "Recettes AI",
-            'descriptionPage' => "Recettes AI est un site qui vous permet de trouver des recettes de cuisine en fonction des ingrédients que vous avez chez vous.",
+            'titlePage' => "Recettes AI - Trouvez des recettes avec vos ingrédients",
+            'descriptionPage' => "Recettes AI, Découvrez des recettes personnalisées selon les ingrédients que vous avez chez vous. Réduisez le gaspillage alimentaire avec Recettes AI.",
             'indexPage' => "index",
             'followPage' => "follow",
-            'keywordsPage' => "Recettes AI, recette, ai, intelligence artificielle, cuisine, ingrédients, recettes, trouver une recette",
+            'keywordsPage' => "Recettes AI, recette, cuisine facile, anti-gaspillage, recettes personnalisées, assistant culinaire",
+            'isLoggedIn' => $isLoggedIn,
+            'user' => isset($_SESSION['user']) ? $_SESSION['user'] : null,
             'popularRecipes' => $popularRecipes,
             'recentRecipes' => $recentRecipes,
-            'user' => isset($_SESSION['user']) ? $_SESSION['user'] : null // Passer les informations de l'utilisateur
+            'structuredData' => $structuredData
         ]);
     }
 

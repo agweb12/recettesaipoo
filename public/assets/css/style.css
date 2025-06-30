@@ -468,6 +468,61 @@ main{
     }
 }
 
+/* Breadcrumbs */
+.breadcrumb-nav {
+    margin: 1rem 0;
+    padding: 0 2rem;
+}
+
+.breadcrumb-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--background-secondary);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: '>';
+    margin: 0 0.5rem;
+    color: var(--text-secondary);
+}
+
+.breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+.breadcrumb-item span[aria-current="page"] {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Responsive breadcrumbs */
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        padding: 0 1rem;
+    }
+    
+    .breadcrumb-list {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
 /* ***** INTRODUCTION SECTION HERO PAGE ACCUEIL ***** */
 .hero{
     width: 100%;
@@ -669,6 +724,286 @@ main{
             60% 90%,  /* En bas vers la droite */
             40% 90%;  /* En bas vers la gauche */
     }
+}
+
+/* Notice du formulaire */
+.form-notice {
+    /* background: var(--alert-warning); */
+    color: var(--text-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid var(--secondary-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    i {
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+}
+
+/* Section Impact Sociétal */
+.impact-section {
+    background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+    padding: 4rem 2rem;
+    margin: 2rem 0;
+}
+
+.impact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.impact-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-item.highlight {
+    border-top: 4px solid var(--primary-color);
+}
+
+.stat-item.danger {
+    border-top: 4px solid #e74c3c;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-item.danger .stat-number {
+    color: #e74c3c;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.stat-connector {
+    font-size: 2rem;
+    color: var(--secondary-color);
+}
+
+.impact-cause {
+    background: var(--alert-danger);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.impact-cause i {
+    font-size: 1.5rem;
+}
+
+/* Section Problème vs Solution */
+.problem-solution {
+    padding: 4rem 2rem;
+    background: var(--background-secondary);
+}
+
+.problem-solution-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.problem-box, .solution-box {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.problem-box:hover, .solution-box:hover {
+    transform: translateY(-5px);
+}
+
+.problem-box {
+    border-top: 4px solid #e74c3c;
+}
+
+.solution-box {
+    border-top: 4px solid var(--primary-color);
+}
+
+.problem-icon, .solution-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+}
+
+.problem-icon {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.solution-icon {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.problem-box blockquote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin: 1.5rem 0;
+    border-left: 3px solid #e74c3c;
+    padding-left: 1rem;
+}
+
+.problem-consequences, .solution-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.consequence, .benefit {
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.consequence {
+    background: #fee;
+    color: #e74c3c;
+}
+
+.benefit {
+    background: #efe;
+    color: #27ae60;
+}
+
+.solution-arrow {
+    font-size: 3rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Section Avantages */
+.advantages-section {
+    padding: 4rem 2rem;
+    background: var(--background-primary);
+}
+
+.advantages-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.advantage-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.advantage-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.advantage-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.advantage-icon.ecology {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.advantage-icon.time {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.advantage-icon.alternative {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.advantage-icon.accessible {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
+
+.advantage-card h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.advantage-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 /* ***** SECTION HERO INGREDIENTS ***** */
@@ -1098,7 +1433,11 @@ main{
             }
 
             .no-recipes {
-                grid-column: 1 / -1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
                 text-align: center;
                 font-size: 1.2rem;
                 padding: 2rem;
@@ -2535,6 +2874,38 @@ footer{
         font-size: 1.5rem;
     }
 
+    .impact-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .stat-connector {
+        transform: rotate(90deg);
+    }
+    
+    .problem-solution-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .solution-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .impact-section,
+    .problem-solution,
+    .advantages-section {
+        padding: 2rem 1rem;
+    }
+
     .filterAllRecipes{
         flex-direction: column;
 
@@ -2704,6 +3075,24 @@ footer{
                 gap: 0rem;
             }
         }
+    }
+
+    .form-notice {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-item {
+        min-width: auto;
+        padding: 1.5rem;
+    }
+    
+    .problem-box, .solution-box {
+        padding: 1.5rem;
+    }
+    
+    .advantage-card {
+        padding: 1.5rem;
     }
 
     .listeRecipesIngredients{

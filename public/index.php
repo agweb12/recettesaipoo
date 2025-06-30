@@ -119,5 +119,24 @@ $router->add('admin/administrateurs/view-actions', '\App\Controllers\AdminAdmini
 $router->add('admin/security/stats', '\App\Controllers\AdminAuthController', 'securityStats');
 
 $router->add('admin/analytics', '\App\Controllers\AdminController', 'analytics');
+
+// Gestion directe des fichiers SEO
+$requestUri = $_SERVER['REQUEST_URI'];
+$path = parse_url($requestUri, PHP_URL_PATH);
+$path = rtrim($path, '/');
+
+// Gestion du sitemap.xml
+if (strpos($path, '/sitemap.xml') !== false) {
+    header('Content-Type: application/xml; charset=utf-8');
+    require_once 'sitemap.xml.php';
+    exit;
+}
+
+// Gestion du robots.txt
+if (strpos($path, '/robots.txt') !== false) {
+    header('Content-Type: text/plain; charset=utf-8');
+    require_once 'robots.txt.php';
+    exit;
+}
 // Dispatcher
 $router->dispatch($_SERVER['REQUEST_URI']);

@@ -7,8 +7,19 @@
     <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="<?= $descriptionPage ?>" />
+
+    <!-- Données structurées -->
+    <?php if (isset($structuredData)): ?>
+        <?php foreach ($structuredData as $type => $data): ?>
+            <script type="application/ld+json">
+                <?= $data ?>
+            </script>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
     <!-- Meta Tags -->
-    <meta name="robots" content="<?= $indexPage ?>, <?= $followPage ?>">
+    <meta name="robots" content="<?= $indexPage ?>, <?= $followPage ?>, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="<?= $indexPage ?>, <?= $followPage ?>">
     <meta name="keywords" content="<?= $keywordsPage ?>" />
     <meta name="author" content="Recettes AI">
     <meta name="application-name" content="Recettes AI">
@@ -37,7 +48,12 @@
     <link rel="stylesheet" href="<?= RACINE_SITE ?>public/assets/css/style.css" />
 
     <link rel="image_src" href="<?= RACINE_SITE ?>public/assets/img/logo.svg">
-    <link rel="canonical" href="<?= RACINE_SITE ?>">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?= isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http' ?>://<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>">
+    
+    <!-- Hreflang pour le français -->
+    <link rel="alternate" hreflang="fr" href="<?= RACINE_SITE ?>">
+    <link rel="alternate" hreflang="x-default" href="<?= RACINE_SITE ?>">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= RACINE_SITE ?>public/favicon.ico" type="image/x-icon">

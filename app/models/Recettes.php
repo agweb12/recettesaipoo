@@ -46,8 +46,7 @@ class Recettes extends Model{
      */
     public function getRecipeById(int $recipeId) : array|false
     {
-        $sql = "SELECT r.id, r.nom, r.descriptif, r.instructions, r.temps_preparation, r.temps_cuisson, 
-                r.difficulte, r.image_url, c.nom AS categorie, c.id AS id_categorie, 
+        $sql = "SELECT r.*, c.nom AS categorie, c.id AS id_categorie, 
                 c.couleur AS couleur_categorie, c.couleurTexte AS couleurTexte
                 FROM {$this->table} r
                 JOIN categorie c ON r.id_categorie = c.id

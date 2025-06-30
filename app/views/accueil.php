@@ -15,7 +15,12 @@
                 </div>
             </div>
             <div class="selected-ingredients"></div>
-            <button type="submit" name="submit_ingredients">Trouver votre recette adaptée</button>
+            <button type="submit" name="submit_ingredients">Créer ma liste et trouver mes recettes</button>
+            <!-- Avertissement important pour l'utilisateur -->
+            <div class="form-notice">
+                <i class="fi fi-sr-info"></i>
+                <p><strong>Important :</strong> En soumettant ce formulaire, vous créez une nouvelle liste personnelle d'ingrédients qui remplacera l'ancienne. Vos ingrédients précédents seront supprimés.</p>
+            </div>
         </form>
         <?php else: ?>
             <h1>Recettes AI</h1>
@@ -24,6 +29,110 @@
         <?php endif; ?>
     </div>
 </section>
+
+
+<!-- Section Enjeu Sociétal -->
+<section class="impact-section">
+    <div class="impact-container">
+        <h2>Un enjeu sociétal majeur</h2>
+        <div class="impact-stats">
+            <div class="stat-item highlight">
+                <div class="stat-number">9,4M</div>
+                <div class="stat-label">de tonnes de déchets alimentaires par an en France</div>
+            </div>
+            <div class="stat-connector">
+                <i class="fi fi-sr-arrow-right"></i>
+            </div>
+            <div class="stat-item danger">
+                <div class="stat-number">43%</div>
+                <div class="stat-label">viennent des foyers français</div>
+            </div>
+        </div>
+        <div class="impact-cause">
+            <i class="fi fi-sr-exclamation"></i>
+            <p><strong>Principal responsable :</strong> Le manque d'idées de cuisine avec les ingrédients disponibles</p>
+        </div>
+    </div>
+</section>
+
+<!-- Section Problème vs Solution -->
+<section class="problem-solution">
+    <div class="problem-solution-container">
+        <div class="problem-box">
+            <div class="problem-icon">
+                <i class="fi fi-sr-confused"></i>
+            </div>
+            <h3>Le problème courant</h3>
+            <blockquote>
+                "J'ai des ingrédients dans mon frigo mais je ne sais pas quoi cuisiner avec..."
+            </blockquote>
+            <div class="problem-consequences">
+                <span class="consequence">❌ Gaspillage alimentaire</span>
+                <span class="consequence">❌ Perte de temps</span>
+                <span class="consequence">❌ Courses supplémentaires</span>
+            </div>
+        </div>
+        
+        <div class="solution-arrow">
+            <i class="fi fi-sr-arrow-right"></i>
+        </div>
+        
+        <div class="solution-box">
+            <div class="solution-icon">
+                <i class="fi fi-sr-lightbulb-on"></i>
+            </div>
+            <h3>Notre solution</h3>
+            <p>Recettes AI transforme vos ingrédients disponibles en délicieuses recettes personnalisées</p>
+            <div class="solution-benefits">
+                <span class="benefit">✅ Réduction du gaspillage</span>
+                <span class="benefit">✅ Gain de temps</span>
+                <span class="benefit">✅ Économies</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Avantages -->
+<section class="advantages-section">
+    <div class="advantages-container">
+        <h2>Pourquoi choisir Recettes AI ?</h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon ecology">
+                    <i class="fi fi-sr-leaf"></i>
+                </div>
+                <h4>Réduire le Gaspillage</h4>
+                <p>Optimisez vos restes et réduisez votre impact environnemental grâce à nos recettes adaptées</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon time">
+                    <i class="fi fi-sr-clock"></i>
+                </div>
+                <h4>Gagner du Temps</h4>
+                <p>Trouvez une recette parfaite en moins de <strong>2 minutes</strong> au lieu de chercher pendant des heures</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon alternative">
+                    <i class="fi fi-sr-star"></i>
+                </div>
+                <h4>Alternative Intelligente</h4>
+                <p>Une expérience moderne et personnalisée, bien plus efficace que les moteurs de recherche classiques</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon accessible">
+                    <i class="fi fi-sr-users"></i>
+                </div>
+                <h4>Accessible à Tous</h4>
+                <p>Conçu pour tous types d'utilisateurs : étudiants, familles, seniors, débutants ou experts</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <section class="typesRecipes">
     <h2>Nos recettes</h2>
     <h3>les plus populaires</h3>

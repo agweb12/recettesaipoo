@@ -40,7 +40,7 @@
                     </div>
                     <p><?= htmlspecialchars($recette['nom']) ?></p>
                     <p><?= htmlspecialchars(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
-                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>">Voir la recette</a>
                 </div>
                 <?php endforeach;?>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <p><?= htmlspecialchars($recette['nom']) ?></p>
                     <p><?= htmlspecialchars(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
-                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>">Voir la recette</a>
                 </div>
                 <?php endforeach;?>
             </div>
@@ -81,6 +81,7 @@
         <section class="no-recipes">
             <h4>Aucune recette trouvée</h4>
             <p>Nous n'avons pas trouvé de recettes correspondant à vos ingrédients. Essayez avec d'autres ingrédients ou consultez notre liste complète de recettes.</p>
+            <a href="<?= RACINE_SITE ?>" class="cta">Commencer à créer votre liste d'ingrédients</a>
         </section>
         <?php endif; ?>
     </section>
@@ -234,7 +235,7 @@
                             </div>
                             <h4><?= htmlspecialchars($recette['nom']) ?></h4>
                             <p><?= html_entity_decode(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
-                            <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                            <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>">Voir la recette</a>
                         </div>
                     <?php endforeach; ?>
                 <!-- Si aucune recette n'est trouvée -->

@@ -1,14 +1,29 @@
+<?php if(!$this->isLoggedIn()) :?>
 <section class="heroIngredients">
     <h1><?= htmlspecialchars($recette['nom']) ?></h1>
     <div class="boxHeroIngredients">
-        <?php if(!$this->isLoggedIn()): ?>
             <p>Inscrivez-vous ou connectez-vous pour trouver vos recettes en fonction de votre liste d'ingrédients</p>
             <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
-        <?php else: ?>
-                <h5>Ajoutez cette recette dans vos favoris si elle vous plaît</h5>
-        <?php endif; ?>
     </div>
 </section>
+<?php endif; ?>
+<!-- Breadcrumbs -->
+<?php if($this->isLoggedIn()) :?>
+    <h1 style="margin-top: 5rem;"><?= htmlspecialchars($recette['nom']) ?></h1>
+<?php endif; ?>
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+    <ol class="breadcrumb-list">
+        <?php foreach ($breadcrumbs as $index => $breadcrumb): ?>
+            <li class="breadcrumb-item">
+                <?php if ($index < count($breadcrumbs) - 1): ?>
+                    <a href="<?= $breadcrumb['url'] ?>"><?= htmlspecialchars($breadcrumb['name']) ?></a>
+                <?php else: ?>
+                    <span aria-current="page"><?= htmlspecialchars($breadcrumb['name']) ?></span>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ol>
+</nav>
 <!-- Récupération des données de la recette -->
 <section class="oneRecipe">
     <div class="recipeBox <?= $isFavorite ? 'is-active' : '' ?>"
