@@ -1576,7 +1576,7 @@ main{
             gap: 1rem;
             padding: 0rem 1rem 1rem 1rem;
             border-radius: .5rem;
-            background-color: var(--background-secondary);
+            background-color: var(--background-primary);
             box-shadow: 2px 2px 0px var(--primary-color);
             overflow: hidden;
             transition: all 0.3s ease-in-out;
