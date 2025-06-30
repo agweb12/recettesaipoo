@@ -818,7 +818,6 @@ main{
 
 .impact-cause {
     background: var(--alert-danger);
-    color: white;
     padding: 1.5rem;
     border-radius: 10px;
     margin-top: 2rem;
@@ -832,6 +831,7 @@ main{
 }
 
 .impact-cause i {
+    color: var(--secondary-color);
     font-size: 1.5rem;
 }
 
@@ -860,6 +860,10 @@ main{
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease;
+
+    h3{
+        color: var(--primary-color);
+    }
 }
 
 .problem-box:hover, .solution-box:hover {
@@ -996,13 +1000,13 @@ main{
 }
 
 .advantage-card h4 {
-    color: var(--text-primary);
+    color: var(--primary-color);
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .advantage-card p {
-    color: var(--text-secondary);
+    color: var(--text-primary);
     line-height: 1.6;
 }
 
@@ -1018,13 +1022,35 @@ main{
     padding: 2rem 0;
     padding-top: 7rem;
     height: 100vh;
-    background: url("../img/homme-legumes.jpg");
-    background-position: center;
+    background: url("../img/cuisine/cuisine5.svg"),
+    url("../img/categories/categorie_5_1747401201.webp"),
+    url("../img/categories/categorie_6_1747401153.webp"),
+    url("../img/categories/categorie_11_1747401165.webp"),
+    url("../img/categories/categorie_12_1747400842.webp"),
+    url("../img/categories/categorie_8_1747401112.webp"),
+    url("../img/categories/categorie_15_1747401306.webp"),
+    url("../img/categories/categorie_18_1747508823.webp"),
+    url("../img/categories/categorie_13_1747401242.webp");
+    background-size: 10%;
+    background-position: 
+        50% 10%,  /* En haut au centre */
+        90% 20%,  /* En haut à droite */
+        10% 20%,  /* En haut à gauche */
+        85% 50%,  /* À droite au milieu */
+        15% 50%,  /* À gauche au milieu */
+        75% 80%,  /* En bas à droite */
+        25% 80%,  /* En bas à gauche */
+        60% 90%,  /* En bas vers la droite */
+        40% 90%;  /* En bas vers la gauche */
     background-repeat: no-repeat;
-    background-size: cover;
-    backdrop-filter: brightness(0.4);
     background-attachment: fixed;
     transition: all 0.3s ease-in-out;
+    animation-name: heroIngredientsBackgroundAnimation;
+    animation-duration: 8s;
+    animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-fill-mode:both;
 
     .boxHeroIngredients{
         max-width: 900px;
@@ -1052,6 +1078,73 @@ main{
     }
 }
 
+@keyframes heroIngredientsBackgroundAnimation {
+    0% {
+        background-size: 9%;
+        background-position: 
+            50% 10%,  /* En haut au centre */
+            90% 20%,  /* En haut à droite */
+            10% 20%,  /* En haut à gauche */
+            85% 50%,  /* À droite au milieu */
+            15% 50%,  /* À gauche au milieu */
+            75% 80%,  /* En bas à droite */
+            25% 80%,  /* En bas à gauche */
+            60% 90%,  /* En bas vers la droite */
+            40% 90%;  /* En bas vers la gauche */
+    }
+    25% {
+        background-size: 11%;
+        background-position: 
+            50% 12%,  /* En haut au centre */
+            88% 22%,  /* En haut à droite */
+            12% 18%,  /* En haut à gauche */
+            87% 48%,  /* À droite au milieu */
+            13% 52%,  /* À gauche au milieu */
+            77% 78%,  /* En bas à droite */
+            23% 82%,  /* En bas à gauche */
+            62% 88%,  /* En bas vers la droite */
+            38% 92%;  /* En bas vers la gauche */
+    }
+    50% {
+        background-size: 10%;
+        background-position: 
+            50% 15%,  /* En haut au centre */
+            92% 18%,  /* En haut à droite */
+            8% 22%,   /* En haut à gauche */
+            89% 52%,  /* À droite au milieu */
+            11% 48%,  /* À gauche au milieu */
+            79% 82%,  /* En bas à droite */
+            21% 78%,  /* En bas à gauche */
+            64% 92%,  /* En bas vers la droite */
+            36% 88%;  /* En bas vers la gauche */
+    }
+    75% {
+        background-size: 12%;
+        background-position: 
+            50% 13%,  /* En haut au centre */
+            86% 24%,  /* En haut à droite */
+            14% 16%,  /* En haut à gauche */
+            83% 54%,  /* À droite au milieu */
+            17% 46%,  /* À gauche au milieu */
+            73% 84%,  /* En bas à droite */
+            27% 76%,  /* En bas à gauche */
+            58% 94%,  /* En bas vers la droite */
+            42% 86%;  /* En bas vers la gauche */
+    }
+    100% {
+        background-size: 9%;
+        background-position: 
+            50% 10%,  /* En haut au centre */
+            90% 20%,  /* En haut à droite */
+            10% 20%,  /* En haut à gauche */
+            85% 50%,  /* À droite au milieu */
+            15% 50%,  /* À gauche au milieu */
+            75% 80%,  /* En bas à droite */
+            25% 80%,  /* En bas à gauche */
+            60% 90%,  /* En bas vers la droite */
+            40% 90%;  /* En bas vers la gauche */
+    }
+}
 /* ***** PAGE MONCOMPTE ***** */
 .allListUsersFavorisAndIngredients, .settingsUser {
     max-width: 1200px;
