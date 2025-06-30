@@ -478,7 +478,7 @@ main{
     gap: 1rem;
     padding: 2rem 0;
     padding-top: 7rem;
-    height: 100%;
+    height: 100vh;
     background: url("../img/cuisine/cuisine2.svg"),
     url("../img/categories/categorie_16_1747401290.webp"),
     url("../img/categories/categorie_10_1747401137.webp"),
@@ -682,7 +682,7 @@ main{
     gap: 1rem;
     padding: 2rem 0;
     padding-top: 7rem;
-    height: 100%;
+    height: 100vh;
     background: url("../img/homme-legumes.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -1063,7 +1063,38 @@ main{
                             color: var(--primary-color);
                         }
                     }
+
+                    span.percentage-badge {
+                        padding: .2rem .5rem;
+                        border-radius: 3rem;
+                        font-weight: bold;
+                    }
+
+                    .percentage-badge.complete {
+                        background-color: var(--alert-success);
+                        color: white;
+                    }
+
+                    .percentage-badge.partial {
+                        background: var(--button-color);
+                        color: white;
+                    }
                 }
+            }
+
+            .recipeBox.recipeBox-complete {
+                border: 2px solid;
+                border-color: var(--alert-success);
+
+                &:hover {
+                    transform: scale(1.05);
+                    box-shadow: 1px 1px 0px var(--alert-success);
+                }
+            }
+
+            .recipeBox.recipeBox-partial {
+                border: 2px solid;
+                border-color: var(--alert-warning);
             }
 
             .no-recipes {
@@ -2614,26 +2645,72 @@ footer{
         }
     }
 
+    .listeRecipesIngredients{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .ingredients-list{
+            width: 90%;
+        }
+
+        .columnRecipe{
+            align-items: center;
+            justify-content: center;
+
+            .recipes {
+
+                .recipeBox {
+                    width: 45%;
+                    max-width: none;
+                }
+            }
+        }
+    }
+
     .allListUsersFavorisAndIngredients.tab-content.active{
         flex-direction: column;
 
             .listUserRecipeFavoris {
-            min-height: 20px;
-            max-height: 100%;
+                min-height: 20px;
+                max-height: 100%;
 
+                .recipes {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 1.5rem;
+                    padding: 1rem 0;
+                    height: 300px;
+                    overflow-y: auto;
+                    overflow-x: scroll;
+                    scrollbar-width: thin;
+                    scrollbar-color: var(--primary-color) var(--background-secondary);
+
+                    .recipeBox{
+                        min-width: 50%;
+                    }
+                }
+        }
+    }
+}
+
+@media screen and (max-width: 440px){
+    header{
+        .menu{
+            justify-content: center;
+            gap: 0rem;
+            .linkNav{
+                gap: 0rem;
+            }
+        }
+    }
+
+    .listeRecipesIngredients{
+        .columnRecipe{
             .recipes {
-                display: flex;
-                flex-wrap: nowrap;
-                gap: 1.5rem;
-                padding: 1rem 0;
-                height: 300px;
-                overflow-y: auto;
-                overflow-x: scroll;
-                scrollbar-width: thin;
-                scrollbar-color: var(--primary-color) var(--background-secondary);
-
-                .recipeBox{
-                    min-width: 50%;
+                .recipeBox {
+                    width: 100%;
                 }
             }
         }

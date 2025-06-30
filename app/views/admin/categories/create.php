@@ -20,6 +20,7 @@
         <div class="add-form-container">
             <h3>Ajouter une nouvelle catégorie</h3>
             <form method="POST" action="<?= RACINE_SITE ?>admin/categories/store" class="add-form" enctype="multipart/form-data">
+                <?= csrf_field() ?>
                 <div class="form-section">
                     <div class="form-row">
                         <div class="form-group">

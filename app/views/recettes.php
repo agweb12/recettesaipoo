@@ -14,12 +14,13 @@
         </section>
         <?php endif; ?>
         <!-- Afficher les recettes correspondantes -->
-        <?php if(!empty($recettes)): ?>
+        <?php if((isset($recettesComplete) && !empty($recettesComplete)) || (isset($recettesPartielle) && !empty($recettesPartielle))):  ?>
         <section class="columnRecipe">
-            <h4>Vos recettes correspondantes</h4>
-            <div class="recipes">
-            <?php foreach($recettes as $recette): ?>
-                <div class="recipeBox">
+            <?php if(isset($recettesComplete) && !empty($recettesComplete)): ?>
+            <h4>Recettes 100% Correspondantes</h4>
+            <div class="recipes recipes-complete">
+                <?php foreach($recettesComplete as $recette): ?>
+                <div class="recipeBox recipeBox-complete">
                     <img src="<?= (!empty($recette['image_url'])) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg' ?>" alt="<?= htmlspecialchars($recette['nom']) ?>">
                     <div class="recipe-meta">
                         <span><i class="fi fi-sr-clock"></i> Préparation: <?= $recette['temps_preparation'] ?> min</span>
@@ -33,16 +34,49 @@
                             </span>
                         <?php endif; ?>
                         <span><i class="fi fi-sr-list-check"></i>
-                        <?= $recette['nombre_ingredients_correspondants'] ?> ingrédient<?= $recette['nombre_ingredients_correspondants'] > 1 ? 's' : '' ?> / <?= $recette['nombre_ingredients_total'] ?>
+                        <?= $recette['nombre_ingredients_correspondants'] ?> / <?= $recette['nombre_ingredients_total'] ?> ingrédients
                         </span>
+                        <span class="percentage-badge complete">100%</span>
                     </div>
                     <p><?= htmlspecialchars($recette['nom']) ?></p>
                     <p><?= htmlspecialchars(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
                     <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
                 </div>
-            <?php endforeach;?>
+                <?php endforeach;?>
             </div>
+            <?php endif; ?>
+
+            <?php if(isset($recettesPartielle) && !empty($recettesPartielle)): ?>
+            <h4>Recettes partiellement réalisables avec vos ingrédients</h4>
+            <div class="recipes recipes-partial">
+                <?php foreach($recettesPartielle as $recette): ?>
+                <div class="recipeBox recipeBox-partial">
+                    <img src="<?= (!empty($recette['image_url'])) ? RACINE_SITE . 'public/assets/recettes/' . $recette['image_url'] : RACINE_SITE . 'public/assets/img/femme-cuisine.jpg' ?>" alt="<?= htmlspecialchars($recette['nom']) ?>">
+                    <div class="recipe-meta">
+                        <span><i class="fi fi-sr-clock"></i> Préparation: <?= $recette['temps_preparation'] ?> min</span>
+                        <span><i class="fi fi-sr-flame"></i> Cuisson: <?= $recette['temps_cuisson'] ?> min</span>
+                        <span style="background-color:<?= $recette['couleur_categorie'] ?>; color:<?= $recette['couleurTexte'] ?>;  border-radius:3rem; padding:.3rem;"><?= $recette['categorie'] ?></span>
+                        <span><i class="fi fi-sr-stats"></i><?= ucfirst($recette['difficulte']) ?></span>
+                        <?php if($isLoggedIn): ?>
+                            <span>
+                                <i class="fi <?= in_array($recette['id'], $recettesFavorisIds) ? 'fi-sr-heart' : 'fi-rr-heart' ?>"></i>
+                                Favoris
+                            </span>
+                        <?php endif; ?>
+                        <span><i class="fi fi-sr-list-check"></i>
+                        <?= $recette['nombre_ingredients_correspondants'] ?> / <?= $recette['nombre_ingredients_total'] ?> ingrédients
+                        </span>
+                        <span class="percentage-badge partial"><?= $recette['pourcentage_disponibilite'] ?>%</span>
+                    </div>
+                    <p><?= htmlspecialchars($recette['nom']) ?></p>
+                    <p><?= htmlspecialchars(substr($recette['descriptif'], 0, 100)) ?><?= strlen($recette['descriptif']) > 100 ? '...' : '' ?></p>
+                    <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" target="_blank">Voir la recette</a>
+                </div>
+                <?php endforeach;?>
+            </div>
+            <?php endif; ?>
         </section>
+        
         <?php elseif(isset($formIngredients) && $formIngredients == 1): ?>
         <section class="no-recipes">
             <h4>Aucune recette trouvée</h4>
@@ -50,6 +84,21 @@
         </section>
         <?php endif; ?>
     </section>
+    <?php elseif(isset($formIngredients) && $formIngredients == 1): ?>
+        <!-- Hero Section -->
+        <section class="heroIngredients">
+            <h1>Toutes les recettes</h1>
+            <div class="boxHeroIngredients">
+                <?php if(!$isLoggedIn): ?>
+                    <p>Inscrivez-vous ou connectez-vous pour trouver vos recettes en fonction de votre liste d'ingrédients</p>
+                    <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
+                <?php else: ?>
+                    <p>Découvrez vos recettes en fonction de votre liste d'ingrédients</p>
+                    <a href="<?= RACINE_SITE ?>recettes?formIngredients=1" class="cta">Voir vos recettes correspondantes</a>
+                <?php endif; ?>
+            </div>
+        </section>
+        <!-- Hero Section End -->
     <?php endif; ?>
 
 <?php else: ?>
@@ -61,7 +110,8 @@
                 <p>Inscrivez-vous ou connectez-vous pour trouver vos recettes en fonction de votre liste d'ingrédients</p>
                 <button type="button" id="btnModal">Commencez à trouver votre recette du jour</button>
             <?php else: ?>
-                <h5>Trouvez votre recette à l'aide du système de filtrage en fonction de vos envies</h5>
+                <p>Découvrez vos recettes en fonction de votre liste d'ingrédients</p>
+                <a href="<?= RACINE_SITE ?>recettes?formIngredients=1" class="cta">Voir vos recettes correspondantes</a>
             <?php endif; ?>
         </div>
     </section>

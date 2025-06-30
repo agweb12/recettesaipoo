@@ -9,3 +9,18 @@
     RewriteRule ^$ public/index.php [L]
     RewriteRule (.*) public/$1 [L]
 </IfModule>
+
+# Protection des fichiers sensibles
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protection des fichiers de configuration
+<FilesMatch "\.(sql|md|lock|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Désactiver l'affichage des répertoires
+Options -Indexes

@@ -392,6 +392,80 @@ textarea::placeholder {
     text-decoration: underline;
 }
 
+/* Alerte CSRF */
+.csrf-error {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    min-width: 400px;
+    background: #dc3545;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.3s ease-out;
+}
+
+.csrf-error .close-alert {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+/* Alertes de sécurité rate limiting */
+.alert.alert-danger {
+    position: relative;
+    border-left: 4px solid #dc3545;
+}
+
+.alert.alert-danger i.fi-sr-shield-exclamation {
+    color: #dc3545;
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.alert small {
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Animation pour les alertes critiques */
+.alert.alert-danger:has(i.fi-sr-shield-exclamation) {
+    animation: securityAlert 0.5s ease-in-out;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+@keyframes securityAlert {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-10px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
 /* BODY */
 body {
     width: 100%;

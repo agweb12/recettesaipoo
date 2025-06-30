@@ -35,7 +35,10 @@ class RecettesController extends Controller {
         $recettesFavorisIds = []; // Tableau pour stocker les IDs des recettes favorites de l'utilisateur
         $formIngredients = isset($_GET['formIngredients']) && $_GET['formIngredients'] == 1; // Vérifie si le formulaire d'ingrédients a été soumis
         $hasFilters = $this->hasFilters($_GET); // Vérifie si des filtres sont appliqués
-
+        $recettesGroupees = [
+            'complete' => [],
+            'partielle' => []
+        ];
         // Si l'utilisateur est connecté
         if($this->isLoggedIn()){
             $userId = $_SESSION['user']['id'];
@@ -57,6 +60,9 @@ class RecettesController extends Controller {
                     $recette['nombre_ingredients_total'] = $this->recetteModel->countRecipeIngredients($recette['id']);
                     return $recette;
                 }, $recettesIngredients);
+
+                // Préparer les recettes avec le pourcentage et les séparer en deux groupes
+                $recettesGroupees = $this->prepareRecettesWithPercentage($recettes);
             }
         }
         
@@ -109,6 +115,8 @@ class RecettesController extends Controller {
             'recettesFavorisIds' => $recettesFavorisIds,
             'etiquettes' => $etiquettes,
             'categories' => $categories,
+            'recettesComplete' => $recettesGroupees['complete'],
+            'recettesPartielle' => $recettesGroupees['partielle'],
             'formIngredients' => $formIngredients,
             'hasFilters' => $hasFilters
         ]);
@@ -268,5 +276,40 @@ class RecettesController extends Controller {
             'uniteMesureList' => $uniteMesureList,
             'possedeListIngredients' => $possedeListIngredients
         ]);
+    }
+
+    /**
+     * Prépare les recettes avec le pourcentage de disponibilité des ingrédients
+     * @param array $recettes Les recettes à préparer
+     * @return array Les recettes avec pourcentage de disponibilité
+     */
+    private function prepareRecettesWithPercentage(array $recettes): array
+    {
+        $recettesPreparees = [];
+        $recettesComplete = []; // Recettes avec 100% des ingrédients
+        $recettesPartielle = []; // Recettes avec moins de 100% des ingrédients
+        
+        foreach ($recettes as $recette) {
+            // Calculer le pourcentage de disponibilité
+            $pourcentage = ($recette['nombre_ingredients_correspondants'] / $recette['nombre_ingredients_total']) * 100;
+            $recette['pourcentage_disponibilite'] = round($pourcentage, 0);
+            
+            // Trier selon que tous les ingrédients sont disponibles ou non
+            if ($recette['pourcentage_disponibilite'] == 100) {
+                $recettesComplete[] = $recette;
+            } else {
+                $recettesPartielle[] = $recette;
+            }
+        }
+        
+        // Trier les recettes partielles par pourcentage de disponibilité décroissant
+        usort($recettesPartielle, function($a, $b) {
+            return $b['pourcentage_disponibilite'] <=> $a['pourcentage_disponibilite'];
+        });
+        
+        $recettesPreparees['complete'] = $recettesComplete;
+        $recettesPreparees['partielle'] = $recettesPartielle;
+        
+        return $recettesPreparees;
     }
 }

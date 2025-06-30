@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(); // Créer un nouvel objet FormData
             formData.append('id_recette', recipeId); // Ajouter l'ID de la recette
             formData.append('action', action); // Ajouter l'action (ajouter ou supprimer)
+            
+             // Récupération du token CSRF depuis un meta tag ou un élément caché
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                             document.querySelector('input[name="csrf_token"]')?.value;
+            
+            if (csrfToken) {
+                formData.append('csrf_token', csrfToken);
+            }
 
             // Récupérer la racine du site à partir du meta tag
             const RACINESITE = document.querySelector('meta[name="racine-site"]')?.getAttribute('content') || '/recettesaipoo/';

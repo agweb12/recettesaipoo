@@ -64,6 +64,7 @@
                                         <a href="<?= RACINE_SITE ?>recettes/recette?id=<?= $recette['id'] ?>" class="btn-view" target="_blank">Voir</a>
                                         <a href="<?= RACINE_SITE ?>admin/recettes/edit/<?= $recette['id'] ?>" class="btn-edit">Modifier</a>
                                         <form method="POST" action="<?= RACINE_SITE ?>admin/recettes/delete/<?= $recette['id'] ?>" class="delete-form" style="display: inline;">
+                                            <?= csrf_field() ?>
                                             <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">Supprimer</button>
                                         </form>
                                     </td>

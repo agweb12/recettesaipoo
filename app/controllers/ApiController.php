@@ -36,6 +36,12 @@ class ApiController extends Controller {
             return;
         }
 
+        // Validation CSRF pour les requêtes AJAX
+        if (!\App\Core\CSRF::validateFromPost()) {
+            $this->jsonResponse(['success' => false, 'message' => 'Token CSRF invalide'], 403);
+            return;
+        }
+
         if (!isset($_POST['id_recette']) || !is_numeric($_POST['id_recette']) || !isset($_POST['action'])) {
             $this->jsonResponse(['success' => false, 'message' => 'Paramètres manquants ou invalides'], 400);
             return;

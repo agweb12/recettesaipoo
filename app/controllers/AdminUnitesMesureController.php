@@ -83,6 +83,11 @@ class AdminUnitesMesureController extends Controller {
             $this->redirect(RACINE_SITE . 'admin/unites-mesure');
             exit();
         }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
         
         $nom = Utils::sanitize($_POST['nom']);
         $abreviation = Utils::sanitize($_POST['abreviation']);
@@ -122,6 +127,11 @@ class AdminUnitesMesureController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/unites-mesure');
             exit();
+        }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         $nom = Utils::sanitize($_POST['nom']);
@@ -163,6 +173,11 @@ class AdminUnitesMesureController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/unites-mesure');
             exit();
+        }
+        
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         // Vérifier si l'unité est utilisée dans des recettes

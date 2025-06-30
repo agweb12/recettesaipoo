@@ -38,6 +38,12 @@ class ProfileController extends Controller {
 
         // Traitement des actions basées sur POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+
+            // Validation CSRF
+            if (!$this->validateCSRF()) {
+                return;
+            }
+            
             $message = $this->handlePostActions($_POST, $userId);
             if (isset($message['redirect'])) {
                 $this->redirect($message['redirect']);

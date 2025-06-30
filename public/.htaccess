@@ -2,6 +2,12 @@
     RewriteEngine On
     RewriteBase /recettesaipoo/
     
+    # Protection contre les injections basiques
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule ^(.*)$ - [F,L]
+
     # Si le fichier ou dossier demandé existe, alors l'utiliser
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -9,3 +15,40 @@
     # Sinon rediriger vers index.php
     RewriteRule ^(.*)$ index.php/$1 [L,QSA]
 </IfModule>
+
+# Headers de sécurité de base (compatible Laragon)
+<IfModule mod_headers.c>
+    # CSP simple et compatible
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;"
+    
+    # Protection de base
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Masquer les informations serveur
+    Header always unset X-Powered-By
+    Header always unset Server
+    
+    # Cache pour les assets statiques
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2)$">
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+</IfModule>
+
+# Protection des fichiers
+<FilesMatch "\.(htaccess|htpasswd|sql|log|conf|config)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Configuration PHP sécurisée (compatible Laragon)
+<IfModule mod_php.c>
+    php_value expose_php Off
+    php_value session.cookie_httponly 1
+    php_value session.use_only_cookies 1
+</IfModule>
+
+# Désactiver l'affichage des répertoires
+Options -Indexes

@@ -1,6 +1,7 @@
 <div class="add-form-container">
     <h3>Ajouter un nouvel administrateur</h3>
     <form method="POST" action="<?= RACINE_SITE ?>admin/administrateurs/store" class="add-form">
+        <?= csrf_field() ?>
         <div class="form-row">
             <div class="form-group">
                 <label for="nom" class="form-label">Nom *</label>

@@ -1,6 +1,7 @@
 <div class="edit-form-container">
     <h3>Modifier l'administrateur</h3>
     <form method="POST" action="<?= RACINE_SITE ?>admin/administrateurs/update/<?= $adminEdit['id'] ?>" class="edit-form">
+        <?= csrf_field() ?>
         <div class="form-row">
             <div class="form-group">
                 <label for="nom" class="form-label">Nom *</label>

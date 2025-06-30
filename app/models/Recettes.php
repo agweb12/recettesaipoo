@@ -132,7 +132,8 @@ class Recettes extends Model{
         $sql = "SELECT DISTINCT r.id, r.nom, r.descriptif, r.temps_preparation, r.temps_cuisson, 
                 r.difficulte, r.image_url, c.nom AS categorie, c.id AS id_categorie, 
                 c.couleur AS couleur_categorie, c.couleurTexte AS couleurTexte, 
-                COUNT(DISTINCT lri.id_ingredient) AS nombre_ingredients_correspondants
+                COUNT(DISTINCT lri.id_ingredient) AS nombre_ingredients_correspondants,
+                (SELECT COUNT(*) FROM liste_recette_ingredients WHERE id_recette = r.id) AS nombre_ingredients_total
                 FROM {$this->table} r
                 JOIN liste_recette_ingredients lri ON r.id = lri.id_recette
                 JOIN categorie c ON r.id_categorie = c.id
@@ -142,7 +143,7 @@ class Recettes extends Model{
                     WHERE lpi.id_utilisateur = :id_utilisateur) 
                 GROUP BY r.id, r.nom, r.descriptif, r.temps_preparation, r.temps_cuisson, r.difficulte, r.image_url, 
                     c.nom, c.id, c.couleur
-                ORDER BY nombre_ingredients_correspondants DESC, r.nom ASC";
+                HAVING nombre_ingredients_correspondants > 0";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id_utilisateur', $userId, PDO::PARAM_INT);
         $stmt->execute();

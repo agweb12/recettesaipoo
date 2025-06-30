@@ -5,13 +5,20 @@
             <p>Espace d'administration Recettes AI</p>
         </div>
         <div class="login-body">
-            <?php if(isset($errors['general'])) { ?>
-                <div class="alert alert-error">
-                    <i class="fi fi-sr-exclamation-triangle"></i>
-                    <p class="alert-error"><?php echo $errors['general']; ?></p>
+            <?php if(isset($errors['general'])) : ?>
+                <div class="alert alert-danger">
+                    <i class="fi fi-sr-shield-exclamation"></i>
+                    <p><?php echo $errors['general']; ?></p>
+                    
+                    <?php if(strpos($errors['general'], 'Trop de tentatives') !== false): ?>
+                        <small style="display: block; margin-top: 10px; opacity: 0.8;">
+                            <strong>Sécurité renforcée :</strong> L'accès administrateur est protégé par un système anti-force brute.
+                        </small>
+                    <?php endif; ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
             <form action="<?= RACINE_SITE ?>admin/login" method="post" id="loginForm">
+                <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Votre adresse email">

@@ -73,6 +73,7 @@
                                         <a href="<?= RACINE_SITE ?>admin/categories/edit/<?= $categorie['id'] ?>" class="btn-edit">Modifier</a>
                                         <?php if ($categorie['nb_recettes'] == 0): ?>
                                         <form method="post" action="<?= RACINE_SITE ?>admin/categories/delete/<?= $categorie['id'] ?>" style="display: inline;">
+                                            <?= csrf_field() ?>
                                             <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">Supprimer</button>
                                         </form>
                                         <?php else: ?>

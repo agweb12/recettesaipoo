@@ -1,6 +1,7 @@
 <div class="edit-form-container">
     <h3>Modifier la recette</h3>
     <form method="POST" action="<?= RACINE_SITE ?>admin/recettes/update/<?= $recetteEdit['id'] ?>" class="edit-form" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <!-- Informations générales -->
         <div class="form-section">
             <h4>Informations générales</h4>

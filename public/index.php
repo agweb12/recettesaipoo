@@ -38,7 +38,7 @@ spl_autoload_register(function($className) { // spl_autoload_register est une fo
 require_once ROOT_DIR . '/app/helpers/functions.php';
 
 // Initialiser le routeur
-$router = new \App\Core\Router();
+$router = new \App\Core\Router(); // instanciation de la classe Router
 
 // Définir les routes
 $router->add('', '\App\Controllers\HomeController', 'index', 'ANY');
@@ -115,5 +115,9 @@ $router->add('admin/administrateurs/update/([0-9]+)', '\App\Controllers\AdminAdm
 $router->add('admin/administrateurs/delete/([0-9]+)', '\App\Controllers\AdminAdministrateursController', 'delete', 'POST');
 $router->add('admin/administrateurs/view-actions', '\App\Controllers\AdminAdministrateursController', 'viewActions');
 
+// Route pour les statistiques de sécurité
+$router->add('admin/security/stats', '\App\Controllers\AdminAuthController', 'securityStats');
+
+$router->add('admin/analytics', '\App\Controllers\AdminController', 'analytics');
 // Dispatcher
 $router->dispatch($_SERVER['REQUEST_URI']);

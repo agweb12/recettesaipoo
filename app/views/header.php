@@ -12,6 +12,7 @@
     <meta name="keywords" content="<?= $keywordsPage ?>" />
     <meta name="author" content="Recettes AI">
     <meta name="application-name" content="Recettes AI">
+    <meta name="csrf-token" content="<?= \App\Core\CSRF::generateToken() ?>">
     <meta name="racine-site" content="<?= RACINE_SITE ?>">
     <title><?= $titlePage ?></title>
 
@@ -66,6 +67,13 @@
 
 </head>
 <body>
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'csrf'): ?>
+        <div class="alert alert-danger csrf-error" role="alert">
+            <i class="fi fi-sr-shield-exclamation"></i>
+            <strong>Erreur de sécurité :</strong> Votre session a expiré ou une tentative d'attaque a été détectée. Veuillez recharger la page et réessayer.
+            <button type="button" class="close-alert" onclick="this.parentElement.style.display='none'">&times;</button>
+        </div>
+    <?php endif; ?>
 <header>
     <?php
     function is_active($pageName) {

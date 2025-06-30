@@ -1,6 +1,7 @@
 <div class="add-form-container">
     <h3>Ajouter une nouvelle recette</h3>
     <form method="POST" action="<?= RACINE_SITE ?>admin/recettes/store" class="add-form" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <!-- Informations générales -->
         <div class="form-section">
             <h4>Informations générales</h4>

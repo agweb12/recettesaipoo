@@ -113,6 +113,11 @@ class AdminAdministrateursController extends Controller {
             exit();
         }
         
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
+
         $nom = Utils::sanitize($_POST['nom']);
         $prenom = Utils::sanitize($_POST['prenom']);
         $email = Utils::sanitize($_POST['email']);
@@ -170,7 +175,12 @@ class AdminAdministrateursController extends Controller {
             $this->redirect(RACINE_SITE . 'admin/administrateurs');
             exit();
         }
-        
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
+
         $nom = Utils::sanitize($_POST['nom']);
         $prenom = Utils::sanitize($_POST['prenom']);
         $email = Utils::sanitize($_POST['email']);
@@ -233,6 +243,11 @@ class AdminAdministrateursController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/administrateurs');
             exit();
+        }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         // Vérifier qu'un administrateur ne tente pas de supprimer son propre compte

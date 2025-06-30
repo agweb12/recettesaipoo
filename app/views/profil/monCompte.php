@@ -24,6 +24,7 @@
                             <span><?= htmlspecialchars($ingredient['nom']) ?></span>
                             <!-- Formulaire pour supprimer un ingrédient -->
                             <form method="post" action="" class="inline-form">
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="supprimer_ingredient">
                                 <input type="hidden" name="id_ingredient" value="<?= $ingredient['id'] ?>">
                                 <button type="submit" class="remove-btn" title="Retirer cet ingrédient">
@@ -36,6 +37,7 @@
             </div>
             <!-- Formulaire pour supprimer tous les ingrédients -->
             <form method="post" action="" class="danger-form">
+                <?= csrf_field() ?>
                 <input type="hidden" name="action" value="supprimer_tous_ingredients">
                 <button type="submit" class="btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer tous vos ingrédients ?');">
                     <i class="fi fi-sr-trash"></i> Supprimer tous mes ingrédients
@@ -63,6 +65,7 @@
                             <h6><i class="fi fi-sr-clock"></i> <?= $recette['temps_preparation'] + $recette['temps_cuisson'] ?> min</h6>
                             <!-- Formulaire pour supprimer une recette des favoris -->
                             <form method="post" action="" class="inline-form">
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="supprimer_favori">
                                 <input type="hidden" name="id_recette" value="<?= $recette['id'] ?>">
                                 <button type="submit" class="favorite-btn is-active profile-favorite-btn" title="Retirer des favoris">
@@ -76,6 +79,7 @@
             </div>
             <!-- Formulaire pour supprimer tous les favoris -->
             <form method="post" action="" class="danger-form">
+                <?= csrf_field() ?>
                 <input type="hidden" name="action" value="supprimer_tous_favoris">
                 <button type="submit" class="btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer toutes vos recettes favorites ?');">
                     <i class="fi fi-sr-trash"></i> Supprimer tous mes favoris
@@ -104,6 +108,7 @@
     <div class="change-password">
         <h3>Changer mon mot de passe</h3>
         <form method="post" action="" class="form-settings">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="changer_mot_de_passe">
             
             <div class="form-group">
@@ -131,6 +136,7 @@
         <p class="warning-text">Attention : Cette action est irréversible et supprimera toutes vos données, y compris vos recettes favorites et votre liste d'ingrédients.</p>
         
         <form method="post" action="" class="form-settings">
+            <?= csrf_field() ?>
             <input type="hidden" name="action" value="supprimer_compte">
             <input type="hidden" name="confirm_suppression" value="oui">
             

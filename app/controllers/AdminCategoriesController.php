@@ -81,6 +81,11 @@ class AdminCategoriesController extends Controller {
             exit();
         }
         
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
+
         $nom = trim($_POST['nom']);
         $descriptif = trim($_POST['descriptif']);
         $couleur = trim($_POST['couleur']);
@@ -174,6 +179,11 @@ class AdminCategoriesController extends Controller {
             exit();
         }
         
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
+
         $nom = trim($_POST['nom']);
         $descriptif = trim($_POST['descriptif']);
         $couleur = trim($_POST['couleur']);
@@ -238,6 +248,11 @@ class AdminCategoriesController extends Controller {
      */
     public function delete(int $id) : void
     {
+        // Validation CSRF pour les suppressions
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$this->validateCSRF()) {
+            return;
+        }
+        
         // Vérifier si la catégorie est utilisée dans des recettes
         if ($this->categorieModel->isUsedInRecipes($id)) {
             $this->redirect(RACINE_SITE . 'admin/categories?info=Cette catégorie est utilisée dans une ou plusieurs recettes et ne peut pas être supprimée.&type=warning');

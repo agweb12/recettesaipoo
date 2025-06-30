@@ -6,10 +6,12 @@ use PDO;
 use App\Core\Database;
 use App\Core\Controller;
 use App\Models\Administrateurs;
+use App\Models\Analytics;
 
 class AdminController extends Controller {
     
     private $adminModel;
+    private $analyticsModel;
     
     public function __construct() {
         // Vérifier si l'administrateur est connecté
@@ -19,6 +21,7 @@ class AdminController extends Controller {
         }
         
         $this->adminModel = new Administrateurs();
+        $this->analyticsModel = new Analytics();
     }
     
     /**
@@ -62,6 +65,23 @@ class AdminController extends Controller {
         // Ingrédients
         $stmt = $db->query("SELECT COUNT(*) as total FROM ingredient");
         $counters['ingredients'] = $stmt->fetch()['total'];
+
+        // Récupération des données analytiques
+        $analytics = [
+            'topRecipes' => $this->analyticsModel->getTopRecipesByFavorites(5),
+            'userStats' => $this->analyticsModel->getUserStats(),
+            'popularCategories' => $this->analyticsModel->getPopularCategories(),
+            'popularIngredients' => $this->analyticsModel->getPopularIngredients(),
+            'activityByMonth' => $this->analyticsModel->getActivityByMonth(),
+            'favoritesTrends' => $this->analyticsModel->getFavoritesTrends(),
+            'recipeStats' => $this->analyticsModel->getRecipeStats(),
+            'mostActiveUsers' => $this->analyticsModel->getMostActiveUsers(),
+            'popularTags' => $this->analyticsModel->getPopularTags(),
+            'growthData' => $this->analyticsModel->getGrowthData(),
+            // Nouvelles statistiques (optionnel)
+            'performanceStats' => $this->analyticsModel->getRecipePerformanceStats(),
+            'engagementStats' => $this->analyticsModel->getUserEngagementStats()
+        ];
         
         $this->view('admin/dashboard', [
             'titlePage' => "Dashboard Admin - Recettes AI",
@@ -69,7 +89,39 @@ class AdminController extends Controller {
             'indexPage' => "noindex",
             'followPage' => "nofollow",
             'keywordsPage' => "",
-            'counters' => $counters
+            'counters' => $counters,
+            'analytics' => $analytics
+        ]);
+    }
+
+    /**
+     * Page dédiée aux analyses détaillées
+     */
+    public function analytics() : void {
+        // Récupération de toutes les données analytiques
+        $analytics = [
+            'topRecipes' => $this->analyticsModel->getTopRecipesByFavorites(20),
+            'userStats' => $this->analyticsModel->getUserStats(),
+            'popularCategories' => $this->analyticsModel->getPopularCategories(),
+            'popularIngredients' => $this->analyticsModel->getPopularIngredients(),
+            'activityByMonth' => $this->analyticsModel->getActivityByMonth(),
+            'favoritesTrends' => $this->analyticsModel->getFavoritesTrends(),
+            'recipeStats' => $this->analyticsModel->getRecipeStats(),
+            'mostActiveUsers' => $this->analyticsModel->getMostActiveUsers(),
+            'popularTags' => $this->analyticsModel->getPopularTags(),
+            'growthData' => $this->analyticsModel->getGrowthData(),
+            // Nouvelles statistiques (optionnel)
+            'performanceStats' => $this->analyticsModel->getRecipePerformanceStats(),
+            'engagementStats' => $this->analyticsModel->getUserEngagementStats()
+        ];
+
+        $this->view('admin/analytics', [
+            'titlePage' => "Analyses & Statistiques - Admin",
+            'descriptionPage' => "Analyses détaillées de l'utilisation de Recettes AI",
+            'indexPage' => "noindex",
+            'followPage' => "nofollow",
+            'keywordsPage' => "",
+            'analytics' => $analytics
         ]);
     }
 }

@@ -37,6 +37,7 @@
                                          ($_SESSION['admin']['role'] === 'superadmin' || 
                                          ($_SESSION['admin']['role'] === 'moderateur' && $admin['role'] !== 'superadmin'))): ?>
                                     <form method="POST" action="<?= RACINE_SITE ?>admin/administrateurs/delete/<?= $admin['id'] ?>" class="delete-form" style="display: inline;">
+                                        <?= csrf_field() ?>
                                         <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')">Supprimer</button>
                                     </form>
                                 <?php endif; ?>

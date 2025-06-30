@@ -20,9 +20,6 @@ class AuthController extends Controller {
      */
     public function login(): void
     {
-        error_log("Login method called");
-        error_log("POST data: " . print_r($_POST, true));
-        error_log("Session before: " . print_r($_SESSION, true));
         // Si l'utilisateur est déjà connecté, rediriger vers l'accueil
         if($this->isLoggedIn()){
             $this->redirect(RACINE_SITE);
@@ -30,9 +27,37 @@ class AuthController extends Controller {
         }
 
         $errors = [];
+        $clientIp = $_SERVER['REMOTE_ADDR'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 'unknown';
 
         // Traitement du formulaire de connexion
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            // Validation CSRF
+            if (!$this->validateCSRF()) {
+                return;
+            }
+
+            // Vérification des tentatives limités
+            if (\App\Core\RateLimiter::isBlocked($clientIp)) {
+                $timeRemaining = \App\Core\RateLimiter::getTimeRemaining($clientIp);
+                $minutes = ceil($timeRemaining / 60);
+                
+                $errors['general'] = "Trop de tentatives de connexion. Réessayez dans {$minutes} minute(s).";
+                
+                // Log de la tentative bloquée
+                error_log("Tentative de connexion bloquée - IP: {$clientIp} - Temps restant: {$timeRemaining}s");
+                
+                $this->view('connexion', [
+                    'titlePage' => "Se Connecter - Recettes AI",
+                    'descriptionPage' => "Se connecter pour accéder à votre compte Recette AI.",
+                    'indexPage' => "index",
+                    'followPage' => "follow",
+                    'keywordsPage' => "connexion, login, Recettes AI",
+                    'errors' => $errors,
+                    'formData' => []
+                ]);
+                return;
+            }
+
             $loginData = [
                 'email' => trim($_POST['email'] ?? ''),
                 'password' => trim($_POST['password'] ?? '')
@@ -44,18 +69,34 @@ class AuthController extends Controller {
             if(empty($errors)){
                 // Si les données sont valides, tenter la connexion
                 $user = $this->userModel->authenticate($loginData['email'], $loginData['password']); // authenticate est une méthode dans le modèle Utilisateurs pour vérifier les identifiants de l'utilisateur
+                
+                // Enregistrer la tentative
+                \App\Core\RateLimiter::recordAttempt($clientIp, $loginData['email'], (bool)$user, 'user');
 
                 if($user){
+                    // Connexion réussie - réinitialiser les tentatives
+                    \App\Core\RateLimiter::resetAttempts($clientIp);
                     // Connexion réussie
                     $_SESSION['user'] = $user;
-                    error_log("Session after login: " . print_r($_SESSION, true));
 
+                    // Régénérer le token CSRF après connexion pour plus de sécurité
+                    \App\Core\CSRF::regenerateToken();
+                    
+                    error_log("Session after login: " . print_r($_SESSION, true));
+                    error_log("Connexion réussie - IP: {$clientIp} - Email: {$loginData['email']}");
+                    
                     $this->redirect(RACINE_SITE);
                     return;
-                }else {
-                // Ajout d'un message d'erreur si l'authentification échoue
-                $errors['general'] = "Email ou mot de passe incorrect";
-            }
+                } else {
+                    // Ajout d'un message d'erreur si l'authentification échoue
+                    $errors['general'] = "Email ou mot de passe incorrect";
+
+                    // Log de la tentative échouée
+                    error_log("Tentative de connexion échouée - IP: {$clientIp} - Email: {$loginData['email']}");
+                }
+            } else {
+                // Enregistrer même les tentatives avec des données invalides
+                \App\Core\RateLimiter::recordAttempt($clientIp, $loginData['email'] ?? 'invalid', false, 'user');
             }
         }
 
@@ -90,6 +131,11 @@ class AuthController extends Controller {
 
         // Traitement du formulaire d'inscription
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            // Validation CSRF
+            if (!$this->validateCSRF()) {
+                return;
+            }
+            
             $registrationData = [
                 'nom' => trim($_POST['nom'] ?? ''),
                 'prenom' => trim($_POST['prenom'] ?? ''),

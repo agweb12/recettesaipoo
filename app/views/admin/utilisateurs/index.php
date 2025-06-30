@@ -19,6 +19,7 @@
             <div class="edit-form-container">
                 <h3>Modifier l'utilisateur</h3>
                 <form method="POST" action="<?= RACINE_SITE ?>admin/utilisateurs/update/<?= $utilisateurEdit['id'] ?>" class="edit-form">
+                    <?= csrf_field() ?>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nom" class="form-label">Nom</label>
@@ -78,6 +79,7 @@
                                     <td class="actions">
                                         <a href="<?= RACINE_SITE ?>admin/utilisateurs/edit/<?= $user['id'] ?>" class="btn-edit">Modifier</a>
                                         <form method="POST" action="<?= RACINE_SITE ?>admin/utilisateurs/delete/<?= $user['id'] ?>" class="delete-form" style="display: inline;">
+                                            <?= csrf_field()?>
                                             <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</button>
                                         </form>
                                     </td>

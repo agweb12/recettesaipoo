@@ -103,6 +103,11 @@ class AdminRecettesController extends Controller {
             exit();
         }
         
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
+
         $nom = Utils::sanitize($_POST['nom']);
         $descriptif = Utils::sanitize($_POST['descriptif']);
         $instructions = Utils::sanitize($_POST['instructions']);
@@ -174,6 +179,11 @@ class AdminRecettesController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/recettes');
             exit();
+        }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         $nom = Utils::sanitize($_POST['nom']);
@@ -259,6 +269,11 @@ class AdminRecettesController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/recettes');
             exit();
+        }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         $result = $this->recetteModel->delete($id);

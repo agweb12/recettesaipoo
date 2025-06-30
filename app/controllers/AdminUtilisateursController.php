@@ -80,6 +80,11 @@ class AdminUtilisateursController extends Controller {
             $this->redirect(RACINE_SITE . 'admin/utilisateurs');
             exit();
         }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
         
         $nom = Utils::sanitize($_POST['nom']);
         $prenom = Utils::sanitize($_POST['prenom']);
@@ -128,6 +133,11 @@ class AdminUtilisateursController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect(RACINE_SITE . 'admin/utilisateurs');
             exit();
+        }
+        
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
         }
         
         // Vérifier si l'utilisateur existe

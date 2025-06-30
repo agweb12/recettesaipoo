@@ -32,3 +32,20 @@ function sanitize($input)
 {
     return \App\Utils\Utils::sanitize($input);
 }
+
+
+/**
+ * Génère un champ input hidden CSRF
+ * @return string Le HTML du champ CSRF
+ */
+function csrf_field(): string {
+    return \App\Core\CSRF::getTokenField();
+}
+
+/**
+ * Génère le token CSRF uniquement
+ * @return string Le token CSRF
+ */
+function csrf_token(): string {
+    return \App\Core\CSRF::generateToken();
+}

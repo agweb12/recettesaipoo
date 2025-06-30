@@ -83,6 +83,11 @@ class AdminEtiquettesController extends Controller {
             $this->redirect(RACINE_SITE . 'admin/etiquettes');
             exit();
         }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
         
         $nom = Utils::sanitize($_POST['nom']);
         $descriptif = Utils::sanitize($_POST['descriptif']);
@@ -126,6 +131,11 @@ class AdminEtiquettesController extends Controller {
             $this->redirect(RACINE_SITE . 'admin/etiquettes');
             exit();
         }
+
+        // Validation CSRF
+        if (!$this->validateCSRF()) {
+            return;
+        }
         
         $nom = Utils::sanitize($_POST['nom']);
         $descriptif = Utils::sanitize($_POST['descriptif']);
@@ -165,6 +175,12 @@ class AdminEtiquettesController extends Controller {
      * Supprime une étiquette
      */
     public function delete($id) {
+
+        // Validation CSRF pour les suppressions
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$this->validateCSRF()) {
+            return;
+        }
+        
         // Vérifier si l'étiquette est utilisée dans des recettes
         if ($this->etiquetteModel->isUsedInRecipes($id)) {
             $this->redirect(RACINE_SITE . 'admin/etiquettes?info=Cette étiquette est utilisée dans une ou plusieurs recettes et ne peut pas être supprimée.&type=warning');

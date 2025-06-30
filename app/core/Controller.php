@@ -1,7 +1,9 @@
 <?php
 // app/core/Controller.php
 namespace App\Core;
+use App\Core\CSRF;
 use App\Core\Router;
+
 class Controller {
     protected function view($view, $data = []) { // $view est le nom de la vue à charger, $data est un tableau de données à passer à la vue
         // Toujours ajouter isLoggedIn et user aux données
@@ -48,5 +50,32 @@ class Controller {
     
     protected function isAdminLoggedIn() {
         return isset($_SESSION['admin']);
+    }
+
+    /**
+     * Valide le token CSRF pour les requêtes POST
+     * @return bool True si valide, redirige avec erreur sinon
+     */
+    protected function validateCSRF(): bool {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!CSRF::validateFromPost()) {
+                // Log détaillé de la tentative d'attaque CSRF
+                $logData = [
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown',
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown',
+                    'url' => $_SERVER['REQUEST_URI'] ?? 'Unknown',
+                    'timestamp' => date('Y-m-d H:i:s'),
+                    'session_id' => session_id()
+                ];
+
+                // Log de l'tentative d'attaque CSRF
+                error_log("Tentative CSRF détectée: " . json_encode($logData));
+                
+                // Redirection avec message d'erreur
+                $this->redirect(RACINE_SITE . '?error=csrf');
+                return false;
+            }
+        }
+        return true;
     }
 }

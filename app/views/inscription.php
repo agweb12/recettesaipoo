@@ -17,6 +17,7 @@
                 </div>
             <?php } ?>
             <form action="<?= RACINE_SITE ?>inscription" method="post" id="registerForm">
+                <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="prenom">Prénom</label>
                     <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" >

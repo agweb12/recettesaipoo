@@ -11,6 +11,7 @@
             <div id="modal-errors"></div>
 
             <form action="<?= RACINE_SITE ?>connexion" method="POST" id="modalLoginForm">
+                <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Votre adresse email">

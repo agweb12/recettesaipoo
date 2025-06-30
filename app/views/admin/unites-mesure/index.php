@@ -19,6 +19,7 @@
             <div class="add-form-container">
                 <h3>Ajouter une nouvelle unité de mesure</h3>
                 <form method="POST" action="<?= RACINE_SITE ?>admin/unites-mesure/store" class="add-form">
+                    <?= csrf_field() ?>
                     <div class="form-section">
                         <div class="form-row">
                             <div class="form-group">
@@ -45,6 +46,7 @@
             <div class="edit-form-container">
                 <h3>Modifier l'unité de mesure</h3>
                 <form method="POST" action="<?= RACINE_SITE ?>admin/unites-mesure/update/<?= $uniteEdit['id'] ?>" class="edit-form">
+                    <?= csrf_field() ?>
                     <div class="form-section">
                         <div class="form-row">
                             <div class="form-group">
@@ -102,6 +104,7 @@
                                         <a href="<?= RACINE_SITE ?>admin/unites-mesure/edit/<?= $unite['id'] ?>" class="btn-edit">Modifier</a>
                                         <?php if ($unite['nb_recettes'] == 0): ?>
                                             <form method="POST" action="<?= RACINE_SITE ?>admin/unites-mesure/delete/<?= $unite['id'] ?>" class="delete-form" style="display: inline;">
+                                                <?= csrf_field() ?>
                                                 <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette unité de mesure ?')">Supprimer</button>
                                             </form>
                                         <?php else: ?>

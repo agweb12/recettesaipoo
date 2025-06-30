@@ -19,6 +19,7 @@
             <div class="add-form-container">
                 <h3>Ajouter un nouvel ingrédient</h3>
                 <form method="POST" action="<?= RACINE_SITE ?>admin/ingredients/store" class="add-form">
+                    <?= csrf_field() ?>
                     <div class="form-section">
                         <div class="form-row">
                             <div class="form-group">
@@ -40,6 +41,7 @@
             <div class="edit-form-container">
                 <h3>Modifier l'ingrédient</h3>
                 <form method="POST" action="<?= RACINE_SITE ?>admin/ingredients/update/<?= $ingredientEdit['id'] ?>" class="edit-form">
+                    <?= csrf_field() ?>
                     <div class="form-section">
                         <div class="form-row">
                             <div class="form-group">
@@ -95,6 +97,7 @@
                                         <a href="<?= RACINE_SITE ?>admin/ingredients/edit/<?= $ingredient['id'] ?>" class="btn-edit">Modifier</a>
                                         <?php if ($ingredient['nb_recettes'] == 0 && $ingredient['nb_listes_perso'] == 0): ?>
                                             <form method="POST" action="<?= RACINE_SITE ?>admin/ingredients/delete/<?= $ingredient['id'] ?>" class="delete-form" style="display: inline;">
+                                                <?= csrf_field() ?>
                                                 <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet ingrédient ?')">Supprimer</button>
                                             </form>
                                         <?php else: ?>

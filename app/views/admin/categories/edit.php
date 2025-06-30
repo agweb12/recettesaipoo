@@ -20,6 +20,7 @@
         <div class="edit-form-container">
             <h3>Modifier la catégorie</h3>
             <form method="POST" action="<?= RACINE_SITE ?>admin/categories/update/<?= $categorie['id'] ?>" class="edit-form" enctype="multipart/form-data">
+                <?= csrf_field() ?>
                 <div class="form-section">
                     <div class="form-row">
                         <div class="form-group">
